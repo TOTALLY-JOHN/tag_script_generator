@@ -157,7 +157,7 @@ $(document).ready(function () {
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
   $("#ads_reset_events").on("click", function () {
-    ua_event_size = 0;
+    ads_conversion_size = 0;
     $("#ads_conditions").empty();
   });
   $("#ads_clear_script").on("click", function () {
