@@ -161,6 +161,6 @@ $(document).ready(function () {
     $("#ads_conditions").empty();
   });
   $("#ads_clear_script").on("click", function () {
-    $("#ads_generated_script").empty();
+    $("#generated_ads_script").empty();
   });
 });
