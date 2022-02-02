@@ -7,6 +7,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -18,7 +19,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css"
     />
-    <link rel="stylesheet" href="editor_css.css" />
+    <link rel="stylesheet" href="styles/editor_css.css?after" />
   </head>
   <body>
     <div class="wrapper">
@@ -69,6 +70,7 @@
             >
               UA Event
             </button>
+            <!--
             <button
               class="nav-link"
               id="nav-ga4-tab"
@@ -80,7 +82,7 @@
               aria-selected="false"
             >
               GA4 Event
-            </button>
+            </button>-->
             <button
               class="nav-link"
               id="nav-ads-tab"
@@ -131,6 +133,7 @@
               <div class="line"></div>
             </div>
           </div>
+          <!--
           <div
             class="tab-pane fade"
             id="nav-ga4"
@@ -160,7 +163,7 @@
               <h2>GA4 Generated Script</h2>
               <div id="generated_ga4_script" class="script_part"></div>
             </div>
-          </div>
+          </div>-->
           <div
             class="tab-pane fade"
             id="nav-ads"
@@ -195,7 +198,8 @@
         </div>
       </div>
     </div>
-
+    <script src="scripts/universal_analytics.js?after"></script>
+    <script src="scripts/ads_conversions.js?after"></script>
     <script>
       $(document).ready(function () {
         $("#sidebarCollapse").on("click", function () {
@@ -262,7 +266,7 @@
               ads_conversion_size +
               "><b>Conversion " +
               ads_conversion_size +
-              " </b></p></td><td>Type: <select class='conversion_type'><option value='pageview_equal'>Page View (Equal)</option><option value='pageview_contain'>Page View (Contain)</option><option value='click'>Click</option><option value='click_multiple'>Multiple Clicks</option></select></td><td>URL/Selector: <input type='text' class='ads_page_url_or_selector'/></td><td>Conversion ID: <input type='text' class='ads_cid'/></td><td></tr><tr><td>Conversion Label: <input type='text' class='ads_clabel'/></td><td>Conversion value: <input type='text' class='ads_cvalue'/></td><td>Transaction ID: <input type='text' class='ads_tid'/></td><td>Currency: <input type='text' class='ads_currency'/></td></tr></tbody></table>"
+              " </b></p></td><td>Type: <select class='conversion_type'><option value='pageview_equal'>Page View (Equal)</option><option value='pageview_contain'>Page View (Contain)</option><option value='click'>Click</option></select></td><td>URL/Selector: <input type='text' class='ads_page_url_or_selector'/></td><td>Conversion ID: <input type='text' class='ads_cid'/></td><td></tr><tr><td>Conversion Label: <input type='text' class='ads_clabel'/></td><td>Conversion value: <input type='text' class='ads_cvalue'/></td><td>Transaction ID: <input type='text' class='ads_tid'/></td><td>Currency: <input type='text' class='ads_currency'/></td></tr></tbody></table>"
           );
         });
         $("#generate_ads_script").on("click", function () {
@@ -299,9 +303,9 @@
               if (ads_cvalues[i].value != "") {
                 result +=
                   ",<br />" +
-                  "        <span class='red2'>&apos;value&apos;</span>: <span class='red2'>" +
+                  "        <span class='red2'>&apos;value&apos;</span>: <span class='red2'>parseFloat(" +
                   ads_cvalues[i].value +
-                  "</span>";
+                  ")</span>";
               }
               if (ads_currencies[i].value != "") {
                 result +=
@@ -313,9 +317,9 @@
               if (ads_transactionIds[i].value != "") {
                 result +=
                   ",<br />" +
-                  "        <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>&apos;" +
+                  "        <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>" +
                   ads_transactionIds[i].value +
-                  "&apos;</span>";
+                  "</span>";
               }
               result += "<br />      });<br />";
               result += "    }";
@@ -340,9 +344,9 @@
               if (ads_cvalues[i].value != "") {
                 result +=
                   ",<br />" +
-                  "        <span class='red2'>&apos;value&apos;</span>: <span class='red2'>&apos;" +
+                  "        <span class='red2'>&apos;value&apos;</span>: <span class='red2'>parseFloat(" +
                   ads_cvalues[i].value +
-                  "&apos;</span>";
+                  ")</span>";
               }
               if (ads_currencies[i].value != "") {
                 result +=
@@ -354,9 +358,9 @@
               if (ads_transactionIds[i].value != "") {
                 result +=
                   ",<br />" +
-                  "        <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>&apos;" +
+                  "        <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>" +
                   ads_transactionIds[i].value +
-                  "&apos;</span>";
+                  "</span>";
               }
               result += "<br />      });<br />";
               result += "    }";
@@ -382,9 +386,9 @@
               if (ads_cvalues[i].value != "") {
                 result +=
                   ",<br />" +
-                  "        <span class='red2'>&apos;value&apos;</span>: <span class='red2'>&apos;" +
+                  "        <span class='red2'>&apos;value&apos;</span>: <span class='red2'>parseFloat(" +
                   ads_cvalues[i].value +
-                  "&apos;</span>";
+                  ")</span>";
               }
               if (ads_currencies[i].value != "") {
                 result +=
@@ -396,9 +400,9 @@
               if (ads_transactionIds[i].value != "") {
                 result +=
                   ",<br />" +
-                  "        <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>&apos;" +
+                  "        <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>" +
                   ads_transactionIds[i].value +
-                  "&apos;</span>";
+                  "</span>";
               }
               result += "<br />      });<br />";
               result += "    });";
@@ -409,12 +413,12 @@
             "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
           $("#generated_ads_script").html("<pre>" + result + "</pre>");
         });
-        $("#ua_reset_events").on("click", function () {
+        $("#ads_reset_events").on("click", function () {
           ua_event_size = 0;
-          $("#ua_conditions").empty();
+          $("#ads_conditions").empty();
         });
-        $("#ua_clear_script").on("click", function () {
-          $("#ua_generated_script").empty();
+        $("#ads_clear_script").on("click", function () {
+          $("#ads_generated_script").empty();
         });
       });
     </script>
