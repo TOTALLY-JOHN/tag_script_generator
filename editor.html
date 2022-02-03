@@ -41,7 +41,7 @@
           </li>-->
         </ul>
         <ul class="list-unstyled components">
-          <li><a>Made by Jihwan Jeong</a></li>
+          <li><a>Version 0.1</a></li>
         </ul>
       </nav>
 
@@ -95,6 +95,19 @@
             >
               Ads Conversion
             </button>
+            <!--
+            <button
+              class="nav-link"
+              id="nav-cafe24-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-cafe24"
+              type="button"
+              role="tab"
+              aria-controls="nav-cafe24"
+              aria-selected="false"
+            >
+              Cafe24
+            </button>-->
           </div>
         </nav>
 
@@ -128,7 +141,8 @@
               <h2>Conditions</h2>
               <div><form id="ua_conditions" autocomplete="off"></form></div>
               <div class="line"></div>
-              <h2>UA Generated Script</h2>
+              <h2>UA Generated Script</h2><br />
+              <button id="ua_copy" class="btn btn-primary">Copy</button> <br /><br />
               <div id="ua_generated_script" class="script_part"></div>
               <div class="line"></div>
             </div>
@@ -175,6 +189,9 @@
               <br />
               <h2>Ads Conversion Script Generator</h2>
               <div class="line"></div>
+              <button id="ads_script_for_timeout" class="btn btn-info">Timeout Script</button>
+              <button id="ads_script_for_gtm_custom_event" class="btn btn-info">GTM Custom Event Script</button><br />
+              <div class="line"></div>
               <button id="ads_add_button" class="btn btn-primary">
                 Add Conversion
               </button>
@@ -190,18 +207,58 @@
               <button id="ads_clear_script" class="btn btn-warning">
                 Clear Script
               </button>
+              
               <div class="line"></div>
               <h2>Conditions</h2>
               <div><form id="ads_conditions" autocomplete="off"></form></div>
               <div class="line"></div>
-              <h2>Ads Conversion Generated Script</h2>
+              <h2>Ads Conversion Generated Script</h2><br />
+              <button id="ads_copy" class="btn btn-primary">Copy</button> <br /><br />
               <div id="generated_ads_script" class="script_part"></div>
             </div>
           </div>
-        </div>
+
+          <!-- <div
+            class="tab-pane fade"
+            id="nav-cafe24"
+            role="tabpanel"
+            aria-labelledby="nav-cafe24-tab"
+          > -->
+            <!-- CAFE24 --> <!--
+            <div>
+              <br />
+              <h2>Cafe24 Script Generator</h2>
+              <div class="line"></div>
+              <button id="cafe24_ua_add_button" class="btn btn-primary">
+                Universal Analytics
+              </button>
+              &nbsp;
+              <button id="cafe24_ec_add_button" class="btn btn-primary">
+                E-Commerce
+              </button>
+              &nbsp;
+              <button id="cafe24_dr_add_button" class="btn btn-primary">
+                Dynamic Remarketing
+              </button>
+              &nbsp;
+              <button id="ads_reset_events" class="btn btn-danger">
+                Reset
+              </button>
+              &nbsp;
+              <button id="ads_clear_script" class="btn btn-warning">
+                Clear Script
+              </button>
+              <div class="line"></div>
+              <h2>Cafe24 Generated Script</h2>
+              <div id="generated_cafe24_script" class="script_part"></div>
+            </div>
+          </div>
+        </div>-->
       </div>
     </div>
     <script src="scripts/universal_analytics.js?after"></script>
     <script src="scripts/ads_conversions.js?after"></script>
+    <!-- <script src="scripts/cafe24_script.js?after"></script> -->
   </body>
 </html>
+
