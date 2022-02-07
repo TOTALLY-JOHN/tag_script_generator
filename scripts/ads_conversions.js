@@ -58,7 +58,10 @@ $(document).ready(function () {
       "<br />  <span class='lightblue1'>window</span>.<span class='yellow'>addEventListener</span>(<span class='red2'>&apos;load&apos;</span>, <span class='lightblue2'>function</span>(<span class='yellow'>event</span>) {";
     for (var i = 0; i < ads_page_urls_or_selectors.length; i++) {
       if (ads_comments[i].value != "") {
-        result += "<span class='grey'><br /><br />    // " + ads_comments[i].value + "</span>";
+        if (i == 0)
+          result += "<span class='grey'><br />    // " + ads_comments[i].value + "</span>";
+        else 
+          result += "<span class='grey'><br /><br />    // " + ads_comments[i].value + "</span>";
       }
       // ADS CONVERSION PAGEVIEW
       if (conversion_types[i].value == "pageview_equal") {
