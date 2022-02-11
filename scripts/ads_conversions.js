@@ -12,6 +12,7 @@ $(document).ready(function () {
         " </b></p></td><td>Type: <select class='conversion_type'><option value='pageview_equal'>Page View (Equal)</option><option value='pageview_contain'>Page View (Contain)</option><option value='click'>Click</option><option value='all_clicks'>All Clicks</option></select></td><td>URL/Selector: <input type='text' class='ads_page_url_or_selector'/></td><td>Conversion ID: <input type='text' class='ads_cid'/></td><td></tr><tr><td>Conversion Label: <input type='text' class='ads_clabel'/></td><td>Conversion value: <input type='text' class='ads_cvalue'/><br /><br />Including Regex: <input type='checkbox' class='ads_cvalue_regex'/><br /><br />String to Number: <input type='checkbox' class='ads_cvalue_change' checked/></td><td>Transaction ID: <input type='text' class='ads_tid'/><br /><br />Including Regex: <input type='checkbox' class='ads_tid_regex'/></td><td>Currency: <input type='text' class='ads_currency'/><br /><br />Comment: <input type='text' class='ads_comment'/></td></tr></tbody></table>"
     );
   });
+  
   $("#ads_script_for_timeout").on("click", function () { 
     let result =
       "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
@@ -30,6 +31,7 @@ $(document).ready(function () {
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
+
   $("#ads_script_for_gtm_custom_event").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     result += "  document.querySelector('selector').addEventListener('click', function() {<br />";
@@ -39,6 +41,50 @@ $(document).ready(function () {
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
+  $("#ads_script_for_gtm_sixshop_purchase_variables").on("click", function () { 
+    let result = "<span class='grey'>// Sixshop Transaction ID</span><br />";
+    result += "function() {<br />";
+    result += "  if (window.location.href.indexOf('payment/success/inicisPay') > -1 || window.location.href.indexOf('payment/request/withoutBank') > -1) {<br />";
+    result += "    return document.querySelector('#content_div > div.content.designSettingElement.text-body > div:nth-child(2) > input').value;<br />";
+    result += "  } <br />";
+    result += "}<br /><br />";
+    result += "<span class='grey'>// Sixshop Purchase Price</span><br />";
+    result += "function() {<br />";
+    result += "  if (window.location.href.indexOf('payment/success/inicisPay') > -1) {<br />";
+    result += "    return document.querySelector('#content_div > div.content.designSettingElement.text-body > div:nth-child(4) > input:nth-child(3)').value.replace(/[^\d]/g, '');<br />";
+    result += "  } else if (window.location.href.indexOf('payment/request/withoutBank') > -1) {<br />";
+    result += "    return document.querySelector('#content_div > div.content.designSettingElement.text-body > div:nth-child(6) > input:nth-child(3)').value.replace(/[^\d]/g, '');<br />"
+    result += "  }<br />"
+    result += "}<br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#ads_script_for_cafe24_variables").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    result += "  <span class='grey'>// 카페24 전자상거래 페이지</span><br />";
+    result += "  var viewItemPage = /category|detail/.test(window.location.pathname);<br />";
+    result += "  var cartPage = /basket/.test(window.location.pathname);<br />";
+    result += "  var checkoutPage = /orderform/.test(window.location.pathname);<br />";
+    result += "  var purchasePage = /order_result/.test(window.location.pathname);<br /><br />";
+    result += "  <span class='grey'>// 카페24 치환 변수</span><br />";
+    result += "  var orderProductLenght = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length;<br />";
+    result += "  var totalPrice = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.payed_amount;<br />";
+    result += "  var transactionId = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_id;<br />";
+    result += "  var quantity = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].quantity;<br />";
+    result += "  var price = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_price;<br /><br />";
+    result += "  <span class='grey'>// 카페24 구매 완료 코드 예제</span><br />";
+    result += "  if (window.location.href.indexOf('order_complete') > -1) {<br />";
+    result += "    gtag('event', 'conversion', {<br />";
+    result += "      'send_to': 'AW-1111/AAAA',<br />";
+    result += "      'value': EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.payed_amount,<br />";
+    result += "      'currency': 'KRW',<br />";
+    result += "      'transaction_id': EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_id<br />";
+    result += "    });<br />";
+    result += "  }<br />";
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#generate_ads_script").on("click", function () {
     let conversion_types = $(".conversion_type");
     let ads_page_urls_or_selectors = $(".ads_page_url_or_selector");
