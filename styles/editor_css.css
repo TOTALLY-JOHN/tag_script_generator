@@ -165,6 +165,9 @@ a.article:hover {
   color: white;
   padding: 10px;
   border-radius: 10px;
+  max-width: calc(80vw) !important;
+  overflow-wrap: break-word;
+  margin-bottom: 50px;
 }
 .tabSize {
   tab-size: 2;
