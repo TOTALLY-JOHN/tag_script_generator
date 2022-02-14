@@ -55,7 +55,7 @@ $(document).ready(function () {
     result += "  } else if (window.location.href.indexOf('payment/request/withoutBank') > -1) {<br />";
     result += "    return document.querySelector('#content_div > div.content.designSettingElement.text-body > div:nth-child(6) > input:nth-child(3)').value.replace(/[^\d]/g, '');<br />"
     result += "  }<br />"
-    result += "}<br />";
+    result += "}<br /><br />";
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
@@ -81,7 +81,7 @@ $(document).ready(function () {
     result += "      'transaction_id': EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_id<br />";
     result += "    });<br />";
     result += "  }<br />";
-    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br /><br />";
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
@@ -318,7 +318,7 @@ $(document).ready(function () {
     
     result += "<br />  });";
     result +=
-      "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+      "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br /><br />";
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
   $("#ads_reset_events").on("click", function () {
