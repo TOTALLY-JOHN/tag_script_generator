@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  // ADS CONVERSION
+// ADS CONVERSION
   let ads_conversion_size = 0;
 
   $("#ads_add_button").on("click", function () {
@@ -82,6 +82,150 @@ $(document).ready(function () {
     result += "    });<br />";
     result += "  }<br />";
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br /><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#cafe24_ga4_eec").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    result +=  "  window.addEventListener('load', function (event) { <br />" +
+      "    <span class='grey'>// GA4 (Google Analytics 4) E-Commerce (전자상거래) 코드 (카페24용)</span><br /><br />" +
+      "    <span class='grey'>// 페이지 변수</span><br />" +
+      "    var viewItemPage = /category|detail/.test(window.location.pathname);<br />" +
+      "    var cartPage = /basket/.test(window.location.pathname);<br />" +
+      "    var checkoutPage = /orderform/.test(window.location.pathname);<br />" +
+      "    var purchasePage = /order_result/.test(window.location.pathname);<br />" +
+      "<br />" +
+      "    <span class='grey'>// 공통 변수 (웹사이트에 따라 적절하게 변경하세요)</span><br />" +
+      "    var brand = 'Google';<br />" +
+      "    var affiliation = 'Google';<br />" +
+      "    var listName = 'Search Results';<br />" +
+      "    var currency = 'KRW';<br />" +
+      "<br />" +
+      "    <span class='grey'>// 네이버 페이 버튼 변수 (네이버 페이는 클릭으로만 전환 추적 가능하다는 점을 반드시 확인하세요)</span><br />" +
+      "    var btnNpay = $('.npay_btn_item')[0];<br />" +
+      "<br />" +
+      "    <span class='grey'>// 수량 체크 함수</span><br />" +
+      "    function getQuantity() {<br />" +
+      "        var quantity = $('#option_box1_quantity');<br />" +
+      "        if (quantity.length == 1) {<br />" +
+      "            return Number(document.getElementById('option_box1_quantity').value);<br />" +
+      "        }<br />" +
+      "        else { <br />"+
+      "            return 1;<br />" +
+      "        }<br />" +
+      "    }<br /><br />" +
+      "    <span class='grey'>// 상세페이지 gtag 호출 함수</span><br />" +
+      "    function callGtagViewItem(pageType, items) {<br />" +
+      "        gtag('event', pageType, {<br />" +
+      "            items: items<br />" +
+      "        });<br />" +
+      "    }<br />" +
+      "<br />" +
+      "    <span class='grey'>// 장바구니 추가 gtag 호출 함수</span><br />" +
+      "    function callGtagAddToCart(pageType, items) {<br />" +
+      "        gtag('event', pageType, {<br />" +
+      "            items: items<br />" +
+      "        });<br />" +
+      "    }<br/ >" +
+      "<br />" +
+      "    <span class='grey'>// 장바구니 제거 gtag 호출 함수</span><br />" +
+      "    function callGtagRemoveFromCart(pageType, items) {<br/ >" +
+      "        gtag('event', pageType, {<br />" +
+      "            items: items<br />" +
+      "        });<br />" +
+      "    }<br />" +
+      "<br />" +
+      "    <span class='grey'>// 구매완료 gtag 호출 함수</span><br />" +
+      "    function callGtagPurchase(pageType, transaction_id, affiliation, totalPrice, currency, items) {<br />" +
+      "        gtag('event', pageType, {<br />" +
+      "            transaction_id: transaction_id,<br />" +
+      "            affiliation: affiliation,<br />" +
+      "            value: totalPrice,<br />" +
+      "            currency: currency,<br />" +
+      "            tax: 0,<br />" +
+      "            shipping: 0,<br />" +
+      "            items: items<br />" +
+      "        });<br />" +
+      "    }<br /><br />" +
+      "    <span class='grey'>// 상품 추가 함수</span><br />" +
+      "    function addItem(item, id, name, category, quantity, price) {<br />" +
+      "        item.push({<br />" +
+      "            item_id: id,<br />" +
+      "            item_name: name,<br />" +
+      "            item_list_name: listName,<br />" +
+      "            item_brand: brand,<br />" +
+      "            item_category: category,<br />" +
+      "            quantity: quantity,<br />" +
+      "            price: price<br />" +
+      "        });<br />" +
+      "    }<br /><br />" +
+      "    <span class='grey'>// 상세페이지</span><br />" +
+      "    if (viewItemPage) {<br />" +
+      "        var viewItem = [];<br />" +
+      "        addItem(viewItem, iProductNo, product_name, iCategoryNo, getQuantity(), product_price);<br />" +
+      "        callGtagViewItem('view_item', viewItem);<br />" +
+      "<br />" +
+      "        var addToCartItem = [];<br />" +
+      "        var send = XMLHttpRequest.prototype.send<br />" +
+      "        XMLHttpRequest.prototype.send = function () {<br />" +
+      "           this.addEventListener('load', function () {<br />" +
+      "                if (this.responseURL.includes('/exec/front/order/basket/')) {<br />" +
+      "                   addItem(addToCartItem, iProductNo, product_name, iCategoryNo, getQuantity(), product_price);<br />" +
+      "                    callGtagAddToCart('add_to_cart', addToCartItem);<br />" +
+      "               }<br />" +
+      "            })<br />" +
+      "            return send.apply(this, arguments)<br />" +
+      "        }<br />" +
+      "        btnNpay?.addEventListener('click', function (e) {<br />" +
+      "           callGtagPurchase('purchase', btnNpay.children[0].id, affiliation, getQuantity() * product_price, currency, addToCartItem);<br />" +
+      "        }, false);<br />" +
+      "    }<br />" +
+      "    <span class='grey'>// 장바구니 페이지</span><br />" +
+      "    else if (cartPage) {<br />" +
+      "        var send = XMLHttpRequest.prototype.send<br />" +
+      "        XMLHttpRequest.prototype.send = function () {<br/ >" +
+      "            this.addEventListener('load', function () {<br />" +
+      "                if (this.responseURL.includes('/exec/front/order/basket/')) {<br />" +
+      "                    var removeFromCartItem = [];<br />" +
+      "                    $('[id^=\"' + BASKET_CHK_ID_PREFIX + '\"]').each(function (i) {<br />" +
+      "                        if ($(this).is(':checked')) {<br />" +
+      "                            addItem(removeFromCartItem, aBasketProductOrderData[i].product_no, aBasketProductOrderData[i].product_name, aBasketProductOrderData[i].main_cate_no, aBasketProductOrderData[i].quantity, aBasketProductOrderData[i].product_sum_price);<br />" +
+      "                        }<br />" +
+      "                    });<br />" +
+      "                    callGtagRemoveFromCart('remove_from_cart', removeFromCartItem);<br />" +
+      "                }<br />" +
+      "            })<br />" +
+      "            return send.apply(this, arguments)<br />" +
+      "        }<br />" +
+      "        var cartItem = [];<br />" +
+      "        var totalPrice = 0.0;<br />" +
+      "        jQuery.each(aBasketProductData, function (i) {<br />" +
+      "            addItem(cartItem, aBasketProductData[i].product_no, aBasketProductData[i].product_name, aBasketProductData[i].main_cate_no, aBasketProductData[i].quantity, aBasketProductData[i].product_sum_price);<br />" +
+      "            totalPrice += aBasketProductData[i].quantity * aBasketProductData[i].product_sum_price<br />" +
+      "        });<br />" +
+      "        btnNpay?.addEventListener('click', function (e) {<br />" +
+      "           callGtagPurchase('purchase', btnNpay.children[0].id, affiliation, getQuantity() * product_price, currency, addToCartItem);<br />" +
+      "        }, false);<br />" +
+      "    }<br />" +
+      "    <span class='grey'>// 구매완료 페이지</span><br />" +
+      "    else if (purchasePage) {<br />" +
+      "        var purchaseItem = [];<br />" +
+      "        if (EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length > 0) {<br />" +
+      "            for (var i = 0; i < EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length; i++) {<br />" +
+      "                var category = '';<br />" +
+      "                if (typeof EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].category_no_3 == 'undefined') {<br />" +
+      "                    category = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].category_no_2;<br />" +
+      "                }<br />" +
+      "                else {<br />" +
+      "                    category = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].category_no_3;<br />" +
+      "                }<br />" +
+      "                addItem(purchaseItem, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_no, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_name, category, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].quantity, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_price);<br />" + 
+      "            }<br />" +
+      "        }<br />" +
+      "        callGtagPurchase('purchase', EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_id, affiliation, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.payed_amount, currency, purchaseItem);<br />" +
+      "    }<br />" +
+      "  });";
+      result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br /><br />";
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
