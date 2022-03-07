@@ -85,6 +85,146 @@ $(document).ready(function () {
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#cafe24_ua_eec").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+      window.addEventListener('load', function(event) {
+        <span class='grey'>// UA (Universal Analytics) E-Commerce (전자상거래) 코드 (카페24용)</span>
+
+        <span class='grey'>// 페이지 변수</span>
+        var viewItemPage = /category|detail/.test(window.location.pathname);
+        var cartPage = /basket/.test(window.location.pathname);
+        var checkoutPage = /orderform/.test(window.location.pathname);
+        var purchasePage = /order_result/.test(window.location.pathname);
+ 
+        <span class='grey'>// 공통 변수 (웹사이트에 따라 적절하게 변경하세요)</span>
+        var brand = 'Google';
+        var affiliation = 'Google';
+        var listName = 'Search Results';
+        var currency = 'KRW';
+ 
+        <span class='grey'>// 네이버 페이 버튼 변수 (네이버 페이는 클릭으로만 전환 추적 가능하다는 점을 반드시 확인하세요)</span>
+        var btnNpay = $('.npay_btn_item')[0];
+ 
+        <span class='grey'>// 수량 체크 함수</span>
+        function getQuantity(){
+            var quantity = $('#option_box1_quantity');
+            if(quantity.length == 1){
+                return Number(document.getElementById('option_box1_quantity').value);
+            }
+            else {
+                return 1;
+            }
+        }
+
+        function callGtag(pageType, items){
+            gtag('event', pageType, {
+                "items": items
+            });
+        }
+
+        function callGtagPurchase(pageType, transaction_id, affiliation, totalPrice, currency, items){
+            gtag('event', pageType, {
+                "transaction_id":  transaction_id,
+                "affiliation": affiliation,
+                "value": totalPrice,
+                "currency": currency,
+                "tax": 0,
+                "shipping": 0,
+                "items": items
+            });
+        }
+
+        function addItem(item, id, name, category, quantity, price){
+            item.push({
+                'id': id,
+                'name': name,
+                'list_name': listName,
+                'brand': brand,
+                'category': category,
+                'quantity': quantity,
+                'price': price
+            });
+        }
+        
+        if(viewItemPage){
+            var viewItem = [];
+            addItem(viewItem, iProductNo, product_name, iCategoryNo, getQuantity(), product_price);
+            callGtag('view_item', viewItem);
+ 
+            var addToCartItem = [];
+            var send = XMLHttpRequest.prototype.send
+            XMLHttpRequest.prototype.send = function() { 
+                this.addEventListener('load', function() {
+                    if(this.responseURL.includes('/exec/front/order/basket/')){
+                        addItem(addToCartItem, iProductNo, product_name, iCategoryNo, getQuantity(), product_price);
+                        callGtag('add_to_cart', addToCartItem);
+                    }
+                })
+                return send.apply(this, arguments)
+            }
+ 
+            btnNpay?.addEventListener('click', function(e) {
+                callGtag('begin_checkout', addToCartItem);
+                callGtagPurchase('purchase', btnNpay.children[0].id, affiliation, getQuantity()*product_price, currency, addToCartItem);
+            }, false );
+        }
+        else if(cartPage){
+            var send = XMLHttpRequest.prototype.send
+            XMLHttpRequest.prototype.send = function() { 
+                this.addEventListener('load', function() {
+                    if(this.responseURL.includes('/exec/front/order/basket/')){
+                        var removeFromCartItem = [];
+                        $('[id^="'+ BASKET_CHK_ID_PREFIX +'"]').each(function(i){
+                            if ($(this).is(':checked')) {
+                                addItem(removeFromCartItem, aBasketProductData[i].product_no, aBasketProductData[i].product_name, aBasketProductData[i].main_cate_no, aBasketProductData[i].quantity, aBasketProductData[i].product_sum_price);
+                            }
+                        });
+                        callGtag('remove_from_cart', removeFromCartItem);
+                    }
+                })
+                return send.apply(this, arguments)
+            }
+            var cartItem = [];
+            var totalPrice = 0;
+            jQuery.each( aBasketProductData, function( i ) {
+                addItem(cartItem, aBasketProductData[i].product_no, aBasketProductData[i].product_name, aBasketProductData[i].main_cate_no, aBasketProductData[i].quantity, aBasketProductData[i].product_sum_price);
+                totalPrice += aBasketProductData[i].quantity*aBasketProductData[i].product_sum_price
+            });
+            btnNpay?.addEventListener('click', function(e) {
+                callGtag('add_to_cart', cartItem);
+                callGtag('begin_checkout', cartItem);
+                callGtagPurchase('purchase', btnNpay.children[0].id, affiliation, totalPrice, currency, cartItem);
+            }, false );
+        }
+        else if(checkoutPage){
+            var checkOutItem = [];
+            jQuery.each( aBasketProductData, function( i ) {
+                addItem(checkOutItem, aBasketProductData[i].product_no, aBasketProductData[i].product_name, aBasketProductData[i].main_cate_no, aBasketProductData[i].quantity, aBasketProductData[i].product_sum_price);
+            });
+            callGtag('begin_checkout', checkOutItem);
+        }
+        else if(purchasePage){
+            var purchaseItem = [];
+            if(EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length > 0){
+                for(var i = 0; i < EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length; i++){
+                    var category = '';
+                    if(typeof EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].category_no_3 == 'undefined'){
+                        category = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].category_no_2;
+                    }
+                    else{
+                        category = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].category_no_3;
+                    }      
+                    addItem(purchaseItem, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_no, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_name, category, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].quantity, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_price);
+                }
+            }
+            callGtagPurchase('purchase', EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_id, affiliation, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.payed_amount, currency, purchaseItem);
+        }
+      });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#cafe24_ga4_eec").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     result +=  "  window.addEventListener('load', function (event) { <br />" +
@@ -226,6 +366,70 @@ $(document).ready(function () {
       "    }<br />" +
       "  });";
       result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br /><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#cafe24_dr").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+      document.addEventListener('DOMContentLoaded', function (event) {
+          var viewItemPage = /category|detail/.test(window.location.pathname);
+          var cartPage = /basket/.test(window.location.pathname);
+          var listPage = /list/.test(window.location.pathname);
+          var searchPage = /search/.test(window.location.pathname);
+          var purchasePage = /order_result/.test(window.location.pathname);
+    
+          var google_business_vertical = 'retail';
+          var ids = [];
+          var totalPrice = 0;
+    
+          function callGtag(eventPageType, totalPrice, ids) {
+              gtag('event', eventPageType, {
+                  'value': totalPrice,
+                  'items': ids
+              })
+          }
+    
+          if (viewItemPage) {
+              if (typeof iProductNo == 'undefined') {
+                  var e = $("[id^=anchorBoxId_]");
+                  for (var i = 0; i < e.length; i++) {
+                      ids.push({ 'id': e[i].id.split('_')[1], 'google_business_vertical': google_business_vertical });
+                  }
+                  callGtag('view_item_list', '', ids);
+              }
+              else {
+                  ids.push({ 'id': iProductNo, 'google_business_vertical': google_business_vertical });
+                  callGtag('view_item', product_price, ids);
+              }
+          }
+          else if (cartPage) {
+              for (var i = 0; i < aBasketProductData.length; i++) {
+                  ids.push({ 'id': aBasketProductData[i].product_no, 'google_business_vertical': google_business_vertical });
+                  totalPrice += aBasketProductData[i].product_sum_price * aBasketProductData[i].quantity;
+              }
+              callGtag('add_to_cart', totalPrice, ids);
+          }
+          else if (searchPage || listPage) {
+              var e = $("[id^=anchorBoxId_]");
+              for (var i = 0; i < e.length; i++) {
+                  ids.push({ 'id': e[i].id.split('_')[1], 'google_business_vertical': google_business_vertical });
+              }
+              if (listPage) {
+                  callGtag('view_item_list', '', ids);
+              }
+              else {
+                  callGtag('view_search_results', '', ids);
+              }
+          }
+          else if (purchasePage) {
+              for (var i = 0; i < EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length; i++) {
+                  ids.push({ 'id': EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_no, 'google_business_vertical': google_business_vertical });
+              }
+              callGtag('purchase', EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.payed_amount, ids);
+          }
+      });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
@@ -482,3 +686,4 @@ $(document).ready(function () {
     document.body.removeChild(textArea);
   });
 });
+
