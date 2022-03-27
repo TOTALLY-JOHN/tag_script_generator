@@ -433,6 +433,68 @@ $(document).ready(function () {
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#makeshop_dr").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+      // VIEW ITEM
+      document.addEventListener('DOMContentLoaded', function(event) {
+        var ids = [];
+        ids.push({ 'id': '<!--/number/-->', 'google_business_vertical': 'retail' });
+        totalPrice = ('<!--/number/price_sell/-->').replace(/[^0-9]/g, "");
+        dataLayer.push({
+            'EventPageType' : 'view_item',
+            'Total_Price' : totalPrice,
+            'Items' : ids,
+            'event':'dynamic_remarketing'
+        });
+      });
+
+      // VIEW ITEM LIST
+      document.addEventListener('DOMContentLoaded', function(event) {
+        var totalPrice = 0;
+        var ids = [];
+        <!--/loop_product/-->
+            ids.push({ 'id': '<!--/product@uid/-->', 'google_business_vertical': 'retail' });
+            totalPrice += Number('<!--/product@price_sell/-->');
+        <!--/end_loop/-->
+        gtag('event', 'view_item_list', {
+            'send_to': 'AW-11111111',
+            'value': totalPrice,
+            'items': ids
+        });
+      });
+
+      // ADD TO CART
+      document.addEventListener('DOMContentLoaded', function(event) {
+        var ids = [];
+        var getID = document.getElementsByName('branduid');
+        for(var i = 0; i < getID.length; i++){
+            ids.push({ 'id': getID[i].value, 'google_business_vertical': 'retail' });
+        }
+        gtag('event', 'add_to_cart', {
+            'send_to': 'AW-11111111',
+            'value': Number($('.MK_chg_none_groupsale_total_price_sell.MK_change_price').text().replace(/[^0-9]/g, '')),
+            'items': ids
+        });
+      });
+
+      // PURCHASE
+      document.addEventListener('DOMContentLoaded', function(event) {
+        var ids = [];
+        var totalPrice = '<!--/pay_price/-->';
+        <!--/loop_order_product/-->
+            ids.push({ 'id': '<!--/order_product@product_id/-->', 'google_business_vertical': 'retail'});
+        <!--/end_loop/-->
+        gtag('event', 'purchase', {
+            'send_to': 'AW-11111111',
+            'value': totalPrice,
+            'items': ids
+        });
+      });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#generate_ads_script").on("click", function () {
     let conversion_types = $(".conversion_type");
     let ads_page_urls_or_selectors = $(".ads_page_url_or_selector");

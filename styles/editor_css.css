@@ -213,3 +213,7 @@ a.article:hover {
 .table-borderless > thead > tr > th {
   border: none;
 }
+
+button {
+  margin: 5px;
+}
