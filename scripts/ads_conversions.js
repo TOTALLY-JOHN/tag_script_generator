@@ -433,6 +433,61 @@ $(document).ready(function () {
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#ads_script_for_interval").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+      function conversions() {
+        if (window.location.href.indexOf('example.html') > -1) {
+          gtag('event', 'conversions', {
+            'send_to': 'AW-1111/AAAA'
+          });
+        }
+
+        document.querySelector('css_selector').addEventListener('click', function() {
+          gtag('event', 'conversions', {
+            'send_to': 'AW-1111/BBBB'
+          });
+        });
+      }
+
+      setInterval(conversions, 1000);`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#javascript_validation").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+      // 자바스크립트 기본 Input Validation
+      function validate(str) {
+        return str == "" || str == null ? false : true;
+      }
+
+      // 특정 페이지 조회한 경우
+      if (window.location.href.indexOf('example.html') > -1) {
+        if (validate(document.querySelector('css_selector1').value) && 
+            validate(document.querySelector('css_selector2').value) &&
+            validate(document.querySelector('css_selector3').value)) {
+              gtag('event', 'conversions', {
+                'send_to': 'AW-1111/AAAA'
+              });
+        }
+      }
+
+      // 버튼 클릭한 경우
+      document.querySelector('css_selector').addEventListener('click', function() {
+        if (validate(document.querySelector('css_selector1').value) && 
+            validate(document.querySelector('css_selector2').value) &&
+            validate(document.querySelector('css_selector3').value)) {
+              gtag('event', 'conversions', {
+                'send_to': 'AW-1111/AAAA'
+              });
+        }
+      });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#makeshop_dr").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
