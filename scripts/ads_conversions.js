@@ -455,6 +455,85 @@ $(document).ready(function () {
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#enhanced_conversion").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+      window.onload = conversion;
+
+      function conversion() {
+        // 페이지뷰인 경우
+        if (window.location.href.indexOf('example.html') > -1) {
+          // test123@gmail.com
+          // test123
+          let a = document.querySelector('email_selector1').value;
+
+          // gmail.com
+          let b = document.querySelector('email_selector2').value;
+
+          if (a !== "" && b !== "") {
+            let email = a + '@' + b;
+            var enhanced_conversion_data = {
+              'email': email
+            }
+          }
+        }
+
+        // 버튼 클릭인 경우
+        document.querySelector('css_selector').addEventListener('click', function() {
+          // test123@gmail.com
+          // test123
+          let a = document.querySelector('email_selector1').value;
+
+          // gmail.com
+          let b = document.querySelector('email_selector2').value;
+
+          if (a !== "" && b !== "") {
+            let email = a + '@' + b;
+            var enhanced_conversion_data = {
+              'email': email
+            }
+          }
+        });
+      }`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#session_storage").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+      function setSessionStorageVariable() {
+        let ecArr = [];
+
+        // 페이지뷰
+        if (window.location.href.indexOf('example.html') > -1) {
+          let ecPhoneNo = document.querySelector('css_selector').value;
+          let ecEmail = document.querySelector('css_selector').value;
+
+          ecArr.push({
+            'phone_number': ecPhoneNo,
+            'email': ecEmail
+          });
+
+          sessionStorage.setItem('ecData', JSON.stringify(ecArr));
+        }
+      }
+
+      function getSessionStorageVariable() {
+        // 페이지뷰
+        if (window.location.href.indexOf('example.html') > -1) {
+          let ecData = JSON.parse(sessionStorage.getItem('ecData'));
+
+          var enhanced_conversion_data = ecData;
+        }
+      }
+
+      setSessionStorageVariable();
+      getSessionStorageVariable();`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#javascript_validation").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
