@@ -42,7 +42,7 @@
           </li>-->
         </ul>
         <ul class="list-unstyled components">
-          <li><a href="update_log.html">Version 0.9</a></li>
+          <li><a href="update_log.html">Version 1.0</a></li>
         </ul>
       </nav>
 
@@ -58,7 +58,7 @@
         </nav>
 
         <nav>
-          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <div class="nav nav-pills" id="nav-tab" role="tablist">
             <button
               class="nav-link active"
               id="nav-ua-tab"
@@ -69,9 +69,9 @@
               aria-controls="nav-ua"
               aria-selected="true"
             >
-              UA Event
+              Universal Analytics
             </button>
-            <!--
+            
             <button
               class="nav-link"
               id="nav-ga4-tab"
@@ -82,8 +82,8 @@
               aria-controls="nav-ga4"
               aria-selected="false"
             >
-              GA4 Event
-            </button>-->
+              Google Analytics 4
+            </button>
             <button
               class="nav-link"
               id="nav-ads-tab"
@@ -96,19 +96,42 @@
             >
               Ads Conversion
             </button>
-            <!--
             <button
               class="nav-link"
-              id="nav-cafe24-tab"
+              id="nav-ec-tab"
               data-bs-toggle="tab"
-              data-bs-target="#nav-cafe24"
+              data-bs-target="#nav-ec"
               type="button"
               role="tab"
-              aria-controls="nav-cafe24"
+              aria-controls="nav-ec"
               aria-selected="false"
             >
-              Cafe24
-            </button>-->
+              Enhanced Conversion
+            </button>
+            <button
+              class="nav-link"
+              id="nav-dr-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-dr"
+              type="button"
+              role="tab"
+              aria-controls="nav-dr"
+              aria-selected="false"
+            >
+              Dynamic Remarketing
+            </button>
+            <button
+              class="nav-link"
+              id="nav-cms-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-cms"
+              type="button"
+              role="tab"
+              aria-controls="nav-cms"
+              aria-selected="false"
+            >
+              CMS List
+            </button>
           </div>
         </nav>
 
@@ -121,9 +144,11 @@
           >
             <div>
               <br />
-              <h1>Version is updated to 0.9! (2022-04-06)<br />Updates are applied after Ctrl + Shift + R.</h1>
+              <h1>Version is updated to 1.0! (2022-04-09)<br />Updates are applied after Ctrl + Shift + R.</h1>
               <br />
               <h2>UA Event Script Generator</h2>
+              <div class="line"></div>
+              <button id="cafe24_ua_eec" class="btn btn-info">Cafe24 UA EEC</button><br />
               <div class="line"></div>
               <button id="ua_add_button" class="btn btn-primary">
                 Add Event
@@ -150,7 +175,7 @@
               <div class="line"></div>
             </div>
           </div>
-          <!--
+          
           <div
             class="tab-pane fade"
             id="nav-ga4"
@@ -161,26 +186,18 @@
               <br />
               <h2>GA4 Event Script Generator</h2>
               <div class="line"></div>
-              <button id="ga4_add_button" class="btn btn-primary">
-                Add Event
-              </button>
-              &nbsp;
-              <button id="ga4_reset_events" class="btn btn-danger">
-                Reset Events
-              </button>
-              &nbsp;
-              <button id="generate_ga4_script" class="btn btn-success">
-                Generate Script
-              </button>
-              &nbsp;
+              <button id="ga4_event_template" class="btn btn-info">GA4 Event Basic Template Script</button>
+              <button id="ga4_eec_template" class="btn btn-info">GA4 Event EEC Template Script</button>
+              <button id="cafe24_ga4_eec" class="btn btn-info">Cafe24 GA4 EEC</button>
               <div class="line"></div>
               <h2>Conditions</h2>
               <div><form id="ga4_conditions" autocomplete="off"></form></div>
               <div class="line"></div>
               <h2>GA4 Generated Script</h2>
+              <button id="ga4_copy" class="btn btn-primary">Copy</button> <br /><br />
               <div id="generated_ga4_script" class="script_part"></div>
             </div>
-          </div>-->
+          </div>
           <div
             class="tab-pane fade"
             id="nav-ads"
@@ -193,18 +210,12 @@
               <h2>Ads Conversion Script Generator</h2>
               <div class="line"></div>
               <button id="ads_script_for_timeout" class="btn btn-info">Timeout Script</button>
-              <button id="ads_script_for_interval" class="btn btn-info">Interval Script for SPA</button>
+              <button id="ads_script_for_interval" class="btn btn-info">Interval Script</button>
+              <button id="ads_script_for_interval_once" class="btn btn-info">Interval Script (전환 발생시 Interval 종료)</button>
               <button id="ads_script_for_gtm_custom_event" class="btn btn-info">GTM Custom Event Script</button>
               <button id="ads_script_for_cafe24_variables" class="btn btn-info">Cafe24 Variables</button>
               <button id="ads_script_for_gtm_sixshop_purchase_variables" class="btn btn-info">GTM Sixshop Purchase Variables</button>
-              <button id="cafe24_ua_eec" class="btn btn-info">Cafe24 UA EEC</button>
-              <button id="cafe24_ga4_eec" class="btn btn-info">Cafe24 GA4 EEC</button>
-              <button id="cafe24_dr" class="btn btn-info">Cafe24 DR</button>
-              <button id="makeshop_dr" class="btn btn-info">Makeshop DR</button>
               <button id="javascript_validation" class="btn btn-info">Javascript Validation</button>
-              <button id="enhanced_conversion" class="btn btn-info">Enhanced Conversion Script</button>
-              <button id="session_storage" class="btn btn-info">EC Session Storage Script</button>
-
               <br />
               <div class="line"></div>
               <button id="ads_add_button" class="btn btn-primary">
@@ -233,42 +244,66 @@
             </div>
           </div>
 
-          <!-- <div
+          <div
             class="tab-pane fade"
-            id="nav-cafe24"
+            id="nav-ec"
             role="tabpanel"
-            aria-labelledby="nav-cafe24-tab"
-          > -->
-            <!-- CAFE24 --> <!--
+            aria-labelledby="nav-ec-tab"
+          >
             <div>
               <br />
-              <h2>Cafe24 Script Generator</h2>
+              <h2>Enhanced Conversion</h2>
               <div class="line"></div>
-              <button id="cafe24_ua_add_button" class="btn btn-primary">
-                Universal Analytics
-              </button>
-              &nbsp;
-              <button id="cafe24_ec_add_button" class="btn btn-primary">
-                E-Commerce
-              </button>
-              &nbsp;
-              <button id="cafe24_dr_add_button" class="btn btn-primary">
-                Dynamic Remarketing
-              </button>
-              &nbsp;
-              <button id="ads_reset_events" class="btn btn-danger">
-                Reset
-              </button>
-              &nbsp;
-              <button id="ads_clear_script" class="btn btn-warning">
-                Clear Script
-              </button>
-              <div class="line"></div>
-              <h2>Cafe24 Generated Script</h2>
-              <div id="generated_cafe24_script" class="script_part"></div>
+              <button id="enhanced_conversion" class="btn btn-info">Enhanced Conversion Script</button>
+              <button id="session_storage" class="btn btn-info">Enhanced Conversion Session Storage Script</button><br /><br />
+              <button id="ec_copy" class="btn btn-primary">Copy</button> <br /><br />
+              <div id="generated_ec_script" class="script_part"></div>
             </div>
           </div>
-        </div>-->
+
+          <div
+            class="tab-pane fade"
+            id="nav-dr"
+            role="tabpanel"
+            aria-labelledby="nav-dr-tab"
+          >
+            <div>
+              <br />
+              <h2>Dynamic Remarketing</h2>
+              <div class="line"></div>
+              <button id="cafe24_dr" class="btn btn-info">Cafe24 DR</button>
+              <button id="makeshop_dr" class="btn btn-info">Makeshop DR</button>
+              <div class="line"></div>
+              <button id="dr_copy" class="btn btn-primary">Copy</button> <br /><br />
+              <div id="generated_dr_script" class="script_part"></div>
+            </div>
+          </div>
+
+          <div
+            class="tab-pane fade"
+            id="nav-cms"
+            role="tabpanel"
+            aria-labelledby="nav-cms-tab"
+          >
+            <div>
+              <br />
+              <h2>Available CMS List</h2>
+              <div class="line"></div>
+              <button id="cafe24_tips" class="btn btn-info">카페24(Cafe24)</button>
+              <button id="godomall_tips" class="btn btn-info">고도몰(Godomall)</button>
+              <button id="sixshop_tips" class="btn btn-info">식스샵(Sixshop)</button> 
+              <button id="imweb_tips" class="btn btn-info">아임웹(Imweb)</button>
+              <button id="wordpress_tips" class="btn btn-info">워드프레스(Wordpress)</button>
+              <button id="wix_tips" class="btn btn-info">윅스(Wix)</button>
+              <button id="wisa_tips" class="btn btn-info">위사(Wisa)</button>
+              <button id="makeshop_tips" class="btn btn-info">메이크샵(Makeshop)</button>
+              <button id="shopify_tips" class="btn btn-info">쇼피파이(Shopify)</button>
+              <button id="squarespace_tips" class="btn btn-info">스퀘어스페이스(Squarespace)</button>
+              <div class="line"></div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
     <script src="scripts/universal_analytics.js?after"></script>

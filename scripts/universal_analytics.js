@@ -52,13 +52,4 @@ $(document).ready(function () {
   $("#ua_clear_script").on("click", function () {
     $("#ua_generated_script").empty();
   });
-  $("#ua_copy").on("click", function() {
-    let value = document.querySelector("#ua_generated_script").innerText;
-    let textArea = document.createElement("textarea");
-    document.body.appendChild(textArea);
-    textArea.value = value;
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
-  });
 });

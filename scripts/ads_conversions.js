@@ -222,7 +222,7 @@ $(document).ready(function () {
         }
       });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
-    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+    $("#ua_generated_script").html("<pre>" + result + "</pre>");
   });
 
   $("#cafe24_ga4_eec").on("click", function () { 
@@ -366,7 +366,7 @@ $(document).ready(function () {
       "    }<br />" +
       "  });";
       result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br /><br />";
-    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+    $("#generated_ga4_script").html("<pre>" + result + "</pre>");
   });
 
   $("#cafe24_dr").on("click", function () { 
@@ -430,7 +430,7 @@ $(document).ready(function () {
           }
       });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
-    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+    $("#generated_dr_script").html("<pre>" + result + "</pre>");
   });
 
   $("#ads_script_for_interval").on("click", function () { 
@@ -451,6 +451,43 @@ $(document).ready(function () {
       }
 
       setInterval(conversions, 1000);`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#ads_script_for_interval_once").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+      <span class='grey'>// 이 방법은 SPA웹사이트에서 쓸 수 있는 방법으로, Interval을 활용하여 스크립트를 매 1초마다 함수를 반복하여 실행합니다.</span>
+      <span class='grey'>// 모든 전환 작동이 확인되면 1초마다 반복되서 실행했던 함수를 멈춤으로서 더 이상 반복될 필요 없는 스크립트 작동을 중단합니다. (count1, count2 활용)</span>
+      <span class='grey'>// count1은 페이지뷰 예시, count2는 버튼 클릭일 경우의 예시입니다.</span>
+      let count1 = 0;
+      let count2 = 0;
+      function conversions() {
+        if (count1 == 0 && window.location.href.indexOf('example.html') > -1) {
+          count1 = 1;
+          gtag('event', 'conversions', {
+            'send_to': 'AW-1111/AAAA'
+          });
+        }
+
+        if (count2 == 0) {
+          document.querySelector('css_selector')?.addEventListener('click', function() {
+            count2 = 1;
+            gtag('event', 'conversions', {
+              'send_to': 'AW-1111/BBBB'
+            });
+          });
+        }
+
+        <span class='grey'>// 모든 전환 발생이 확인된 경우 Interval 종료.</span>
+        if (count1 === 1 && count2 === 1) {
+          clearInterval(conversion_interval);
+        }
+      }
+
+      <span class='grey'>// 1초마다 conversion 함수가 반복되서 실행될 수 있도록 변수 할당.</span>
+      let conversion_interval = setInterval(conversions, 1000);`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
@@ -496,7 +533,7 @@ $(document).ready(function () {
         });
       }`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
-    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+    $("#generated_ec_script").html("<pre>" + result + "</pre>");
   });
 
   $("#session_storage").on("click", function () { 
@@ -531,7 +568,7 @@ $(document).ready(function () {
       setSessionStorageVariable();
       getSessionStorageVariable();`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
-    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+    $("#generated_ec_script").html("<pre>" + result + "</pre>");
   });
 
   $("#javascript_validation").on("click", function () { 
@@ -626,7 +663,99 @@ $(document).ready(function () {
         });
       });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
-    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+    $("#generated_dr_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#ga4_event_template").on("click", function () { 
+    let result =
+      "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result +=`
+    gtag("event", "event_name", {
+      "event_parameter1_name": "value_or_variable"
+    });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ga4_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#ga4_eec_template").on("click", function () { 
+    let result =
+      "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result +=`
+    // 아래 나와 있는 items은 예제이므로 items: 에는 Array(배열) 형태로 넣어주어야 한다 
+    // (for 반복문 등을 활용하여 item_id, item_name, currency, price, quantity를 포함한 객체를 배열에 저장하여 할당해준다)
+    // 상세페이지 (상품 페이지 조회)
+    if (window.location.href.indexOf("view_item_page") > -1) {
+      var view_item_price = +document.querySelector("css_selector").innerText.replace(/[^\d]/g, '')
+      gtag("event", "view_item", {
+        currency: "KRW",
+        value: view_item_price,
+        items: [
+          {
+            item_id: "1",
+            item_name: "Product Name",
+            currency: "KRW",
+            price: 123.45
+            quantity: 1
+          }
+        ]
+      });
+    }
+
+    // 장바구니
+    if (window.location.href.indexOf("cart_page") > -1) {
+      var cart_price = +document.querySelector("css_selector").innerText.replace(/[^\d]/g, '')
+      gtag("event", "add_to_cart", {
+        currency: "KRW",
+        value: cart_price,
+        items: [
+          {
+            item_id: "1",
+            item_name: "Product Name",
+            currency: "KRW",
+            price: 123.45
+            quantity: 1
+          }
+        ]
+      });
+    }
+
+    // 결제시작
+    if (window.location.href.indexOf("begin_checkout_page") > -1) {
+      var begin_checkout_price = +document.querySelector("css_selector").innerText.replace(/[^\d]/g, '')
+      gtag("event", "begin_checkout", {
+        currency: "KRW",
+        value: begin_checkout_price,
+        items: [
+          {
+            item_id: "1",
+            item_name: "Product Name",
+            currency: "KRW",
+            price: 123.45
+            quantity: 1
+          }
+        ]
+      });
+    }
+    
+    // 구매완료 
+    if (window.location.href.indexOf("purchase_done_page") > -1) {
+      var purchase_price = +document.querySelector("css_selector").innerText.replace(/[^\d]/g, '')
+      gtag("event", "purchase", {
+        currency: "KRW",
+        value: purchase_price,
+        items: [
+          {
+            item_id: "1",
+            item_name: "Product Name",
+            currency: "KRW",
+            price: 123.45
+            quantity: 1
+          }
+        ]
+      });
+    }`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ga4_script").html("<pre>" + result + "</pre>");
   });
 
   $("#generate_ads_script").on("click", function () {
@@ -872,14 +1001,41 @@ $(document).ready(function () {
   $("#ads_clear_script").on("click", function () {
     $("#generated_ads_script").empty();
   });
-  $("#ads_copy").on("click", function() {
-    let value = document.querySelector("#generated_ads_script").innerText;
+  function performCopy(value) {
     let textArea = document.createElement("textarea");
     document.body.appendChild(textArea);
     textArea.value = value;
     textArea.select();
     document.execCommand('copy');
     document.body.removeChild(textArea);
+  }
+  $("#ads_copy").on("click", function() {
+    let value = document.querySelector("#generated_ads_script").innerText;
+    performCopy(value);
+  });
+  $("#ua_copy").on("click", function() {
+    let value = document.querySelector("#ua_generated_script").innerText;
+    performCopy(value);
+  });
+  $("#ga4_copy").on("click", function() {
+    let value = document.querySelector("#generated_ga4_script").innerText;
+    performCopy(value);
+  });
+  $("#ec_copy").on("click", function() {
+    let value = document.querySelector("#generated_ec_script").innerText;
+    performCopy(value);
+  });
+  $("#dr_copy").on("click", function() {
+    let value = document.querySelector("#generated_dr_script").innerText;
+    performCopy(value);
+  });
+  $("#gmc_copy").on("click", function() {
+    let value = document.querySelector("#generated_gmc_script").innerText;
+    performCopy(value);
+  });
+  $("#cms_copy").on("click", function() {
+    let value = document.querySelector("#generated_cms_script").innerText;
+    performCopy(value);
   });
 });
 
