@@ -492,6 +492,54 @@ $(document).ready(function () {
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#ads_script_for_sixshop_variables").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+    // 식스샵 결제완료 치환변수 (출처: https://lovelypeter.tistory.com/556)
+    var price = '\${customerVar_double_orderTotalPrice}';
+    var orderNo = '\${customerVar_string_orderNo}';
+    var currency = '\${customerVar_string_orderCurrency}';`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#ads_script_for_godomall_variables").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+    // 고도몰 치환변수 (출처: https://lovelypeter.tistory.com/554?category=335860)
+    var price = '\${=gd_isset(goodsView['goodsPrice'],0)} / {=gd_money_format(..goodsPrice)} ';
+    var orderNo = '\${goodsView.goodsNo}';
+    var currency = '\${=gd_currency_symbol()}';`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#ads_script_for_makeshop_variables").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+    // 메이크샵 치환변수
+    var price = '&lt;!--/pay_price/-->';
+    var orderNo = '&lt;!--/order_num/-->';`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#ads_script_for_shopify_variables").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+    // 쇼피파이 치환변수
+    {% if first_time_accessed %}
+      gtag('event', 'conversion', {
+        'send_to': 'AW-123456789/ABCDEFGHIJK',
+        'value': {{ checkout.subtotal_price | divided_by: 100.0 }},
+        'currency': '{{ currency }}',
+        'transaction_id': '{{ order_number }}
+      });
+    {% endif %}`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#enhanced_conversion").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
@@ -610,8 +658,8 @@ $(document).ready(function () {
       // VIEW ITEM
       document.addEventListener('DOMContentLoaded', function(event) {
         var ids = [];
-        ids.push({ 'id': '<!--/number/-->', 'google_business_vertical': 'retail' });
-        totalPrice = ('<!--/number/price_sell/-->').replace(/[^0-9]/g, "");
+        ids.push({ 'id': '&lt;!--/number/-->', 'google_business_vertical': 'retail' });
+        totalPrice = ('&lt;!--/number/price_sell/-->').replace(/[^0-9]/g, "");
         dataLayer.push({
             'EventPageType' : 'view_item',
             'Total_Price' : totalPrice,
@@ -624,10 +672,10 @@ $(document).ready(function () {
       document.addEventListener('DOMContentLoaded', function(event) {
         var totalPrice = 0;
         var ids = [];
-        <!--/loop_product/-->
-            ids.push({ 'id': '<!--/product@uid/-->', 'google_business_vertical': 'retail' });
-            totalPrice += Number('<!--/product@price_sell/-->');
-        <!--/end_loop/-->
+        &lt;!--/loop_product/-->
+            ids.push({ 'id': '&lt;!--/product@uid/-->', 'google_business_vertical': 'retail' });
+            totalPrice += Number('&lt;!--/product@price_sell/-->');
+        &lt;!--/end_loop/-->
         gtag('event', 'view_item_list', {
             'send_to': 'AW-11111111',
             'value': totalPrice,
@@ -652,10 +700,10 @@ $(document).ready(function () {
       // PURCHASE
       document.addEventListener('DOMContentLoaded', function(event) {
         var ids = [];
-        var totalPrice = '<!--/pay_price/-->';
-        <!--/loop_order_product/-->
+        var totalPrice = '&lt;!--/pay_price/-->';
+        &lt;!--/loop_order_product/-->
             ids.push({ 'id': '<!--/order_product@product_id/-->', 'google_business_vertical': 'retail'});
-        <!--/end_loop/-->
+        &lt;!--/end_loop/-->
         gtag('event', 'purchase', {
             'send_to': 'AW-11111111',
             'value': totalPrice,
