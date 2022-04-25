@@ -714,6 +714,76 @@ $(document).ready(function () {
     $("#generated_dr_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#godomall_dr").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+    document.addEventListener('DOMContentLoaded', function(event) {
+      var viewItemPage = /goods_view/.test(window.location.pathname);
+      var cartPage = /cart/.test(window.location.pathname);
+      var listPage = /goods_list/.test(window.location.pathname);
+      var searchPage = /goods_search/.test(window.location.pathname);
+      var purchasePage = /order_end/.test(window.location.pathname);
+    
+      var ids = [];
+      var google_business_vertical = 'retail';
+      var totalPrice = 0;
+    
+      function callGtag(eventPageType, totalPrice, ids){
+          gtag('event', eventPageType, {
+              'Value': totalPrice,
+              'items':ids
+          })
+      }
+      function pushIds(array, google_business_vertical){
+          for(var i = 0; i < arrCart.length; i++){
+              ids.push({ 'id': arrCart[i].dataset.goodsNo, 'google_business_vertical': google_business_vertical });
+              totalPrice += Number(arrCart[i].dataset.price);
+          }
+      }
+    
+      if(viewItemPage){
+          ids.push({ 'id': goodsNo , 'google_business_vertical': google_business_vertical });
+          totalPrice = product_price;
+          callGtag('view_item', Number($('input[name=set_total_price]').val()), ids);
+      }
+      else if(cartPage){
+          var arrCart =  $('input[name="cartSno[]"]');
+          for(var i = 0; i < arrCart.length; i++){
+              ids.push({ 'id': arrCart[i].dataset.goodsNo, 'google_business_vertical': google_business_vertical });
+              totalPrice += Number(arrCart[i].dataset.price);
+          }
+          callGtag('add_to_cart', totalPrice, ids);
+      }
+      else if(listPage){
+          var arrList = $('button[class="btn_basket_get btn_add_wish_"]');
+          for(var i = 0; i < arrList.length; i++){
+              ids.push({ 'id': arrList[i].dataset.goodsNo, 'google_business_vertical': google_business_vertical });
+              totalPrice += Number(arrList[i].dataset.goodsPrice);
+          }
+          callGtag('view_search_results', totalPrice, ids);
+      }
+      else if(searchPage){
+          pushIds(array);
+          var arrSearch = $('.item_photo_box');
+          for(var i = 0; i < arrSearch.length; i++){
+              ids.push({ 'id': arrSearch[i].children[0].href.replace(/[^0-9]/g,''), 'google_business_vertical': google_business_vertical });
+          }
+          callGtag('view_item_list', '', ids);
+      }
+      else if(purchasePage){
+          var e = $('input[name=naver-common-inflow-script-order-item]');
+          for(var i = 0; i < e.length; i++){
+              var detail = eval('(' + e[i].value + ')');
+              ids.push({ 'id': detail.goodsno, 'google_business_vertical': google_business_vertical });
+              totalPrice += detail.price;
+          }
+          callGtag('purchase', totalPrice, ids);
+      }
+    });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_dr_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#ga4_event_template").on("click", function () { 
     let result =
       "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
@@ -1086,4 +1156,5 @@ $(document).ready(function () {
     performCopy(value);
   });
 });
+
 
