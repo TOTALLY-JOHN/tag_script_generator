@@ -784,6 +784,86 @@ $(document).ready(function () {
     $("#generated_dr_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#godomall_dr_gtm").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+    // 이 전체 코드를 GTM의 CUSTOM HTML에다가 삽입하시고, 트리거는 DOM Ready로 모든 페이지에 집어 넣어주세요.
+    // 그리고 Dynamic Remarketing 가이드를 참고하여 Ads Remarketing 태그를 적절하게 수정해주세요.
+    (function() {
+      view = /goods_view/.test(location.pathname)
+      cart = /cart/.test(location.pathname)
+      checkout = location.pathname === '/order/order.php'
+      purchase = /order_end/.test(location.pathname)
+    
+      if(view) {
+        Id = location.href.split('goodsNo=')[1]
+        Items = []
+    
+        Items.push({
+          'id': Id,
+          'google_business_vertical': 'retail'
+        })
+    
+        console.log('view', Items)
+        //
+        dataLayer.push({
+          'event': 'view_item',
+          'items': Items
+          });
+        //
+      }
+    
+      if(cart) {
+        Id = document.querySelectorAll('[class="pick_add_img"] > a')
+        Items = []
+    
+        for(var a = 0; a < Id.length; a++) {
+          Items.push({
+            'id': Id[a].href.split('goodsNo=')[1],
+            'google_business_vertical': 'retail'
+          })
+        }
+    
+        console.log('cart', Items)
+        //
+        dataLayer.push({
+          'event': 'add_to_cart',
+          'items': Items
+          });
+        //
+      }
+    
+      if(checkout) {
+        Id = document.querySelectorAll('[class="pick_add_img"] > a')
+        Items = []
+    
+        for(var a = 0; a < Id.length; a++) {
+          Items.push({
+            'id': Id[a].href.split('goodsNo=')[1],
+            'google_business_vertical': 'retail'
+          })
+        }
+    
+        console.log('checkout', Items)
+        sessionStorage.setItem('items', JSON.stringify(Items))
+      }
+    
+      if(purchase) {
+        getItems = JSON.parse(sessionStorage.getItem('items'))
+    
+        console.log('purchase', getItems)
+        //
+        dataLayer.push({
+          'event': 'purchase',
+          'items': getItems
+          });
+        //
+      }
+    })()`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_dr_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#ga4_event_template").on("click", function () { 
     let result =
       "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
