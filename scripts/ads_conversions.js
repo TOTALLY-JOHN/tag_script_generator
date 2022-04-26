@@ -225,6 +225,144 @@ $(document).ready(function () {
     $("#ua_generated_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#godomall_ua_eec").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+    document.addEventListener('DOMContentLoaded', function (event) {
+      // 고도몰 Universal Analytics 전자상거래 스크립트
+      var viewItemPage = /goods_view/.test(window.location.pathname);
+      var cartPage = /cart/.test(window.location.pathname);
+      var checkout = /order.php/.test(window.location.pathname);
+      var purchasePage = /order_end/.test(window.location.pathname);
+
+      var listName = 'Search Results';
+
+      // Affiliation과 Brand명을 적절하게 바꿔주세요.
+      var affiliation = 'Google';
+      var brand = 'Google';
+      var currency = 'KRW';
+
+      var btnAddToCart = document.querySelector("#frmView > div > div > div.btn_choice_box > div > button.btn_add_cart");
+      var btnNpay = $('.npay_btn_link.npay_btn_pay');
+
+      function getQuantity() {
+          var quantity = $('[name^="goodsCnt"]');
+          if (quantity.length == 1) {
+              return Number($('[name^="goodsCnt"]').val());
+          }
+          else {
+              return 1;
+          }
+      }
+      function callGtag(pageType, items) {
+          gtag('event', pageType, {
+              "items": items
+          });
+      }
+      function callGtagPurchase(pageType, transaction_id, affiliation, totalPrice, currency, items) {
+          gtag('event', pageType, {
+              "transaction_id": transaction_id,
+              "affiliation": affiliation,
+              "value": totalPrice,
+              "currency": currency,
+              "tax": 0,
+              "shipping": 0,
+              "items": items
+          });
+      }
+      function addItem(item, id, name, category, quantity, price) {
+          item.push({
+              'id': id,
+              'name': name,
+              'list_name': listName,
+              'brand': brand,
+              'category': category,
+              'quantity': quantity,
+              'price': price
+          })
+      }
+      if (viewItemPage) {
+          var allItems = [];
+          var price = $('input[name=set_goods_price]').val();
+          var proId = goodsNo;
+          var proName = $('meta[property="og:title"]').attr('content');
+          var proCate = $('input[name=cateCd]').val();
+
+          addItem(allItems, proId, proName, proCate, getQuantity(), price);
+          callGtag('view_item', allItems);
+          btnAddToCart.addEventListener('click', function () {
+              var item = [];
+              addItem(item, proId, proName, proCate, getQuantity(), price);
+              callGtag('add_to_cart', item);
+          }, false);
+          btnNpay.click(function () {
+              var npayProducts = [];
+              addItem(npayProducts, proId, proName, proCate, getQuantity(), price);
+              callGtag('begin_checkout', npayProducts);
+              callGtagPurchase('purchase', btnNpay.attr('id'), affiliation, price * getQuantity(), currency, npayProducts);
+          });
+      }
+      else if (cartPage) {
+          jQuery('#frmCart').submit(function (event) {
+              var proCnt = document.querySelectorAll('.td_left').length;
+              var products = [];
+              for (var i = 0; i < proCnt; i++) {
+                  addItem(products, document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNo'], document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNm'], '', document.querySelectorAll('.form_element')[i + 1].children[0].dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.form_element')[i + 1].children[0].dataset['price']));
+              }
+              var checked = document.querySelectorAll('.check_s');
+              var removedProduct = [];
+              var newProductIndex = 0;
+              for (var i = 0; i < checked.length - 1; i++) {
+                  var getClassName = checked[i + 1].className;
+                  if (getClassName.includes('on')) {
+                      removedProduct[newProductIndex] = products[i];
+                      newProductIndex++;
+                  }
+              }
+              callGtag('remove_from_cart', removedProduct);
+          });
+          btnNpay.click(function () {
+              var proCnt = document.querySelectorAll('.td_left').length;
+              var npayProducts = [];
+              var totalPrice = 0;
+              for (var i = 0; i < proCnt; i++) {
+                  addItem(npayProducts, document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNo'], document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNm'], '', document.querySelectorAll('.form_element')[i + 1].children[0].dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.form_element')[i + 1].children[0].dataset['price']));
+                  totalPrice += Number(document.querySelectorAll('.form_element')[i + 1].children[0].dataset['price']) * document.querySelectorAll('.form_element')[i + 1].children[0].dataset['defaultGoodsCnt']
+              }
+              callGtag('begin_checkout', npayProducts);
+              callGtagPurchase('purchase', btnNpay.attr('id'), affiliation, totalPrice, currency, npayProducts);
+          });
+      }
+      else if (checkout) {
+          var listOfItems = $('[name^="priceInfo"]');
+          var checkoutProducts = [];
+          for (var i = 0; i < listOfItems.length; i++) {
+              var JsonItems = JSON.parse(listOfItems[i].value);
+              addItem(checkoutProducts, listOfItems[i].name.replace('priceInfo[', '').split('][')[0], $('.pick_add_info')[i].children[0].innerText, JsonItems.goodsCnt, JsonItems.baseGoodsPrice);
+          }
+          callGtag('begin_checkout', checkoutProducts);
+          btnNpay.click(function () {
+              var npayProducts = [];
+              addItem(npayProducts, proId, proName, proCate, getQuantity(), price);
+              callGtagPurchase('purchase', btnNpay.attr('id'), affiliation, price * getQuantity(), currency, npayProducts);
+          })
+      }
+      else if (purchasePage) {
+          var e = $('input[name=naver-common-inflow-script-order-item]');
+          var totalPrice = 0;
+          var purchaseProducts = [];
+          for (var i = 0; i < e.length; i++) {
+              var detail = eval('(' + e[i].value + ')');
+              addItem(purchaseProducts, detail.goodsno, detail.goodsnm, detail.sno, detail.ea, detail.price / detail.ea);
+              totalPrice += detail.price;
+          }
+          callGtagPurchase('purchase', eval('(' + e[0].value + ')').ordno, affiliation, totalPrice, currency, purchaseProducts);
+      }
+  });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#ua_generated_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#cafe24_ga4_eec").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     result +=  "  window.addEventListener('load', function (event) { <br />" +
@@ -366,6 +504,145 @@ $(document).ready(function () {
       "    }<br />" +
       "  });";
       result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br /><br />";
+    $("#generated_ga4_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#godomall_ga4_eec").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+    document.addEventListener('DOMContentLoaded', function (event) {
+      // 고도몰 Google Analytics 4 전자상거래 스크립트 (UA를 기반으로 한 것이고 테스트는 진행해본 적 없는 스크립트이므로 꼭 검증하세요!)
+      var viewItemPage = /goods_view/.test(window.location.pathname);
+      var cartPage = /cart/.test(window.location.pathname);
+      var checkout = /order.php/.test(window.location.pathname);
+      var purchasePage = /order_end/.test(window.location.pathname);
+
+      var listName = 'Search Results';
+      
+      // Affiliation과 Brand명을 적절하게 바꿔주세요.
+      var affiliation = 'Google';
+      var brand = 'Google';
+      var currency = 'KRW';
+
+      var btnAddToCart = document.querySelector("#frmView > div > div > div.btn_choice_box > div > button.btn_add_cart");
+      var btnNpay = $('.npay_btn_link.npay_btn_pay');
+
+      function getQuantity() {
+          var quantity = $('[name^="goodsCnt"]');
+          if (quantity.length == 1) {
+              return Number($('[name^="goodsCnt"]').val());
+          }
+          else {
+              return 1;
+          }
+      }
+      function callGtag(pageType, items) {
+          gtag('event', pageType, {
+              currency: currency,
+              items: items
+          });
+      }
+      function callGtagPurchase(pageType, transaction_id, affiliation, totalPrice, currency, items) {
+          gtag('event', pageType, {
+              transaction_id: transaction_id,
+              affiliation: affiliation,
+              value: totalPrice,
+              currency: currency,
+              tax: 0,
+              shipping: 0,
+              items: items
+          });
+      }
+      function addItem(item, id, name, category, quantity, price) {
+          item.push({
+              item_id: id,
+              item_name: name,
+              item_list_name: listName,
+              item_brand: brand,
+              item_category: category,
+              quantity: quantity,
+              price: price
+          })
+      }
+      if (viewItemPage) {
+          var allItems = [];
+          var price = $('input[name=set_goods_price]').val();
+          var proId = goodsNo;
+          var proName = $('meta[property="og:title"]').attr('content');
+          var proCate = $('input[name=cateCd]').val();
+
+          addItem(allItems, proId, proName, proCate, getQuantity(), price);
+          callGtag('view_item', allItems);
+          btnAddToCart.addEventListener('click', function () {
+              var item = [];
+              addItem(item, proId, proName, proCate, getQuantity(), price);
+              callGtag('add_to_cart', item);
+          }, false);
+          btnNpay.click(function () {
+              var npayProducts = [];
+              addItem(npayProducts, proId, proName, proCate, getQuantity(), price);
+              callGtag('begin_checkout', npayProducts);
+              callGtagPurchase('purchase', btnNpay.attr('id'), affiliation, price * getQuantity(), currency, npayProducts);
+          });
+      }
+      else if (cartPage) {
+          jQuery('#frmCart').submit(function (event) {
+              var proCnt = document.querySelectorAll('.td_left').length;
+              var products = [];
+              for (var i = 0; i < proCnt; i++) {
+                  addItem(products, document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNo'], document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNm'], '', document.querySelectorAll('.form_element')[i + 1].children[0].dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.form_element')[i + 1].children[0].dataset['price']));
+              }
+              var checked = document.querySelectorAll('.check_s');
+              var removedProduct = [];
+              var newProductIndex = 0;
+              for (var i = 0; i < checked.length - 1; i++) {
+                  var getClassName = checked[i + 1].className;
+                  if (getClassName.includes('on')) {
+                      removedProduct[newProductIndex] = products[i];
+                      newProductIndex++;
+                  }
+              }
+              callGtag('remove_from_cart', removedProduct);
+          });
+          btnNpay.click(function () {
+              var proCnt = document.querySelectorAll('.td_left').length;
+              var npayProducts = [];
+              var totalPrice = 0;
+              for (var i = 0; i < proCnt; i++) {
+                  addItem(npayProducts, document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNo'], document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNm'], '', document.querySelectorAll('.form_element')[i + 1].children[0].dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.form_element')[i + 1].children[0].dataset['price']));
+                  totalPrice += Number(document.querySelectorAll('.form_element')[i + 1].children[0].dataset['price']) * document.querySelectorAll('.form_element')[i + 1].children[0].dataset['defaultGoodsCnt']
+              }
+              callGtag('begin_checkout', npayProducts);
+              callGtagPurchase('purchase', btnNpay.attr('id'), affiliation, totalPrice, currency, npayProducts);
+          });
+      }
+      else if (checkout) {
+          var listOfItems = $('[name^="priceInfo"]');
+          var checkoutProducts = [];
+          for (var i = 0; i < listOfItems.length; i++) {
+              var JsonItems = JSON.parse(listOfItems[i].value);
+              addItem(checkoutProducts, listOfItems[i].name.replace('priceInfo[', '').split('][')[0], $('.pick_add_info')[i].children[0].innerText, JsonItems.goodsCnt, JsonItems.baseGoodsPrice);
+          }
+          callGtag('begin_checkout', checkoutProducts);
+          btnNpay.click(function () {
+              var npayProducts = [];
+              addItem(npayProducts, proId, proName, proCate, getQuantity(), price);
+              callGtagPurchase('purchase', btnNpay.attr('id'), affiliation, price * getQuantity(), currency, npayProducts);
+          })
+      }
+      else if (purchasePage) {
+          var e = $('input[name=naver-common-inflow-script-order-item]');
+          var totalPrice = 0;
+          var purchaseProducts = [];
+          for (var i = 0; i < e.length; i++) {
+              var detail = eval('(' + e[i].value + ')');
+              addItem(purchaseProducts, detail.goodsno, detail.goodsnm, detail.sno, detail.ea, detail.price / detail.ea);
+              totalPrice += detail.price;
+          }
+          callGtagPurchase('purchase', eval('(' + e[0].value + ')').ordno, affiliation, totalPrice, currency, purchaseProducts);
+      }
+  });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_ga4_script").html("<pre>" + result + "</pre>");
   });
 
@@ -655,61 +932,59 @@ $(document).ready(function () {
   $("#makeshop_dr").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
-      // VIEW ITEM
-      document.addEventListener('DOMContentLoaded', function(event) {
-        var ids = [];
-        ids.push({ 'id': '&lt;!--/number/-->', 'google_business_vertical': 'retail' });
-        totalPrice = ('&lt;!--/number/price_sell/-->').replace(/[^0-9]/g, "");
-        dataLayer.push({
-            'EventPageType' : 'view_item',
-            'Total_Price' : totalPrice,
-            'Items' : ids,
-            'event':'dynamic_remarketing'
-        });
-      });
+    // 해당 스크립트는 완성본이 아니고 각각의 페에지를 분류하여 if문 작업으로 페이지를 체크해줘야 합니다
+    var google_business_vertical = "retail";
 
-      // VIEW ITEM LIST
-      document.addEventListener('DOMContentLoaded', function(event) {
-        var totalPrice = 0;
-        var ids = [];
-        &lt;!--/loop_product/-->
-            ids.push({ 'id': '&lt;!--/product@uid/-->', 'google_business_vertical': 'retail' });
-            totalPrice += Number('&lt;!--/product@price_sell/-->');
-        &lt;!--/end_loop/-->
-        gtag('event', 'view_item_list', {
-            'send_to': 'AW-11111111',
-            'value': totalPrice,
-            'items': ids
-        });
+    // VIEW ITEM
+    document.addEventListener('DOMContentLoaded', function(event) {
+      var ids = [];
+      ids.push({ 'id': '&lt;!--/number/-->', 'google_business_vertical': google_business_vertical });
+      totalPrice = ('&lt;!--/number/price_sell/-->').replace(/[^0-9]/g, "");
+      gtag('event', 'view_item', {
+        'value': totalPrice,
+        'items': ids
       });
+    });
 
-      // ADD TO CART
-      document.addEventListener('DOMContentLoaded', function(event) {
-        var ids = [];
-        var getID = document.getElementsByName('branduid');
-        for(var i = 0; i < getID.length; i++){
-            ids.push({ 'id': getID[i].value, 'google_business_vertical': 'retail' });
-        }
-        gtag('event', 'add_to_cart', {
-            'send_to': 'AW-11111111',
-            'value': Number($('.MK_chg_none_groupsale_total_price_sell.MK_change_price').text().replace(/[^0-9]/g, '')),
-            'items': ids
-        });
+    // VIEW ITEM LIST
+    document.addEventListener('DOMContentLoaded', function(event) {
+      var totalPrice = 0;
+      var ids = [];
+      &lt;!--/loop_product/-->
+          ids.push({ 'id': '&lt;!--/product@uid/-->', 'google_business_vertical': google_business_vertical });
+          totalPrice += Number('&lt;!--/product@price_sell/-->');
+      &lt;!--/end_loop/-->
+      gtag('event', 'view_item_list', {
+          'value': totalPrice,
+          'items': ids
       });
+    });
 
-      // PURCHASE
-      document.addEventListener('DOMContentLoaded', function(event) {
-        var ids = [];
-        var totalPrice = '&lt;!--/pay_price/-->';
-        &lt;!--/loop_order_product/-->
-            ids.push({ 'id': '<!--/order_product@product_id/-->', 'google_business_vertical': 'retail'});
-        &lt;!--/end_loop/-->
-        gtag('event', 'purchase', {
-            'send_to': 'AW-11111111',
-            'value': totalPrice,
-            'items': ids
-        });
-      });`;
+    // ADD TO CART
+    document.addEventListener('DOMContentLoaded', function(event) {
+      var ids = [];
+      var getID = document.getElementsByName('branduid');
+      for(var i = 0; i < getID.length; i++){
+          ids.push({ 'id': getID[i].value, 'google_business_vertical': google_business_vertical });
+      }
+      gtag('event', 'add_to_cart', {
+          'value': Number($('.MK_chg_none_groupsale_total_price_sell.MK_change_price').text().replace(/[^0-9]/g, '')),
+          'items': ids
+      });
+    });
+
+    // PURCHASE
+    document.addEventListener('DOMContentLoaded', function(event) {
+      var ids = [];
+      var totalPrice = '&lt;!--/pay_price/-->';
+      &lt;!--/loop_order_product/-->
+          ids.push({ 'id': '&lt;!--/order_product@product_id/-->', 'google_business_vertical': google_business_vertical });
+      &lt;!--/end_loop/-->
+      gtag('event', 'purchase', {
+          'value': totalPrice,
+          'items': ids
+      });
+    });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_dr_script").html("<pre>" + result + "</pre>");
   });
@@ -860,6 +1135,74 @@ $(document).ready(function () {
         //
       }
     })()`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_dr_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#imweb_dr").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+    document.addEventListener('DOMContentLoaded', function(event) {
+      var viewItemPage = /viewall/.test(window.location.pathname);
+      var cartPage = /shop_cart/.test(window.location.pathname);
+      var listPage = /list/.test(window.location.pathname);
+      var searchPage = /search/.test(window.location.pathname);
+      var checkoutPage = /shop_payment/.test(window.location.pathname);
+      var purchasePage = /order_result/.test(window.location.pathname);
+
+      var google_business_vertical = 'retail';
+      var ids = [];
+      var totalPrice = 0;
+
+      function callGtag(eventPageType, ids){
+          gtag('event', eventPageType, {
+              'items':ids
+          })
+      }
+
+      if(viewItemPage){
+          ids.push({ 'id': $('link[rel="canonical"]')[0].href.replace(/[^0-9]/g,''), 'google_business_vertical': google_business_vertical });
+          callGtag('view_item', ids);
+      }
+      else if(cartPage){
+          var e = $('.cart-item-wrap');
+          for(var i = 0; i < e.length; i++){
+              ids.push({ 'id': e[i].href.replace(/[^0-9]/g,''), 'google_business_vertical': google_business_vertical });
+          }
+          callGtag('add_to_cart', ids);
+      }
+      else if(listPage){
+          var e = $('._fade_link.shop-item-thumb');
+          for(var i = 0; i< e.length; i++){
+              ids.push({ 'id': e[i].href.replace(/[^0-9]/g,''), 'google_business_vertical': google_business_vertical });
+          }
+          callGtag('view_item_list', ids);
+      }
+      else if(searchPage){
+          var e = $('.box_thumb > a');
+          for(var i = 0; i< e.length; i++){
+              ids.push({ 'id': e[i].href.replace(/[^0-9]/g,''), 'google_business_vertical': google_business_vertical });
+          }
+          callGtag('view_search_results', ids);
+      }
+      else if(checkoutPage){
+          var e = $('.shop_item_thumb > a');
+          var ids = [];
+          for(var i = 0; i< e.length; i++){
+              ids.push(e[i].href.replace(/[^0-9]/g,''))
+          }
+          localStorage.removeItem('ids');
+          localStorage.setItem('ids', ids);
+      }
+      else if(purchasePage){
+          var e = localStorage.getItem('ids').split(',');
+          var ids = [];
+          for(var i = 0; i < e.length; i++){
+              ids.push({ 'id': e[i], 'google_business_vertical': google_business_vertical });
+          }
+          callGtag('purchase', ids);
+      }
+    });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_dr_script").html("<pre>" + result + "</pre>");
   });
@@ -1236,5 +1579,4 @@ $(document).ready(function () {
     performCopy(value);
   });
 });
-
 
