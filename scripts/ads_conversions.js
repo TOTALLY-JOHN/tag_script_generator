@@ -930,7 +930,7 @@ $(document).ready(function () {
   });
 
   $("#regex_for_replace").on("click", function () { 
-    let result = `replace(/[^\d]/g, '')`;
+    let result = `.replace(/[^\\d]/g, '')`;
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
