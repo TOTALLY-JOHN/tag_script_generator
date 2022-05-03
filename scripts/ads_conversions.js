@@ -7,9 +7,9 @@ $(document).ready(function () {
     $("#ads_conditions").append(
       "<table class='table table-borderless'><tbody><tr><td><p id=" +
         ads_conversion_size +
-        "><b>Conversion " +
+        "><span class='btn btn-warning'>Conversion " +
         ads_conversion_size +
-        " </b></p></td><td>Type: <select class='conversion_type'><option value='pageview_equal'>Page View (Equal)</option><option value='pageview_contain'>Page View (Contain)</option><option value='click'>Click</option><option value='all_clicks'>All Clicks</option></select></td><td>URL/Selector: <input type='text' class='ads_page_url_or_selector'/></td><td>Conversion ID: <input type='text' class='ads_cid'/></td><td></tr><tr><td>Conversion Label: <input type='text' class='ads_clabel'/></td><td>Conversion value: <input type='text' class='ads_cvalue'/><br /><br />Including Regex: <input type='checkbox' class='ads_cvalue_regex'/><br /><br />String to Number: <input type='checkbox' class='ads_cvalue_change' checked/></td><td>Transaction ID: <input type='text' class='ads_tid'/><br /><br />Including Regex: <input type='checkbox' class='ads_tid_regex'/></td><td>Currency: <input type='text' class='ads_currency'/><br /><br />Comment: <input type='text' class='ads_comment'/></td></tr></tbody></table>"
+        " </span></p></td><td>Type: <select class='conversion_type'><option value='pageview_equal'>Page View (Equal)</option><option value='pageview_contain'>Page View (Contain)</option><option value='click'>Click</option><option value='all_clicks'>All Clicks</option></select></td><td>URL/Selector: <input type='text' class='ads_page_url_or_selector'/></td><td>Conversion ID: <input type='text' class='ads_cid'/></td><td></tr><tr><td>Conversion Label: <input type='text' class='ads_clabel'/></td><td>Conversion value: <input type='text' class='ads_cvalue'/><br /><br />Including QuerySelector: <input type='checkbox' class='ads_cvalue_querySelector' checked/><br /><br />Appending .value: <input type='checkbox' class='ads_cvalue_append_value'/><br /><br />Appending .innerText: <input type='checkbox' class='ads_cvalue_append_innerText' checked/><br /><br />Including Regex: <input type='checkbox' class='ads_cvalue_regex'/><br /><br />String to Number: <input type='checkbox' class='ads_cvalue_change' checked/></td><td>Transaction ID: <input type='text' class='ads_tid'/><br /><br />Including QuerySelector: <input type='checkbox' class='ads_tid_querySelector' checked/><br /><br />Appending .value: <input type='checkbox' class='ads_tid_append_value'/><br /><br />Appending .innerText: <input type='checkbox' class='ads_tid_append_innerText' checked/><br /><br />Including Regex: <input type='checkbox' class='ads_tid_regex'/></td><td>Currency: <input type='text' class='ads_currency'/><br /><br />Comment: <input type='text' class='ads_comment'/></td></tr></tbody></table>"
     );
   });
   
@@ -929,6 +929,11 @@ $(document).ready(function () {
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#regex_for_replace").on("click", function () { 
+    let result = `replace(/[^\d]/g, '')`;
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#makeshop_dr").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
@@ -1308,7 +1313,13 @@ $(document).ready(function () {
     let ads_transactionIds = $(".ads_tid");
     let ads_currencies = $(".ads_currency");
     let ads_cvalue_regexes = $(".ads_cvalue_regex");
+    let ads_cvalue_querySelectors = $(".ads_cvalue_querySelector");
+    let ads_cvalue_append_values = $(".ads_cvalue_append_value");
+    let ads_cvalue_append_innerTexts = $(".ads_cvalue_append_innerText");
     let ads_transactionId_regexes = $(".ads_tid_regex");
+    let ads_transactionId_querySelectors = $(".ads_tid_querySelector");
+    let ads_transactionId_append_values = $(".ads_tid_append_value");
+    let ads_transactionId_append_innerTexts = $(".ads_tid_append_innerText");
     let ads_cvalue_changes = $(".ads_cvalue_change");
     let ads_comments = $(".ads_comment");
 
@@ -1347,7 +1358,19 @@ $(document).ready(function () {
           if (ads_cvalue_changes[i].checked) {
             result += "+";
           }
+          if (ads_cvalue_querySelectors[i].checked) {
+            result += "document.querySelector('";
+          }
           result += ads_cvalues[i].value;
+          if (ads_cvalue_querySelectors[i].checked) {
+            result += "')";
+          }
+          if (ads_cvalue_append_values[i].checked) {
+            result += ".value";
+          }
+          if (ads_cvalue_append_innerTexts[i].checked) {
+            result += ".innerText";
+          }
           if (ads_cvalue_regexes[i].checked) {
             result += ".replace(/[^\\d]/g, '')";
           }
@@ -1363,8 +1386,21 @@ $(document).ready(function () {
         if (ads_transactionIds[i].value != "") {
           result +=
             ",<br />" +
-            "        <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>" +
-            ads_transactionIds[i].value;
+            "        <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>";
+            
+          if (ads_transactionId_querySelectors[i].checked) {
+            result += "document.querySelector('";
+          }
+          result += ads_transactionIds[i].value;
+          if (ads_transactionId_querySelectors[i].checked) {
+            result += "')";
+          }
+          if (ads_transactionId_append_values[i].checked) {
+            result += ".value";
+          }
+          if (ads_transactionId_append_innerTexts[i].checked) {
+            result += ".innerText";
+          }
           if (ads_transactionId_regexes[i].checked) {
             result += ".replace(/[^\\d-]/g, '')";
           }
