@@ -363,6 +363,105 @@ $(document).ready(function () {
     $("#ua_generated_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#imweb_ua_eec").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+  window.addEventListener('load', function(event) {
+    // UA (Universal Analytics) E-Commerce (전자상거래) 코드 (아임웹)
+    // 아임웹은 자체 설정에서 Google 애널리틱스 전자상거래 옵션을 사용으로 바꿔주면 된다. 아래 코드는 하드 코딩으로 구현하는 경우에 사용하면 된다.
+    // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 아직 미포함했으니 네이버 페이 경우에는 별도로 코드 추가 요함!!! 추후 추가 예정)
+    var brand = 'Google';
+    var affiliation = 'Google';
+    var listName = 'Search Results';
+    var currency = 'KRW';
+
+    // 제품 상세 페이지 조회
+    if (window.location.href.indexOf("?idx=") > -1) {
+        gtag('event', 'view_item', {
+            "items": [
+                {
+                    "id": window.location.href.split("?idx=")[1] || "",
+                    "name": document.querySelector("#prod_goods_form > header > div.view_tit.no-margin-top.title_font_style").innerText, 
+                    "list_name": listName,
+                    "brand": brand,
+                    "price": +document.querySelector("#prod_goods_form > header > div.pay_detail.full-width > div.holder.table-row > span > span").innerText.replace(/[^\d]/g, '')
+                }
+            ]
+        });
+    }
+
+    // 장바구니 페이지 조회 
+    if (window.location.href.indexOf("shop_cart") > -1) {
+        var cartList = document.querySelectorAll("table > tbody > tr.content");
+        var idList = document.querySelectorAll(".cart-item-wrap");
+        var nameList = document.querySelectorAll(".cart-item-title");
+        var quantityList = document.querySelectorAll("td.amount.td-blocked");
+        var priceList = document.querySelectorAll("td.price.td-blocked");
+        var items = [];
+
+        cartList.forEach((value, i) => {
+            items.push({
+                "id": idList[i].href.split("?idx=")[1],
+                "name": nameList[i].innerText,
+                "list_name": listName,
+                "brand": brand,
+                "quantity": +quantityList[i].innerText.replace(/[^\d]/g, ''),
+                "price": +priceList[i].innerText.replace(/[^\d]/g, ''),
+            })
+        });
+
+        console.log('add_to_cart', items);
+        gtag('event', 'add_to_cart', {
+            "items": items
+        });
+    }
+
+    // Begin Checkout 페이지 조회 (결제 시작 페이지)
+    if (window.location.href.indexOf("shop_payment") > -1) {
+        var checkoutList = document.querySelectorAll(".shop_item_thumb");
+        var idList = document.querySelectorAll(".shop_item_thumb > a");
+        var nameList = document.querySelectorAll(".shop_item_title");
+        var quantityList = document.querySelectorAll(".shop_item_opt");
+        var priceList = document.querySelectorAll(".shop_item_pay > span:nth-child(1)"); 
+        var items = [];
+
+        checkoutList.forEach((value, i) => {
+            items.push({
+                "id": idList[i].href.split("?idx=")[1],
+                "name": nameList[i].innerText,
+                "list_name": listName,
+                "brand": brand,
+                "quantity": +quantityList[i].innerText.split(" - ")[1].replace(/[^\d]/g, ''),
+                "price": +priceList[i].innerText.replace(/[^\d]/g, ''),
+            })
+        });
+
+        localStorage.removeItem('products');
+        localStorage.setItem('products', JSON.stringify(items));
+        console.log('begin_checkout', items);
+        gtag('event', 'begin_checkout', {
+            "items": items
+        });
+    }
+
+    if (window.location.href.indexOf("shop_payment_complete") > -1) {
+        var items = JSON.parse(localStorage.getItem('products'));
+        var transaction_id = document.querySelector("#w20210726dfced3bde2579 > div > div > div.table_payment_complete > table > tbody > tr:nth-child(2) > td").innerText;
+        var totalPrice = 0;
+        items.forEach((item) => totalPrice += item.price);
+        gtag('event', 'purchase', {
+            "transaction_id": transaction_id,
+            "affiliation": affiliation,
+            "value": totalPrice,
+            "currency": currency,
+            "items": items
+        });
+    }
+  });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#ua_generated_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#cafe24_ga4_eec").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     result +=  "  window.addEventListener('load', function (event) { <br />" +
@@ -641,6 +740,118 @@ $(document).ready(function () {
           }
           callGtagPurchase('purchase', eval('(' + e[0].value + ')').ordno, affiliation, totalPrice, currency, purchaseProducts);
       }
+  });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ga4_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#imweb_ga4_eec").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+  window.addEventListener('load', function(event) {
+    // GA4 (Google Analytics 4) E-Commerce (전자상거래) 코드 (아임웹)
+    // 아임웹은 자체 설정에서 Google 애널리틱스 전자상거래 옵션을 사용으로 바꿔주면 된다. 아래 코드는 하드 코딩으로 구현하는 경우에 사용하면 된다.
+    // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 미포함 버전이니 네이버 페이 경우에는 별도로 코드 추가 요함!!!)
+    var brand = 'Google';
+    var affiliation = 'Google';
+    var listName = 'Search Results';
+    var currency = 'KRW';
+
+    // 제품 상세 페이지 조회
+    if (window.location.href.indexOf("?idx=") > -1) {
+        gtag('event', 'view_item', {
+            currency: currency,
+            value: +document.querySelector("#prod_goods_form > header > div.pay_detail.full-width > div.holder.table-row > span > span").innerText.replace(/[^\d]/g, ''),
+            items: [
+                {
+                    item_id: window.location.href.split("?idx=")[1] || "",
+                    item_name: document.querySelector("#prod_goods_form > header > div.view_tit.no-margin-top.title_font_style").innerText, 
+                    item_list_name: listName,
+                    item_brand: brand,
+                    currency: currency,
+                    price: +document.querySelector("#prod_goods_form > header > div.pay_detail.full-width > div.holder.table-row > span > span").innerText.replace(/[^\d]/g, '')
+                }
+            ]
+        });
+    }
+
+    // 장바구니 페이지 조회 
+    if (window.location.href.indexOf("shop_cart") > -1) {
+        var cartList = document.querySelectorAll("table > tbody > tr.content");
+        var idList = document.querySelectorAll(".cart-item-wrap");
+        var nameList = document.querySelectorAll(".cart-item-title");
+        var quantityList = document.querySelectorAll("td.amount.td-blocked");
+        var priceList = document.querySelectorAll("td.price.td-blocked");
+        var items = [];
+        var totalPrice = 0;
+
+        cartList.forEach((value, i) => {
+            totalPrice += +priceList[i].innerText.replace(/[^\d]/g, '');
+            items.push({
+                item_id: idList[i].href.split("?idx=")[1],
+                item_name: nameList[i].innerText,
+                item_list_name: listName,
+                currency: currency,
+                item_brand: brand,
+                quantity: +quantityList[i].innerText.replace(/[^\d]/g, ''),
+                price: +priceList[i].innerText.replace(/[^\d]/g, ''),
+            })
+        });
+
+        console.log('add_to_cart', items);
+        gtag('event', 'add_to_cart', {
+            currency: currency,
+            value: totalPrice,
+            items: items
+        });
+    }
+
+    // Begin Checkout 페이지 조회 (결제 시작 페이지)
+    if (window.location.href.indexOf("shop_payment") > -1) {
+        var checkoutList = document.querySelectorAll(".shop_item_thumb");
+        var idList = document.querySelectorAll(".shop_item_thumb > a");
+        var nameList = document.querySelectorAll(".shop_item_title");
+        var quantityList = document.querySelectorAll(".shop_item_opt");
+        var priceList = document.querySelectorAll(".shop_item_pay > span:nth-child(1)"); 
+        var items = [];
+        var totalPrice = 0;
+
+        checkoutList.forEach((value, i) => {
+            totalPrice += +priceList[i].innerText.replace(/[^\d]/g, '');
+            items.push({
+                item_id: idList[i].href.split("?idx=")[1],
+                item_name: nameList[i].innerText,
+                item_list_name: listName,
+                item_brand: brand,
+                currency: currency,
+                quantity: +quantityList[i].innerText.split(" - ")[1].replace(/[^\d]/g, ''),
+                price: +priceList[i].innerText.replace(/[^\d]/g, ''),
+            })
+        });
+
+        localStorage.removeItem('products');
+        localStorage.setItem('products', JSON.stringify(items));
+        console.log('begin_checkout', items);
+        gtag('event', 'begin_checkout', {
+            currency: currency,
+            value: totalPrice,
+            items: items
+        });
+    }
+
+    if (window.location.href.indexOf("shop_payment_complete") > -1) {
+        var items = JSON.parse(localStorage.getItem('products'));
+        var transaction_id = document.querySelector("#w20210726dfced3bde2579 > div > div > div.table_payment_complete > table > tbody > tr:nth-child(2) > td").innerText;
+        var totalPrice = 0;
+        items.forEach((item) => totalPrice += item.price);
+        gtag('event', 'purchase', {
+            transaction_id: transaction_id,
+            affiliation: affiliation,
+            value: totalPrice,
+            currency: currency,
+            items: items
+        });
+    }
   });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_ga4_script").html("<pre>" + result + "</pre>");
