@@ -462,6 +462,90 @@ $(document).ready(function () {
     $("#ua_generated_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#makeshop_ua_eec_for_pc").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+  window.addEventListener('load', function(event) {
+    // UA (Universal Analytics) E-Commerce (전자상거래) 코드 (메이크샵) PC버전 (모바일 버전은 아직 제작중...)
+    // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 미포함 버전이니 네이버 페이 경우에는 별도로 코드 추가 요함!!!)
+    var brand = 'Google';
+    var affiliation = 'Google';
+    var listName = 'Search Results';
+    var currency = 'KRW';
+
+    // 제품 상세 페이지 조회 (id, name, price가 메이크샵 웹사이트마다 다르기 때문에 반드시 체크 필요함!)
+    if (window.location.href.indexOf("shopdetail.html") > -1) {
+        gtag('event', 'view_item', {
+            "items": [
+                {
+                    "id": window.location.href.split("branduid=")[1].split("&xcode")[0] || "",
+                    "name": document.querySelector("#productDetail > div.page-body > div > div:nth-child(2) > font > span").innerText, 
+                    "list_name": listName,
+                    "brand": brand,
+                    "price": +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\d]/g, '')
+                }
+            ]
+        });
+
+        console.log('view_item', items);
+        localStorage.removeItem('products');
+        localStorage.setItem('products', JSON.stringify(items));
+    }
+
+    // 장바구니 페이지 조회
+    if (window.location.href.indexOf("shop/basket") > -1) {
+        var idList = document.querySelectorAll("tr > td > div > div.thumb > a");
+        var nameList = document.querySelectorAll("tr > td > div.tb-left > a");
+        var quantityList = document.querySelectorAll(".opt-spin > input");
+        var priceList = document.querySelectorAll(".tb-price");
+        var items = [];
+
+        for (var i = 0; i < idList.length; i++) {
+            items.push({
+                "id": idList[i].href.split("branduid=")[1].split("&xcode")[0],
+                "name": nameList[i].innerText,
+                "list_name": listName,
+                "brand": brand,
+                "quantity": +quantityList[i].value.replace(/[^\d]/g, ''),
+                "price": +priceList[i].innerText.replace(/[^\d]/g, ''),
+            });
+        }
+
+        console.log('add_to_cart', items);
+        gtag('event', 'add_to_cart', {
+            "items": items
+        });
+
+        localStorage.removeItem('products');
+        localStorage.setItem('products', JSON.stringify(items));
+    }
+
+    // Begin Checkout 페이지 조회 (결제 시작 페이지)
+    if (window.location.href.indexOf("shop/order.html") > -1) {
+        var items = JSON.parse(localStorage.getItem('products'));
+        console.log('begin_checkout', items);
+        gtag('event', 'begin_checkout', {
+            "items": items
+        });
+    }
+
+    // 결제 완료 페이지 조회
+    if (window.location.href.indexOf("shop/orderend") > -1) {
+        var items = JSON.parse(localStorage.getItem('products'));
+        var transaction_id = window.location.href.split("ordernum=")[1].split("&pay")[0];
+        gtag('event', 'purchase', {
+            "transaction_id": transaction_id,
+            "affiliation": affiliation,
+            "value": +document.querySelector("#mk_totalprice").innerText.replace(/[^\d]/g, ''),
+            "currency": currency,
+            "items": items
+        });
+    }
+  });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#ua_generated_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#cafe24_ga4_eec").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     result +=  "  window.addEventListener('load', function (event) { <br />" +
@@ -848,6 +932,102 @@ $(document).ready(function () {
             transaction_id: transaction_id,
             affiliation: affiliation,
             value: totalPrice,
+            currency: currency,
+            items: items
+        });
+    }
+  });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ga4_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#makeshop_ga4_eec_for_pc").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+  window.addEventListener('load', function(event) {
+    // GA4 (Google Analytics 4) E-Commerce (전자상거래) 코드 (메이크샵) PC버전 (모바일 버전은 별도로 체크 요함)
+    // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 미포함 버전이니 네이버 페이 경우에는 별도로 코드 추가 요함!!!)
+    var brand = 'Google';
+    var affiliation = 'Google';
+    var listName = 'Search Results';
+    var currency = 'KRW';
+
+    // 제품 상세 페이지 조회 (id, name, price가 메이크샵 웹사이트마다 다르기 때문에 반드시 체크 필요함!)
+    if (window.location.href.indexOf("shopdetail.html") > -1) {
+        gtag('event', 'view_item', {
+            currency: currency,
+            value: +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\d]/g, ''),
+            items: [
+                {
+                    item_id: window.location.href.split("branduid=")[1].split("&xcode")[0] || "",
+                    item_name: document.querySelector("#productDetail > div.page-body > div > div:nth-child(2) > font > span").innerText, 
+                    item_list_name: listName,
+                    item_brand: brand,
+                    currency: currency,
+                    price: +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\d]/g, '')
+                }
+            ]
+        });
+
+        console.log('view_item', items);
+        localStorage.removeItem('products');
+        localStorage.setItem('products', JSON.stringify(items));
+    }
+
+    // 장바구니 페이지 조회
+    if (window.location.href.indexOf("shop/basket") > -1) {
+        var idList = document.querySelectorAll("tr > td > div > div.thumb > a");
+        var nameList = document.querySelectorAll("tr > td > div.tb-left > a");
+        var quantityList = document.querySelectorAll(".opt-spin > input");
+        var priceList = document.querySelectorAll(".tb-price");
+        var totalPrice = 0;
+        var items = [];
+
+        for (var i = 0; i < idList.length; i++) {
+            totalPrice += +priceList[i].innerText.replace(/[^\d]/g, '');
+            items.push({
+                item_id: idList[i].href.split("branduid=")[1].split("&xcode")[0],
+                item_name: nameList[i].innerText,
+                item_list_name: listName,
+                item_brand: brand,
+                currency: currency,
+                quantity: +quantityList[i].value.replace(/[^\d]/g, ''),
+                price: +priceList[i].innerText.replace(/[^\d]/g, ''),
+            });
+        }
+
+        console.log('add_to_cart', items);
+        gtag('event', 'add_to_cart', {
+            currency: currency,
+            value: totalPrice,
+            items: items
+        });
+
+        localStorage.removeItem('products');
+        localStorage.setItem('products', JSON.stringify(items));
+    }
+
+    // Begin Checkout 페이지 조회 (결제 시작 페이지)
+    if (window.location.href.indexOf("shop/order.html") > -1) {
+        var items = JSON.parse(localStorage.getItem('products'));
+        var totalPrice = 0;
+        items.forEach((item) => totalPrice += item.price);
+        console.log('begin_checkout', items);
+        gtag('event', 'begin_checkout', {
+            currency: currency,
+            value: totalPrice,
+            items: items
+        });
+    }
+
+    // Purchase Done
+    if (window.location.href.indexOf("shop/orderend") > -1) {
+        var items = JSON.parse(localStorage.getItem('products'));
+        var transaction_id = window.location.href.split("ordernum=")[1].split("&pay")[0];
+        gtag('event', 'purchase', {
+            transaction_id: transaction_id,
+            affiliation: affiliation,
+            value: +document.querySelector("#mk_totalprice").innerText.replace(/[^\d]/g, ''),
             currency: currency,
             items: items
         });
