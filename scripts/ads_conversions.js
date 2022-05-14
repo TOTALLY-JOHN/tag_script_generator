@@ -546,6 +546,110 @@ $(document).ready(function () {
     $("#ua_generated_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#sixshop_ua_eec").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+  window.addEventListener('load', function(event) {
+    // UA (Universal Analytics) E-Commerce (전자상거래) 코드 (식스샵)
+    // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 미포함 버전이니 네이버 페이 경우에는 별도로 코드 추가 요함!!!)
+    var brand = 'Google';
+    var affiliation = 'Google';
+    var listName = 'Search Results';
+    var currency = 'KRW';
+
+    // 제품 상세 페이지 조회 
+    if (window.location.href.indexOf("product") > -1) {
+        var price = 
+            document.querySelector("#shopProductPrice > span.productDiscountPriceSpan") == null ? 
+            +document.querySelector("#shopProductPrice")?.innerText.replace(/[^\d]/g, '') :
+            +document.querySelector("#shopProductPrice > span.productDiscountPriceSpan")?.innerText.replace(/[^\d]/g, '');
+
+        gtag('event', 'view_item', {
+            "items": [
+                {
+                    "id": document.querySelector("#shopProductImgsDiv").attributes["imgsrc"].value.split("/image_")[1].split(".")[0],
+                    "name": document.querySelector("#shopProductName").innerText, 
+                    "list_name": listName,
+                    "brand": brand,
+                    "price": price,
+                }
+            ]
+        });
+
+        console.log('view_item', items);
+    }
+
+    // 장바구니 페이지 조회
+    if (window.location.href.indexOf("cart") > -1) {
+        var idList = document.querySelectorAll("div.product > div.img > a > img"); 
+        var nameList = document.querySelectorAll("div.product > div.text > div.name > a");
+        var quantityList = document.querySelectorAll("div.QuantityDiv > span > input");
+        var priceList = document.querySelectorAll("div.shopCartPrice.price");
+        var items = [];
+
+        for (var i = 0; i < idList.length; i++) {
+            items.push({
+                "id": idList[i].src.split("/image_")[1].split(".")[0],
+                "name": nameList[i].innerText,
+                "list_name": listName,
+                "brand": brand,
+                "quantity": +quantityList[i].value.replace(/[^\d]/g, ''),
+                "price": +priceList[i].innerText.replace(/[^\d]/g, ''),
+            });
+        }
+
+        console.log('add_to_cart', items);
+        gtag('event', 'add_to_cart', {
+            "items": items
+        });
+    }
+
+    // Begin Checkout 페이지 조회 (결제 시작 페이지)
+    if (window.location.href.indexOf("/order/") > -1) {
+        var idList = document.querySelectorAll(".order-item-thumbnail"); 
+        var nameList = document.querySelectorAll(".item-title");
+        var quantityList = document.querySelectorAll(".item-qty-and-price-wrapper");
+        var priceList = document.querySelectorAll(".item-qty-and-price-wrapper");
+        var items = [];
+
+        for (var i = 0; i < idList.length; i++) {
+            items.push({
+                "id": idList[i].src.split("/image_")[1].split(".")[0],
+                "name": nameList[i].innerText,
+                "list_name": listName,
+                "brand": brand,
+                "quantity": +quantityList[i].innerText.split("개")[0].replace(/[^\d]/g, ''),
+                "price": +priceList[i].innerText.split("/")[1].replace(/[^\d]/g, ''),
+            });
+        }
+
+        gtag('event', 'begin_checkout', {
+            "items": items
+        });
+
+        localStorage.removeItem('products');
+        localStorage.setItem('products', JSON.stringify(items));
+    }
+
+    // Purchase Done
+    if (window.location.href.indexOf("/payment/") > -1) {
+        var items = JSON.parse(localStorage.getItem('products'));
+        var transaction_id = document.querySelector('#content_div > div.content.designSettingElement.text-body > div:nth-child(2) > input').value;
+        var totalPrice = 0;
+        items.forEach((item) => totalPrice += item.price);
+        gtag('event', 'purchase', {
+            "transaction_id": transaction_id,
+            "affiliation": affiliation,
+            "value": totalPrice,
+            "currency": currency,
+            "items": items
+        });
+    }
+  });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#ua_generated_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#cafe24_ga4_eec").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     result +=  "  window.addEventListener('load', function (event) { <br />" +
@@ -1028,6 +1132,121 @@ $(document).ready(function () {
             transaction_id: transaction_id,
             affiliation: affiliation,
             value: +document.querySelector("#mk_totalprice").innerText.replace(/[^\d]/g, ''),
+            currency: currency,
+            items: items
+        });
+    }
+  });`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ga4_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#sixshop_ga4_eec").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+  window.addEventListener('load', function(event) {
+    // GA4 (Google Analytics 4) E-Commerce (전자상거래) 코드 (식스샵)
+    // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 미포함 버전이니 네이버 페이 경우에는 별도로 코드 추가 요함!!!)
+    var brand = 'Google';
+    var affiliation = 'Google';
+    var listName = 'Search Results';
+    var currency = 'KRW';
+
+    // 제품 상세 페이지 조회 
+    if (window.location.href.indexOf("product") > -1) {
+        var price = 
+            document.querySelector("#shopProductPrice > span.productDiscountPriceSpan") == null ? 
+            +document.querySelector("#shopProductPrice")?.innerText.replace(/[^\d]/g, '') :
+            +document.querySelector("#shopProductPrice > span.productDiscountPriceSpan")?.innerText.replace(/[^\d]/g, '');
+
+        gtag('event', 'view_item', {
+            currency: currency,
+            value: price,
+            items: [
+                {
+                    item_id: document.querySelector("#shopProductImgsDiv").attributes["imgsrc"].value.split("/image_")[1].split(".")[0],
+                    item_name: document.querySelector("#shopProductName").innerText, 
+                    tiem_list_name: listName,
+                    item_brand: brand,
+                    price: price,
+                }
+            ]
+        });
+
+        console.log('view_item', items);
+    }
+
+    // 장바구니 페이지 조회
+    if (window.location.href.indexOf("cart") > -1) {
+        var idList = document.querySelectorAll("div.product > div.img > a > img"); 
+        var nameList = document.querySelectorAll("div.product > div.text > div.name > a");
+        var quantityList = document.querySelectorAll("div.QuantityDiv > span > input");
+        var priceList = document.querySelectorAll("div.shopCartPrice.price");
+        var totalPrice = 0;
+        var items = [];
+
+        for (var i = 0; i < idList.length; i++) {
+            totalPrice += +priceList[i].innerText.replace(/[^\d]/g, '');
+            items.push({
+                item_id: idList[i].src.split("/image_")[1].split(".")[0],
+                item_name: nameList[i].innerText,
+                item_list_name: listName,
+                item_brand: brand,
+                quantity: +quantityList[i].value.replace(/[^\d]/g, ''),
+                price: +priceList[i].innerText.replace(/[^\d]/g, ''),
+            });
+        }
+
+        console.log('add_to_cart', items);
+        gtag('event', 'add_to_cart', {
+            currency: currency,
+            value: totalPrice,
+            items: items
+        });
+    }
+
+    // Begin Checkout 페이지 조회 (결제 시작 페이지)
+    if (window.location.href.indexOf("/order/") > -1) {
+        var idList = document.querySelectorAll(".order-item-thumbnail"); 
+        var nameList = document.querySelectorAll(".item-title");
+        var quantityList = document.querySelectorAll(".item-qty-and-price-wrapper");
+        var priceList = document.querySelectorAll(".item-qty-and-price-wrapper");
+        var totalPrice = 0;
+        var items = [];
+
+        for (var i = 0; i < idList.length; i++) {
+            totalPrice += +priceList[i].innerText.split("/")[1].replace(/[^\d]/g, '');
+            items.push({
+                item_id: idList[i].src.split("/image_")[1].split(".")[0],
+                item_name: nameList[i].innerText,
+                item_list_name: listName,
+                item_brand: brand,
+                quantity: +quantityList[i].innerText.split("개")[0].replace(/[^\d]/g, ''),
+                price: +priceList[i].innerText.split("/")[1].replace(/[^\d]/g, ''),
+            });
+        }
+
+        gtag('event', 'begin_checkout', {
+            currency: currency,
+            value: totalPrice,
+            items: items
+        });
+
+        localStorage.removeItem('products');
+        localStorage.setItem('products', JSON.stringify(items));
+    }
+
+    // Purchase Done
+    if (window.location.href.indexOf("/payment/") > -1) {
+        var items = JSON.parse(localStorage.getItem('products'));
+        var transaction_id = document.querySelector('#content_div > div.content.designSettingElement.text-body > div:nth-child(2) > input').value;
+        var totalPrice = 0;
+        items.forEach((item) => totalPrice += item.price);
+
+        gtag('event', 'purchase', {
+            transaction_id: transaction_id,
+            affiliation: affiliation,
+            value: totalPrice,
             currency: currency,
             items: items
         });
