@@ -1547,11 +1547,11 @@ $(document).ready(function () {
   $("#makeshop_dr").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
-    // 해당 스크립트는 완성본이 아니고 각각의 페에지를 분류하여 if문 작업으로 페이지를 체크해줘야 합니다
+  document.addEventListener('load', function(event) {
     var google_business_vertical = "retail";
 
     // VIEW ITEM
-    document.addEventListener('DOMContentLoaded', function(event) {
+    if (window.location.href.indexOf("shopdetail.html") > -1) {
       var ids = [];
       ids.push({ 'id': '&lt;!--/number/-->', 'google_business_vertical': google_business_vertical });
       totalPrice = ('&lt;!--/number/price_sell/-->').replace(/[^0-9]/g, "");
@@ -1559,10 +1559,10 @@ $(document).ready(function () {
         'value': totalPrice,
         'items': ids
       });
-    });
+    }
 
     // VIEW ITEM LIST
-    document.addEventListener('DOMContentLoaded', function(event) {
+    if (window.location.href.indexOf("shopbrand.html") > -1) {
       var totalPrice = 0;
       var ids = [];
       &lt;!--/loop_product/-->
@@ -1573,10 +1573,10 @@ $(document).ready(function () {
           'value': totalPrice,
           'items': ids
       });
-    });
+    }
 
     // ADD TO CART
-    document.addEventListener('DOMContentLoaded', function(event) {
+    if (window.location.href.indexOf("basket") > -1) {
       var ids = [];
       var getID = document.getElementsByName('branduid');
       for(var i = 0; i < getID.length; i++){
@@ -1586,10 +1586,10 @@ $(document).ready(function () {
           'value': Number($('.MK_chg_none_groupsale_total_price_sell.MK_change_price').text().replace(/[^0-9]/g, '')),
           'items': ids
       });
-    });
+    }
 
     // PURCHASE
-    document.addEventListener('DOMContentLoaded', function(event) {
+    if (window.location.href.indexOf("orderend") > -1) {
       var ids = [];
       var totalPrice = '&lt;!--/pay_price/-->';
       &lt;!--/loop_order_product/-->
@@ -1599,7 +1599,8 @@ $(document).ready(function () {
           'value': totalPrice,
           'items': ids
       });
-    });`;
+    }
+  });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_dr_script").html("<pre>" + result + "</pre>");
   });
