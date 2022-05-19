@@ -51,9 +51,9 @@ $(document).ready(function () {
     result += "<span class='grey'>// Sixshop Purchase Price</span><br />";
     result += "function() {<br />";
     result += "  if (window.location.href.indexOf('payment/success/inicisPay') > -1) {<br />";
-    result += "    return document.querySelector('#content_div > div.content.designSettingElement.text-body > div:nth-child(4) > input:nth-child(3)').value.replace(/[^\d]/g, '');<br />";
+    result += "    return document.querySelector('#content_div > div.content.designSettingElement.text-body > div:nth-child(4) > input:nth-child(3)').value.replace(/[^\\d]/g, '');<br />";
     result += "  } else if (window.location.href.indexOf('payment/request/withoutBank') > -1) {<br />";
-    result += "    return document.querySelector('#content_div > div.content.designSettingElement.text-body > div:nth-child(6) > input:nth-child(3)').value.replace(/[^\d]/g, '');<br />"
+    result += "    return document.querySelector('#content_div > div.content.designSettingElement.text-body > div:nth-child(6) > input:nth-child(3)').value.replace(/[^\\d]/g, '');<br />"
     result += "  }<br />"
     result += "}<br /><br />";
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
@@ -384,7 +384,7 @@ $(document).ready(function () {
                     "name": document.querySelector("#prod_goods_form > header > div.view_tit.no-margin-top.title_font_style").innerText, 
                     "list_name": listName,
                     "brand": brand,
-                    "price": +document.querySelector("#prod_goods_form > header > div.pay_detail.full-width > div.holder.table-row > span > span").innerText.replace(/[^\d]/g, '')
+                    "price": +document.querySelector("#prod_goods_form > header > div.pay_detail.full-width > div.holder.table-row > span > span").innerText.replace(/[^\\d]/g, '')
                 }
             ]
         });
@@ -405,8 +405,8 @@ $(document).ready(function () {
                 "name": nameList[i].innerText,
                 "list_name": listName,
                 "brand": brand,
-                "quantity": +quantityList[i].innerText.replace(/[^\d]/g, ''),
-                "price": +priceList[i].innerText.replace(/[^\d]/g, ''),
+                "quantity": +quantityList[i].innerText.replace(/[^\\d]/g, ''),
+                "price": +priceList[i].innerText.replace(/[^\\d]/g, ''),
             })
         });
 
@@ -431,8 +431,8 @@ $(document).ready(function () {
                 "name": nameList[i].innerText,
                 "list_name": listName,
                 "brand": brand,
-                "quantity": +quantityList[i].innerText.split(" - ")[1].replace(/[^\d]/g, ''),
-                "price": +priceList[i].innerText.replace(/[^\d]/g, ''),
+                "quantity": +quantityList[i].innerText.split(" - ")[1].replace(/[^\\d]/g, ''),
+                "price": +priceList[i].innerText.replace(/[^\\d]/g, ''),
             })
         });
 
@@ -482,7 +482,7 @@ $(document).ready(function () {
                     "name": document.querySelector("#productDetail > div.page-body > div > div:nth-child(2) > font > span").innerText, 
                     "list_name": listName,
                     "brand": brand,
-                    "price": +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\d]/g, '')
+                    "price": +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\\d]/g, '')
                 }
             ]
         });
@@ -506,8 +506,8 @@ $(document).ready(function () {
                 "name": nameList[i].innerText,
                 "list_name": listName,
                 "brand": brand,
-                "quantity": +quantityList[i].value.replace(/[^\d]/g, ''),
-                "price": +priceList[i].innerText.replace(/[^\d]/g, ''),
+                "quantity": +quantityList[i].value.replace(/[^\\d]/g, ''),
+                "price": +priceList[i].innerText.replace(/[^\\d]/g, ''),
             });
         }
 
@@ -536,7 +536,7 @@ $(document).ready(function () {
         gtag('event', 'purchase', {
             "transaction_id": transaction_id,
             "affiliation": affiliation,
-            "value": +document.querySelector("#mk_totalprice").innerText.replace(/[^\d]/g, ''),
+            "value": +document.querySelector("#mk_totalprice").innerText.replace(/[^\\d]/g, ''),
             "currency": currency,
             "items": items
         });
@@ -561,8 +561,8 @@ $(document).ready(function () {
     if (window.location.href.indexOf("product") > -1) {
         var price = 
             document.querySelector("#shopProductPrice > span.productDiscountPriceSpan") == null ? 
-            +document.querySelector("#shopProductPrice")?.innerText.replace(/[^\d]/g, '') :
-            +document.querySelector("#shopProductPrice > span.productDiscountPriceSpan")?.innerText.replace(/[^\d]/g, '');
+            +document.querySelector("#shopProductPrice")?.innerText.replace(/[^\\d]/g, '') :
+            +document.querySelector("#shopProductPrice > span.productDiscountPriceSpan")?.innerText.replace(/[^\\d]/g, '');
 
         gtag('event', 'view_item', {
             "items": [
@@ -593,8 +593,8 @@ $(document).ready(function () {
                 "name": nameList[i].innerText,
                 "list_name": listName,
                 "brand": brand,
-                "quantity": +quantityList[i].value.replace(/[^\d]/g, ''),
-                "price": +priceList[i].innerText.replace(/[^\d]/g, ''),
+                "quantity": +quantityList[i].value.replace(/[^\\d]/g, ''),
+                "price": +priceList[i].innerText.replace(/[^\\d]/g, ''),
             });
         }
 
@@ -618,8 +618,8 @@ $(document).ready(function () {
                 "name": nameList[i].innerText,
                 "list_name": listName,
                 "brand": brand,
-                "quantity": +quantityList[i].innerText.split("개")[0].replace(/[^\d]/g, ''),
-                "price": +priceList[i].innerText.split("/")[1].replace(/[^\d]/g, ''),
+                "quantity": +quantityList[i].innerText.split("개")[0].replace(/[^\\d]/g, ''),
+                "price": +priceList[i].innerText.split("/")[1].replace(/[^\\d]/g, ''),
             });
         }
 
@@ -949,7 +949,7 @@ $(document).ready(function () {
     if (window.location.href.indexOf("?idx=") > -1) {
         gtag('event', 'view_item', {
             currency: currency,
-            value: +document.querySelector("#prod_goods_form > header > div.pay_detail.full-width > div.holder.table-row > span > span").innerText.replace(/[^\d]/g, ''),
+            value: +document.querySelector("#prod_goods_form > header > div.pay_detail.full-width > div.holder.table-row > span > span").innerText.replace(/[^\\d]/g, ''),
             items: [
                 {
                     item_id: window.location.href.split("?idx=")[1] || "",
@@ -957,7 +957,7 @@ $(document).ready(function () {
                     item_list_name: listName,
                     item_brand: brand,
                     currency: currency,
-                    price: +document.querySelector("#prod_goods_form > header > div.pay_detail.full-width > div.holder.table-row > span > span").innerText.replace(/[^\d]/g, '')
+                    price: +document.querySelector("#prod_goods_form > header > div.pay_detail.full-width > div.holder.table-row > span > span").innerText.replace(/[^\\d]/g, '')
                 }
             ]
         });
@@ -974,15 +974,15 @@ $(document).ready(function () {
         var totalPrice = 0;
 
         cartList.forEach((value, i) => {
-            totalPrice += +priceList[i].innerText.replace(/[^\d]/g, '');
+            totalPrice += +priceList[i].innerText.replace(/[^\\d]/g, '');
             items.push({
                 item_id: idList[i].href.split("?idx=")[1],
                 item_name: nameList[i].innerText,
                 item_list_name: listName,
                 currency: currency,
                 item_brand: brand,
-                quantity: +quantityList[i].innerText.replace(/[^\d]/g, ''),
-                price: +priceList[i].innerText.replace(/[^\d]/g, ''),
+                quantity: +quantityList[i].innerText.replace(/[^\\d]/g, ''),
+                price: +priceList[i].innerText.replace(/[^\\d]/g, ''),
             })
         });
 
@@ -1005,15 +1005,15 @@ $(document).ready(function () {
         var totalPrice = 0;
 
         checkoutList.forEach((value, i) => {
-            totalPrice += +priceList[i].innerText.replace(/[^\d]/g, '');
+            totalPrice += +priceList[i].innerText.replace(/[^\\d]/g, '');
             items.push({
                 item_id: idList[i].href.split("?idx=")[1],
                 item_name: nameList[i].innerText,
                 item_list_name: listName,
                 item_brand: brand,
                 currency: currency,
-                quantity: +quantityList[i].innerText.split(" - ")[1].replace(/[^\d]/g, ''),
-                price: +priceList[i].innerText.replace(/[^\d]/g, ''),
+                quantity: +quantityList[i].innerText.split(" - ")[1].replace(/[^\\d]/g, ''),
+                price: +priceList[i].innerText.replace(/[^\\d]/g, ''),
             })
         });
 
@@ -1060,7 +1060,7 @@ $(document).ready(function () {
     if (window.location.href.indexOf("shopdetail.html") > -1) {
         gtag('event', 'view_item', {
             currency: currency,
-            value: +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\d]/g, ''),
+            value: +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\\d]/g, ''),
             items: [
                 {
                     item_id: window.location.href.split("branduid=")[1].split("&xcode")[0] || "",
@@ -1068,7 +1068,7 @@ $(document).ready(function () {
                     item_list_name: listName,
                     item_brand: brand,
                     currency: currency,
-                    price: +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\d]/g, '')
+                    price: +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\\d]/g, '')
                 }
             ]
         });
@@ -1088,15 +1088,15 @@ $(document).ready(function () {
         var items = [];
 
         for (var i = 0; i < idList.length; i++) {
-            totalPrice += +priceList[i].innerText.replace(/[^\d]/g, '');
+            totalPrice += +priceList[i].innerText.replace(/[^\\d]/g, '');
             items.push({
                 item_id: idList[i].href.split("branduid=")[1].split("&xcode")[0],
                 item_name: nameList[i].innerText,
                 item_list_name: listName,
                 item_brand: brand,
                 currency: currency,
-                quantity: +quantityList[i].value.replace(/[^\d]/g, ''),
-                price: +priceList[i].innerText.replace(/[^\d]/g, ''),
+                quantity: +quantityList[i].value.replace(/[^\\d]/g, ''),
+                price: +priceList[i].innerText.replace(/[^\\d]/g, ''),
             });
         }
 
@@ -1131,7 +1131,7 @@ $(document).ready(function () {
         gtag('event', 'purchase', {
             transaction_id: transaction_id,
             affiliation: affiliation,
-            value: +document.querySelector("#mk_totalprice").innerText.replace(/[^\d]/g, ''),
+            value: +document.querySelector("#mk_totalprice").innerText.replace(/[^\\d]/g, ''),
             currency: currency,
             items: items
         });
@@ -1156,8 +1156,8 @@ $(document).ready(function () {
     if (window.location.href.indexOf("product") > -1) {
         var price = 
             document.querySelector("#shopProductPrice > span.productDiscountPriceSpan") == null ? 
-            +document.querySelector("#shopProductPrice")?.innerText.replace(/[^\d]/g, '') :
-            +document.querySelector("#shopProductPrice > span.productDiscountPriceSpan")?.innerText.replace(/[^\d]/g, '');
+            +document.querySelector("#shopProductPrice")?.innerText.replace(/[^\\d]/g, '') :
+            +document.querySelector("#shopProductPrice > span.productDiscountPriceSpan")?.innerText.replace(/[^\\d]/g, '');
 
         gtag('event', 'view_item', {
             currency: currency,
@@ -1186,14 +1186,14 @@ $(document).ready(function () {
         var items = [];
 
         for (var i = 0; i < idList.length; i++) {
-            totalPrice += +priceList[i].innerText.replace(/[^\d]/g, '');
+            totalPrice += +priceList[i].innerText.replace(/[^\\d]/g, '');
             items.push({
                 item_id: idList[i].src.split("/image_")[1].split(".")[0],
                 item_name: nameList[i].innerText,
                 item_list_name: listName,
                 item_brand: brand,
-                quantity: +quantityList[i].value.replace(/[^\d]/g, ''),
-                price: +priceList[i].innerText.replace(/[^\d]/g, ''),
+                quantity: +quantityList[i].value.replace(/[^\\d]/g, ''),
+                price: +priceList[i].innerText.replace(/[^\\d]/g, ''),
             });
         }
 
@@ -1215,14 +1215,14 @@ $(document).ready(function () {
         var items = [];
 
         for (var i = 0; i < idList.length; i++) {
-            totalPrice += +priceList[i].innerText.split("/")[1].replace(/[^\d]/g, '');
+            totalPrice += +priceList[i].innerText.split("/")[1].replace(/[^\\d]/g, '');
             items.push({
                 item_id: idList[i].src.split("/image_")[1].split(".")[0],
                 item_name: nameList[i].innerText,
                 item_list_name: listName,
                 item_brand: brand,
-                quantity: +quantityList[i].innerText.split("개")[0].replace(/[^\d]/g, ''),
-                price: +priceList[i].innerText.split("/")[1].replace(/[^\d]/g, ''),
+                quantity: +quantityList[i].innerText.split("개")[0].replace(/[^\\d]/g, ''),
+                price: +priceList[i].innerText.split("/")[1].replace(/[^\\d]/g, ''),
             });
         }
 
@@ -1842,7 +1842,7 @@ $(document).ready(function () {
     // (for 반복문 등을 활용하여 item_id, item_name, currency, price, quantity를 포함한 객체를 배열에 저장하여 할당해준다)
     // 상세페이지 (상품 페이지 조회)
     if (window.location.href.indexOf("view_item_page") > -1) {
-      var view_item_price = +document.querySelector("css_selector").innerText.replace(/[^\d]/g, '')
+      var view_item_price = +document.querySelector("css_selector").innerText.replace(/[^\\d]/g, '')
       gtag("event", "view_item", {
         currency: "KRW",
         value: view_item_price,
@@ -1860,7 +1860,7 @@ $(document).ready(function () {
 
     // 장바구니
     if (window.location.href.indexOf("cart_page") > -1) {
-      var cart_price = +document.querySelector("css_selector").innerText.replace(/[^\d]/g, '')
+      var cart_price = +document.querySelector("css_selector").innerText.replace(/[^\\d]/g, '')
       gtag("event", "add_to_cart", {
         currency: "KRW",
         value: cart_price,
@@ -1878,7 +1878,7 @@ $(document).ready(function () {
 
     // 결제시작
     if (window.location.href.indexOf("begin_checkout_page") > -1) {
-      var begin_checkout_price = +document.querySelector("css_selector").innerText.replace(/[^\d]/g, '')
+      var begin_checkout_price = +document.querySelector("css_selector").innerText.replace(/[^\\d]/g, '')
       gtag("event", "begin_checkout", {
         currency: "KRW",
         value: begin_checkout_price,
@@ -1896,7 +1896,7 @@ $(document).ready(function () {
     
     // 구매완료 
     if (window.location.href.indexOf("purchase_done_page") > -1) {
-      var purchase_price = +document.querySelector("css_selector").innerText.replace(/[^\d]/g, '')
+      var purchase_price = +document.querySelector("css_selector").innerText.replace(/[^\\d]/g, '')
       gtag("event", "purchase", {
         currency: "KRW",
         value: purchase_price,
