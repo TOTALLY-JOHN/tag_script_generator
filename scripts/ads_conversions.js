@@ -2037,19 +2037,31 @@ $(document).ready(function () {
           "/" +
           ads_clabels[i].value +
           "&apos;</span>";
-        if (ads_cvalues[i].value != "") {
-          result +=
-            ",<br />" +
-            "        <span class='red2'>&apos;value&apos;</span>: <span class='red2'>";
-          if (ads_cvalue_changes[i].checked) {
-            result += "+";
+          if (ads_cvalues[i].value != "") {
+            result +=
+              ",<br />" +
+              "        <span class='red2'>&apos;value&apos;</span>: <span class='red2'>";
+            if (ads_cvalue_changes[i].checked) {
+              result += "+";
+            }
+            if (ads_cvalue_querySelectors[i].checked) {
+              result += "document.querySelector('";
+            }
+            result += ads_cvalues[i].value;
+            if (ads_cvalue_querySelectors[i].checked) {
+              result += "')";
+            }
+            if (ads_cvalue_append_values[i].checked) {
+              result += ".value";
+            }
+            if (ads_cvalue_append_innerTexts[i].checked) {
+              result += ".innerText";
+            }
+            if (ads_cvalue_regexes[i].checked) {
+              result += ".replace(/[^\\d]/g, '')";
+            }
+            result += "</span>";
           }
-          result += ads_cvalues[i].value;
-          if (ads_cvalue_regexes[i].checked) {
-            result += ".replace(/[^\\d]/g, '')";
-          }
-          result += "</span>";
-        }
         if (ads_currencies[i].value != "") {
           result +=
             ",<br />" +
@@ -2060,8 +2072,21 @@ $(document).ready(function () {
         if (ads_transactionIds[i].value != "") {
           result +=
             ",<br />" +
-            "        <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>" +
-            ads_transactionIds[i].value;
+            "        <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>";
+            
+          if (ads_transactionId_querySelectors[i].checked) {
+            result += "document.querySelector('";
+          }
+          result += ads_transactionIds[i].value;
+          if (ads_transactionId_querySelectors[i].checked) {
+            result += "')";
+          }
+          if (ads_transactionId_append_values[i].checked) {
+            result += ".value";
+          }
+          if (ads_transactionId_append_innerTexts[i].checked) {
+            result += ".innerText";
+          }
           if (ads_transactionId_regexes[i].checked) {
             result += ".replace(/[^\\d-]/g, '')";
           }
@@ -2088,19 +2113,31 @@ $(document).ready(function () {
           "/" +
           ads_clabels[i].value +
           "&apos;</span>";
-        if (ads_cvalues[i].value != "") {
-          result +=
-            ",<br />" +
-            "        <span class='red2'>&apos;value&apos;</span>: <span class='red2'>";
-          if (ads_cvalue_changes[i].checked) {
-            result += "+";
+          if (ads_cvalues[i].value != "") {
+            result +=
+              ",<br />" +
+              "        <span class='red2'>&apos;value&apos;</span>: <span class='red2'>";
+            if (ads_cvalue_changes[i].checked) {
+              result += "+";
+            }
+            if (ads_cvalue_querySelectors[i].checked) {
+              result += "document.querySelector('";
+            }
+            result += ads_cvalues[i].value;
+            if (ads_cvalue_querySelectors[i].checked) {
+              result += "')";
+            }
+            if (ads_cvalue_append_values[i].checked) {
+              result += ".value";
+            }
+            if (ads_cvalue_append_innerTexts[i].checked) {
+              result += ".innerText";
+            }
+            if (ads_cvalue_regexes[i].checked) {
+              result += ".replace(/[^\\d]/g, '')";
+            }
+            result += "</span>";
           }
-          result += ads_cvalues[i].value;
-          if (ads_cvalue_regexes[i].checked) {
-            result += ".replace(/[^\\d]/g, '')";
-          }
-          result += "</span>";
-        }
         if (ads_currencies[i].value != "") {
           result +=
             ",<br />" +
@@ -2111,8 +2148,21 @@ $(document).ready(function () {
         if (ads_transactionIds[i].value != "") {
           result +=
             ",<br />" +
-            "        <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>" +
-            ads_transactionIds[i].value;
+            "        <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>";
+            
+          if (ads_transactionId_querySelectors[i].checked) {
+            result += "document.querySelector('";
+          }
+          result += ads_transactionIds[i].value;
+          if (ads_transactionId_querySelectors[i].checked) {
+            result += "')";
+          }
+          if (ads_transactionId_append_values[i].checked) {
+            result += ".value";
+          }
+          if (ads_transactionId_append_innerTexts[i].checked) {
+            result += ".innerText";
+          }
           if (ads_transactionId_regexes[i].checked) {
             result += ".replace(/[^\\d-]/g, '')";
           }
@@ -2140,19 +2190,31 @@ $(document).ready(function () {
           "/" +
           ads_clabels[i].value +
           "&apos;</span>";
-        if (ads_cvalues[i].value != "") {
-          result +=
-            ",<br />" +
-            "          <span class='red2'>&apos;value&apos;</span>: <span class='red2'>";
-          if (ads_cvalue_changes[i].checked) {
-            result += "+";
+          if (ads_cvalues[i].value != "") {
+            result +=
+              ",<br />" +
+              "        <span class='red2'>  &apos;value&apos;</span>: <span class='red2'>";
+            if (ads_cvalue_changes[i].checked) {
+              result += "+";
+            }
+            if (ads_cvalue_querySelectors[i].checked) {
+              result += "document.querySelector('";
+            }
+            result += ads_cvalues[i].value;
+            if (ads_cvalue_querySelectors[i].checked) {
+              result += "')";
+            }
+            if (ads_cvalue_append_values[i].checked) {
+              result += ".value";
+            }
+            if (ads_cvalue_append_innerTexts[i].checked) {
+              result += ".innerText";
+            }
+            if (ads_cvalue_regexes[i].checked) {
+              result += ".replace(/[^\\d]/g, '')";
+            }
+            result += "</span>";
           }
-          result += ads_cvalues[i].value;
-          if (ads_cvalue_regexes[i].checked) {
-            result += ".replace(/[^\\d]/g, '')";
-          }
-          result += "</span>";
-        }
         if (ads_currencies[i].value != "") {
           result +=
             ",<br />" +
@@ -2163,8 +2225,21 @@ $(document).ready(function () {
         if (ads_transactionIds[i].value != "") {
           result +=
             ",<br />" +
-            "          <span class='red2'>&apos;transaction_id&apos;</span>: <span class='red2'>" +
-            ads_transactionIds[i].value;
+            "        <span class='red2'>  &apos;transaction_id&apos;</span>: <span class='red2'>";
+            
+          if (ads_transactionId_querySelectors[i].checked) {
+            result += "document.querySelector('";
+          }
+          result += ads_transactionIds[i].value;
+          if (ads_transactionId_querySelectors[i].checked) {
+            result += "')";
+          }
+          if (ads_transactionId_append_values[i].checked) {
+            result += ".value";
+          }
+          if (ads_transactionId_append_innerTexts[i].checked) {
+            result += ".innerText";
+          }
           if (ads_transactionId_regexes[i].checked) {
             result += ".replace(/[^\\d-]/g, '')";
           }
