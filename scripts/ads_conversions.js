@@ -1544,6 +1544,49 @@ $(document).ready(function () {
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#gtm_js_custom_variable").on("click", function () { 
+    let result = `
+// Template 1
+function() {
+  return 
+}
+
+// Template 2
+function() {
+  if (window.location.href.indexOf("example") > -1) {
+    return
+  } else {
+    return
+  }
+}
+
+// Template 3
+function() {
+  if (true) {
+    if (true) {
+      return
+    } else {
+      return
+    }
+  } else {
+    return
+  }
+}
+
+// Template 4
+function() {
+  if (document.querySelector("testInput1").value != "" &&
+  document.querySelector("testInput2").value != "" &&
+  document.querySelector("testInput3").value != "")
+  {
+    return true;
+  } else {
+    return false;
+  }
+}`;
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#makeshop_dr").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `

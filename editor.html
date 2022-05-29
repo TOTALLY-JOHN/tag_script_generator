@@ -15,12 +15,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- jQuery Custom Scroller CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="https://unpkg.com/typeit@8.3.3/dist/index.umd.js"></script>
     <!-- Scrollbar Custom CSS -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css"
     />
     <link rel="stylesheet" href="styles/editor_css.css?after" />
+    <style>
+      :root {
+        --ti-cursor-marigin-left: 0.1em;
+        --ti-cursor-color: grey;
+      }
+    </style>
   </head>
   <body>
     <div class="wrapper">
@@ -42,7 +49,7 @@
           </li>-->
         </ul>
         <ul class="list-unstyled components">
-          <li><a href="update_log.html">Version 1.8</a></li>
+          <li><a href="update_log.html">Version 1.9</a></li>
         </ul>
         <ul class="list-unstyled components">
           <li><a>Powered By Jihwan Jeong</a></li>
@@ -147,7 +154,7 @@
           >
             <div>
               <br />
-              <h1>Version is updated to 1.8! (2022-05-23)<br />Updates are applied after Ctrl + Shift + R.</h1>
+              <h1 id="mainTitle">Version is updated to 1.9! (2022-05-29)<br />Updates are applied after Ctrl + Shift + R.</h1>
               <br />
               <h2>UA Event Script Generator</h2>
               <div class="line"></div>
@@ -233,6 +240,7 @@
               <button id="ads_script_for_gtm_sixshop_purchase_variables" class="btn btn-info">GTM Sixshop Purchase Variables</button>
               <button id="javascript_validation" class="btn btn-info">Javascript Validation</button>
               <button id="regex_for_replace" class="btn btn-info">Regex(Replace)</button>
+              <button id="gtm_js_custom_variable" class="btn btn-info">GTM JS Custom Function</button>
               <br />
               <div class="line"></div>
               <button id="ads_add_button" class="btn btn-primary">
@@ -320,16 +328,31 @@
               <button id="shopify_tips" class="btn btn-info">쇼피파이(Shopify)</button>
               <button id="squarespace_tips" class="btn btn-info">스퀘어스페이스(Squarespace)</button>
               <button id="gnuboard_tips" class="btn btn-info">그누보드(Gnuboard)</button>
+              <button id="firstmall_tips" class="btn btn-info">퍼스트몰(Firstmall)</button>
               <div class="line"></div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
     <script src="scripts/universal_analytics.js?after"></script>
     <script src="scripts/ads_conversions.js?after"></script>
     <!-- <script src="scripts/cafe24_script.js?after"></script> -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        new TypeIt('#mainTitle', {
+          speed: 60,
+          startDelay: 900,
+          afterComplete: function (instance) {
+            instance.destroy();
+          }
+        })
+          .pause(1000)
+          .delete(43, { delay: 1000 })
+          .type("<strong>Tag Script Generator</strong>")
+          .go();
+      });
+    </script>
   </body>
 </html>
 
