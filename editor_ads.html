@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text-html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAG SCRIPT EDITOR</title>
+    <!-- Latest compiled and minified CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- Scrollbar Custom CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css"
+    />
+    <link rel="stylesheet" href="styles/main.css?after" />
+  </head>
+  <body>
+    <h1 id="titleText">Google Ads Conversions<br />구글 광고 전환</h1>
+    <div id="divider"></div>
+    <h6 id="versionText"><a href="update_log.html" id="versionTextInsert"></a></h6>
+    <div id="logoImg"><a href="editor.html"><img src="assets/logo.png" width="45" height="45" alt="logoImage"/></a></div>
+    <br /><br />
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2">
+          <a href="#generated_ads_script">
+            <div class="adsMenuButton" id="ads_script_for_timeout">
+              <h4>Timeout Script</h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-2">
+          <a href="#generated_ads_script">
+            <div class="adsMenuButton" id="ads_script_for_interval">
+              <h4>Interval Script</h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-2">
+          <a href="#generated_ads_script">
+            <div class="adsMenuButton" id="ads_script_for_interval_once">
+              <h4>Interval Script (count)</h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-2">
+          <a href="#generated_ads_script">
+            <div class="adsMenuButton" id="ads_script_for_gtm_custom_event">
+              <h4>GTM Custom Event</h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-2">
+          <a href="#generated_ads_script">
+            <div class="adsMenuButton" id="ads_script_for_cafe24_variables">
+              <h4>Cafe24 Variables</h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-2">
+          <a href="#generated_ads_script">
+            <div class="adsMenuButton" id="ads_script_for_sixshop_variables">
+              <h4>Sixshop Variables</h4>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <a href="#generated_ads_script">
+            <div class="adsMenuButton" id="ads_script_for_godomall_variables">
+              <h4>Godomall Variables</h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-2">
+          <a href="#generated_ads_script">
+            <div class="adsMenuButton" id="ads_script_for_makeshop_variables">
+              <h4>Makeshop Variables</h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-2">
+          <a href="#generated_ads_script">
+            <div class="adsMenuButton" id="ads_script_for_shopify_variables">
+              <h4>Shopify Variables</h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-2">
+          <a href="#generated_ads_script">
+            <div class="adsMenuButton" id="javascript_validation">
+              <h4>Javascript Validation</h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-2">
+          <a href="#generated_ads_script">
+            <div class="adsMenuButton" id="regex_for_replace">
+              <h4>Regex (Replace)</h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-2">
+          <a href="#generated_ads_script">
+            <div class="adsMenuButton" id="gtm_js_custom_variable">
+              <h4>GTM JS Custom Function</h4>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <br /><br /><br />
+      <h2 style="text-align:center;">Ads Conversions Script Setup</h2><br />
+      <div id="ads_condition_container">
+        <div class="row">
+          <div class="col-md-3">
+            <a href="#ads_add_button">
+              <div id="ads_add_button" class="adsMenuButton2">
+                Add Conversion
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="#">
+              <div id="ads_reset_events" class="adsMenuButton2">
+                Reset Conversions
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="#generated_ads_script">
+              <div id="generate_ads_script" class="adsMenuButton2">
+                Generate Script
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="#">
+              <div id="ads_clear_script" class="adsMenuButton2">
+                Clear Script
+              </div>
+            </a>
+          </div>
+        </div>
+        <br /><br />
+        
+        <h2>Conditions</h2>
+        <div id="ads_condition_container2"><form id="ads_conditions" autocomplete="off"></form></div>
+      </div>
+      <br /><br /><br />
+      
+
+      <h2 style="text-align:center;">Ads Generated Script</h2><br />
+      <div id="divider"></div>
+      <button id="ads_copy" class="btn btn-warning copy_button">Copy</button> <br /><br />
+      <div id="generated_ads_script" class="script_part"></div>
+    </div>
+    <footer>
+      <h5>Powered by Jihwan Jeong</h5><br />
+      <h6>Click <i><a href="https://github.com/TOTALLY-JOHN/tag_script_generator" style="color:burlywood">here</a></i> to see code!</h5>
+    </footer>
+    <script src="scripts/universal_analytics.js?after"></script>
+    <script src="scripts/ads_conversions.js?after"></script>
+  </body>
+</html>

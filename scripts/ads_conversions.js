@@ -2343,5 +2343,6 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-});
+  $("#versionTextInsert").html("Version 2.0 (Updated 2022.06.08)");
+}); 
 

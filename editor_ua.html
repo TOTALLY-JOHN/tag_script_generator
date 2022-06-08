@@ -24,65 +24,56 @@
     <link rel="stylesheet" href="styles/main.css?after" />
   </head>
   <body>
-    <h1 id="titleText">Welcome to<br />Tag Script Generator</h1>
+    <h1 id="titleText">Universal Analytics<br />유니버셜 애널리틱스</h1>
     <div id="divider"></div>
     <h6 id="versionText"><a href="update_log.html" id="versionTextInsert"></a></h6>
     <div id="logoImg"><a href="editor.html"><img src="assets/logo.png" width="45" height="45" alt="logoImage"/></a></div>
     <br /><br />
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-4">
-          <a href="editor_ua.html">
-            <div class="menuButton">
-              <h3>Universal Analytics</h3>
-              <h3>유니버셜 애널리틱스</h3>
+        <div class="col-md-3">
+          <a href="#">
+            <div class="uaMenuButton" id="cafe24_ua_eec">
+              <h4>Cafe24 EEC</h4>
             </div>
           </a>
         </div>
-        <div class="col-md-4">
-          <a href="editor_ga4.html">
-            <div class="menuButton">
-              <i class="fa-solid fa-magnifying-glass-chart"></i>
-              <h3>Google Analytics 4</h3>
-              <h3>구글 애널리틱스 4</h3>
+        <div class="col-md-2">
+          <a href="#">
+            <div class="uaMenuButton" id="godomall_ua_eec">
+              <h4>Godomall EEC</h3>
             </div>
           </a>
         </div>
-        <div class="col-md-4">
-          <a href="editor_ads.html">
-            <div class="menuButton">
-              <h3>Google Ads Conversions</h3>
-              <h3>구글 광고 전환</h3>
+        <div class="col-md-2">
+          <a href="#">
+            <div class="uaMenuButton" id="imweb_ua_eec">
+              <h4>Imweb EEC</h4>
             </div>
           </a>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <a href="editor_ec.html">
-            <div class="menuButton">
-              <h3>Enhanced Conversions</h3>
-              <h3>향상된 전환</h3>
+        <div class="col-md-2">
+          <a href="#">
+            <div class="uaMenuButton" id="makeshop_ua_eec_for_pc">
+              <h4>Makeshop EEC</h4>
             </div>
           </a>
         </div>
-        <div class="col-md-4">
-          <a href="editor_dr.html">
-            <div class="menuButton">
-              <h3>Dynamic Remarketing</h3>
-              <h3>동적 리마게팅</h3>
-            </div>
-          </a>
-        </div>
-        <div class="col-md-4">
-          <a href="editor_cms.html">
-            <div class="menuButton">
-              <h3>CMS List</h3>
-              <h3>지원 CMS 목록</h3>
+        <div class="col-md-3">
+          <a href="#">
+            <div class="uaMenuButton" id="sixshop_ua_eec">
+              <h4>Sixshop EEC</h3>
             </div>
           </a>
         </div>
       </div>
+
+      <br /><br /><br />
+
+      <h2 style="text-align:center;">UA Generated Script</h2><br />
+      <div id="divider"></div>
+      <button id="ua_copy" class="btn btn-warning copy_button">Copy</button> <br /><br />
+      <div id="ua_generated_script" class="script_part"></div>
     </div>
     <footer>
       <h5>Powered by Jihwan Jeong</h5><br />
@@ -92,4 +83,3 @@
     <script src="scripts/ads_conversions.js?after"></script>
   </body>
 </html>
-

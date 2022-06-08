@@ -1,7 +1,8 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 body {
   font-family: "Poppins", sans-serif;
-  background: #fafafa;
+  background: #121212;
+  color: white;
 }
 
 p {
@@ -9,7 +10,7 @@ p {
   font-size: 1.1em;
   font-weight: 300;
   line-height: 1.7em;
-  color: #999;
+  color: white;
 }
 
 a,
@@ -55,7 +56,7 @@ a:focus {
 #sidebar {
   min-width: 250px;
   max-width: 250px;
-  background: #7386d5;
+  background: #1F1A24;
   color: #fff;
   transition: all 0.3s;
 }
@@ -66,12 +67,12 @@ a:focus {
 
 #sidebar .sidebar-header {
   padding: 20px;
-  background: #6d7fcc;
+  background: #1F1A24;
 }
 
 #sidebar ul.components {
   padding: 20px 0;
-  border-bottom: 1px solid #47748b;
+  /* border-bottom: 1px solid #47748b; */
 }
 
 #sidebar ul p {
@@ -216,4 +217,21 @@ a.article:hover {
 
 button {
   margin: 5px;
+}
+
+#nav-tab {
+  background: #1F1B24;
+}
+
+.nav-link.active {
+  background: #332940;
+}
+
+.nav-tabs .nav-item .nav-link {
+  background-color: #ffffff;
+  color: #FFF;
+}
+
+.nav-tabs .nav-item .nav-link.active {
+  color: #ffffff;
 }
