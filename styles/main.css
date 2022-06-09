@@ -2,9 +2,11 @@
 body {
   font-family: "Poppins", sans-serif;
   color: white;
-  /* background-image: url("back1.png"); */
-  background: #121212;
-  /* background-size:100%; */
+  background-image: url("back1.png");
+  /* background: #121212; */
+  background-size: cover;
+  background-color: #0005;
+  background-blend-mode: darken;
 }
 
 table tbody td {
@@ -70,9 +72,10 @@ table tbody td {
 .menuButton {
   margin: 3rem;
   padding: 100px 20px 100px 20px;
-  background-color: #1F1A24;
+  /* background-color: #1F1A24; */
   text-align: center;
   height: 280px;
+  background : rgba(0, 0, 0, 0.3);
 }
 
 a {
@@ -101,7 +104,7 @@ a:hover {
 .uaMenuButton {
   margin: 1rem;
   padding: 50px 10px 50px 10px;
-  background-color: #1F1A24;
+  background : rgba(0, 0, 0, 0.3);
   text-align: center;
   height: 160px;
 }
@@ -109,7 +112,7 @@ a:hover {
 .ga4MenuButton {
   margin: 1rem;
   padding: 50px 10px 50px 10px;
-  background-color: #1F1A24;
+  background : rgba(0, 0, 0, 0.3);
   text-align: center;
   height: 140px;
 }
@@ -117,7 +120,7 @@ a:hover {
 .ecMenuButton {
   margin: 1rem;
   padding: 50px 10px 50px 10px;
-  background-color: #1F1A24;
+  background : rgba(0, 0, 0, 0.3);
   text-align: center;
   height: 130px;
 }
@@ -125,7 +128,7 @@ a:hover {
 .adsMenuButton {
   margin: 1rem;
   padding: 50px 10px 50px 10px;
-  background-color: #1F1A24;
+  background : rgba(0, 0, 0, 0.3);
   text-align: center;
   height: 160px;
 }
@@ -133,7 +136,7 @@ a:hover {
 .adsMenuButton2 {
   margin: 1rem;
   padding: 30px 10px 30px 10px;
-  background-color: #332940;
+  background : rgba(0, 0, 0, 0.5);
   text-align: center;
   height: 85px;
 }
@@ -141,7 +144,7 @@ a:hover {
 .drMenuButton {
   margin: 1rem;
   padding: 50px 10px 50px 10px;
-  background-color: #1F1A24;
+  background : rgba(0, 0, 0, 0.3);
   text-align: center;
   height: 160px;
 }
@@ -149,15 +152,15 @@ a:hover {
 .cmsMenuButton {
   margin: 1rem;
   padding: 50px 10px 50px 10px;
-  background-color: #1F1A24;
+  background : rgba(0, 0, 0, 0.3);
   text-align: center;
   height: 160px;
 }
 
 .script_part {
-  background-color: #282937;
+  background : rgba(0, 0, 0, 0.5);
   color: white;
-  padding: 10px;
+  padding: 15px;
   border-radius: 10px;
   overflow-wrap: break-word;
   margin-bottom: 50px;
@@ -182,7 +185,7 @@ a:hover {
 }
 
 #ads_condition_container2 {
-  background: #1F1A24;
+  background : rgba(0, 0, 0, 0.5);
   border-radius: 15px;
   padding: 15px;
 }
@@ -194,7 +197,7 @@ a:hover {
 }
 
 footer {
-  background: #1F1B24;
+  background : rgba(0, 0, 0, 0.4);
   margin-top: 200px;
   padding-top: 50px;
   padding-bottom: 50px;
