@@ -1876,87 +1876,87 @@ function() {
     Scroll to the bottom to the Snippet section in the left navigation bar
     Click ‘Add a new snippet’ and give it the name – adwords-dynamic-remarketing
     */
-    <!-- Global site tag (gtag.js) - Google Ads: 000000 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-000000"></script>
-    <script>
+    &lt;!-- Global site tag (gtag.js) - Google Ads: 000000 -->
+    &lt;script async src="https://www.googletagmanager.com/gtag/js?id=AW-000000">&lt;/script&gt;
+    &lt;script&gt;
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       <!-- Event snippet for dynamic remarketing -->
       gtag('config', 'AW-000000');
-    </script>
+    &lt;/script&gt;
     {% if template contains 'index' %}
-    <script>
+    &lt;script&gt;
     gtag('event', 'page_view', {
       'send_to': 'AW-000000',
       'ecomm_pagetype': 'home'
     });
-    </script>
+    &lt;/script&gt;
     {% elsif template contains 'collection' %}
-    <script>
+    &lt;script&gt;
     gtag('event', 'view_item_list', {
       'send_to': 'AW-000000',
       'ecomm_pagetype': 'category'
     })
-    </script>
+    &lt;/script&gt;
     {% elsif template contains 'product' %}
-    <script>
+    &lt;script&gt;
     gtag('event', 'view_item', {
       'send_to': 'AW-000000',
       'ecomm_pagetype': 'product',
       'ecomm_prodid': '{{ product.id }}',
       'ecomm_totalvalue': '{{ product.price | money_without_currency | remove: ',' }}'
     });
-    </script>
+    &lt;/script&gt;
     {% elsif template contains 'cart' %}
-    <script>
+    &lt;script&gt;
     gtag('event', 'view_cart', {
       'send_to': 'AW-000000',
       'ecomm_pagetype': 'cart',
       'ecomm_prodid': [{% for item in cart.items %}'{{item.product.id}}'{% unless forloop.last %},{% endunless %}{% endfor %}],
       'ecomm_totalvalue': '{{cart.total_price | money_without_currency | remove: ',' }}'
     });
-    </script>
+    &lt;/script&gt;
     {% elsif template contains 'search' %}
-    <script>
+    &lt;script&gt;
     gtag('event', 'view_search_results', {
       'send_to': 'AW-000000',
       'ecomm_pagetype': 'searchresults'
     });
-    </script>
+    &lt;/script&gt;
     {% else %}
-    <script>
+    &lt;script&gt;
     gtag('event', 'page_view', {
       'send_to': 'AW-000000',
       'ecomm_pagetype': 'other'
     });
-    </script>
+    &lt;/script&gt;
     {% endif %}
 
     //////////////////////////////////////////////////////////////////////
     Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태그 안에 삽입
-    <!-- Google AdWords Dynamic Remarketing -->
+    &lt;!-- Google AdWords Dynamic Remarketing -->
     {% include 'adwords-dynamic-remarketing' %}
     
     //////////////////////////////////////////////////////////////////////
     마지막으로 Settings > Checkout > Additional Scripts 가서 아래 코드 삽입
     {% if first_time_accessed %}
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-000000"></script>
-    <script>
+    &lt;script async src="https://www.googletagmanager.com/gtag/js?id=AW-000000">&lt;/script&gt;
+    &lt;script&gt;
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
       gtag('config', 'AW-000000');
-    </script>
-    <script>
+    &lt;/script&gt;
+    &lt;script&gt;
     gtag('event', 'purchase', {
       'send_to': 'AW-000000',
       'ecomm_pagetype': 'purchase',
       'ecomm_prodid': [{% for item in checkout.line_items %}'{{line_item.sku}}',{% endfor %}],
       'ecomm_totalvalue': {{ checkout.total_price | money_without_currency | remove:',' }}
     });
-    </script>
+    &lt;/script&gt;
     {% endif %}`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_dr_script").html("<pre>" + result + "</pre>");
