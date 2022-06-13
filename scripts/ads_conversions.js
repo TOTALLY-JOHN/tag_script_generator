@@ -1866,6 +1866,102 @@ function() {
     $("#generated_dr_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#shopify_dr").on("click", function () {
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+    //////////////////////////////////////////////////////////////////////
+    /*
+    Refer to https://ratanjhadigital.com/setup-adwords-dynamic-remarketing-shopify/ for further information.
+    Login to Shopify and go to Online Store > Themes > Edit HTML/CSS
+    Scroll to the bottom to the Snippet section in the left navigation bar
+    Click ‘Add a new snippet’ and give it the name – adwords-dynamic-remarketing
+    */
+    <!-- Global site tag (gtag.js) - Google Ads: 000000 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-000000"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      <!-- Event snippet for dynamic remarketing -->
+      gtag('config', 'AW-000000');
+    </script>
+    {% if template contains 'index' %}
+    <script>
+    gtag('event', 'page_view', {
+      'send_to': 'AW-000000',
+      'ecomm_pagetype': 'home'
+    });
+    </script>
+    {% elsif template contains 'collection' %}
+    <script>
+    gtag('event', 'view_item_list', {
+      'send_to': 'AW-000000',
+      'ecomm_pagetype': 'category'
+    })
+    </script>
+    {% elsif template contains 'product' %}
+    <script>
+    gtag('event', 'view_item', {
+      'send_to': 'AW-000000',
+      'ecomm_pagetype': 'product',
+      'ecomm_prodid': '{{ product.id }}',
+      'ecomm_totalvalue': '{{ product.price | money_without_currency | remove: ',' }}'
+    });
+    </script>
+    {% elsif template contains 'cart' %}
+    <script>
+    gtag('event', 'view_cart', {
+      'send_to': 'AW-000000',
+      'ecomm_pagetype': 'cart',
+      'ecomm_prodid': [{% for item in cart.items %}'{{item.product.id}}'{% unless forloop.last %},{% endunless %}{% endfor %}],
+      'ecomm_totalvalue': '{{cart.total_price | money_without_currency | remove: ',' }}'
+    });
+    </script>
+    {% elsif template contains 'search' %}
+    <script>
+    gtag('event', 'view_search_results', {
+      'send_to': 'AW-000000',
+      'ecomm_pagetype': 'searchresults'
+    });
+    </script>
+    {% else %}
+    <script>
+    gtag('event', 'page_view', {
+      'send_to': 'AW-000000',
+      'ecomm_pagetype': 'other'
+    });
+    </script>
+    {% endif %}
+
+    //////////////////////////////////////////////////////////////////////
+    Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태그 안에 삽입
+    <!-- Google AdWords Dynamic Remarketing -->
+    {% include 'adwords-dynamic-remarketing' %}
+    
+    //////////////////////////////////////////////////////////////////////
+    마지막으로 Settings > Checkout > Additional Scripts 가서 아래 코드 삽입
+    {% if first_time_accessed %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-000000"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-000000');
+    </script>
+    <script>
+    gtag('event', 'purchase', {
+      'send_to': 'AW-000000',
+      'ecomm_pagetype': 'purchase',
+      'ecomm_prodid': [{% for item in checkout.line_items %}'{{line_item.sku}}',{% endfor %}],
+      'ecomm_totalvalue': {{ checkout.total_price | money_without_currency | remove:',' }}
+    });
+    </script>
+    {% endif %}`;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_dr_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#ga4_event_template").on("click", function () { 
     let result =
       "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
@@ -2343,6 +2439,6 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 2.0 (Updated 2022.06.08)");
+  $("#versionTextInsert").html("Version 2.1 (Updated 2022.06.13)");
 }); 
 
