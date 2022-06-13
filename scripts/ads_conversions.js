@@ -2293,7 +2293,6 @@ function() {
         result += "    );";
       }
     }
-
     
     result += "<br />  });";
     result +=
@@ -2306,7 +2305,7 @@ function() {
   });
   $("#ads_clear_script").on("click", function () {
     $("#generated_ads_script").empty();
-  });
+  }); 
   function performCopy(value) {
     let textArea = document.createElement("textarea");
     document.body.appendChild(textArea);
@@ -2345,4 +2344,3 @@ function() {
   });
   $("#versionTextInsert").html("Version 2.0 (Updated 2022.06.08)");
 }); 
-
