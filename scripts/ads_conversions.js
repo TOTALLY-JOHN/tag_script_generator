@@ -2438,6 +2438,6 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 2.1 (Updated 2022.06.13)");
+  $("#versionTextInsert").html("Version 2.2 (Updated 2022.07.21)");
 }); 
 
