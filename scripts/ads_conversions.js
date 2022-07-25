@@ -769,7 +769,7 @@ $(document).ready(function () {
       "            totalPrice += aBasketProductData[i].quantity * aBasketProductData[i].product_sum_price<br />" +
       "        });<br />" +
       "        btnNpayForGA4?.addEventListener('click', function (e) {<br />" +
-      "           callGtagPurchaseForGA4('purchase', btnNpay.children[0].id, affiliationForGA4, getQuantityForGA4() * product_price, currencyForGA4, addToCartItem);<br />" +
+      "           callGtagPurchaseForGA4('purchase', btnNpayForGA4.children[0].id, affiliationForGA4, getQuantityForGA4() * product_price, currencyForGA4, addToCartItem);<br />" +
       "        }, false);<br />" +
       "    }<br />" +
       "    <span class='grey'>// 구매완료 페이지</span><br />" +
