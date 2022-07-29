@@ -1045,8 +1045,43 @@ $(document).ready(function () {
   });
 
   $("#makeshop_ga4_eec_for_pc").on("click", function () { 
-    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    let result = `
+  <!-- 메이크샵 GA4 전자상거래 가이드
+  구매완료는 치환코드가 있기 때문에 코드 변경 불필요하지만 
+  나머지 상세페이지, 장바구니 등은 웹사이트마다 코드가 살짝 다르기 때문에
+  개발자 통해서 이 부분 구현하거나 여건이 된다면 코드 수정 지원해줘도 되지만
+  구매완료 부분만 코드 제공해도 무방하다. 
+  구매완료 코드는 <head></head> 사이가 아니라 디자인 부분 주문완료 코드에 넣어야 작동되니 주의해야 한다.
+  글로벌 사이트 태그(gtag)는 <head></head>에 이미 삽입되어 있어야 한다.
+  아래 코드는 메이크샵용 구매완료 코드이며 brand, affiliation만 적절하게 바꿔서 코드 제공한다.
+  그 아래 코드에는 제품상세페이지, 장바구니용 템플릿 코드도 포함해서 보내니 참고해서 가이드한다. -->
+
+  <script>
+    var products = [];
+    var brand = "brand_name";
+    var affiliation = "affiliation_name";
+    <!--/loop_order_product/-->
+    var goods_price = ('<!--/order_product@price/-->').replace(/[^0-9]/g, '');
+    products.push({
+      'item_name': '<!--/order_product@name/-->',
+      'item_id': '<!--/order_product@product_id/-->',
+      'item_price': goods_price,
+      'item_brand': brand,
+      'quantity': '<!--/order_product@amount/-->'
+    });
+    <!--/end_loop/-->
+    gtag('event', 'purchase', {
+      "transaction_id": '<!--/order_num/-->',
+      "affiliation": affiliation,
+      "value": '<!--/pay_price/-->',
+      "currency": "KRW",
+      "items": products
+    });
+  </script>`;
+    result += "<br /><br />";
+    result += "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
+  // 전체 참고 코드 (구매완료는 반드시 PC,모바일 개별 디자인에 존재하는 주문완료 페이지에 넣어야 한다.)
   window.addEventListener('load', function(event) {
     // GA4 (Google Analytics 4) E-Commerce (전자상거래) 코드 (메이크샵) PC버전 (모바일 버전은 별도로 체크 요함)
     // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 미포함 버전이니 네이버 페이 경우에는 별도로 코드 추가 요함!!!)
@@ -1123,17 +1158,28 @@ $(document).ready(function () {
         });
     }
 
-    // Purchase Done
+    // Purchase Done (반드시 개별디자인의 주문완료 페이지에 넣어야 한다. (공통 head에 넣으면 작동X))
     if (window.location.href.indexOf("shop/orderend") > -1) {
-        var items = JSON.parse(localStorage.getItem('products'));
-        var transaction_id = window.location.href.split("ordernum=")[1].split("&pay")[0];
-        gtag('event', 'purchase', {
-            transaction_id: transaction_id,
-            affiliation: affiliation,
-            value: +document.querySelector("#mk_totalprice").innerText.replace(/[^\\d]/g, ''),
-            currency: currency,
-            items: items
-        });
+      var products = [];
+      var brand = "brand_name";
+      var affiliation = "affiliation_name";
+      <!--/loop_order_product/-->
+      var goods_price = ('<!--/order_product@price/-->').replace(/[^0-9]/g, '');
+      products.push({
+        'item_name': '<!--/order_product@name/-->',
+        'item_id': '<!--/order_product@product_id/-->',
+        'item_price': goods_price,
+        'item_brand': brand,
+        'quantity': '<!--/order_product@amount/-->'
+      });
+      <!--/end_loop/-->
+      gtag('event', 'purchase', {
+        "transaction_id": '<!--/order_num/-->',
+        "affiliation": affiliation,
+        "value": '<!--/pay_price/-->',
+        "currency": "KRW",
+        "items": products
+      });
     }
   });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
