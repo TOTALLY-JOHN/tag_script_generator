@@ -464,7 +464,7 @@ $(document).ready(function () {
 
   $("#makeshop_ua_eec_for_pc").on("click", function () { 
     let result = `
-  <!-- 메이크샵 GA4 전자상거래 가이드
+  &lt;!-- 메이크샵 GA4 전자상거래 가이드
   구매완료는 치환코드가 있기 때문에 코드 변경 불필요하지만 
   나머지 상세페이지, 장바구니 등은 웹사이트마다 코드가 살짝 다르기 때문에
   개발자 통해서 이 부분 구현하거나 여건이 된다면 코드 수정 지원해줘도 되지만
@@ -474,28 +474,28 @@ $(document).ready(function () {
   아래 코드는 메이크샵용 구매완료 코드이며 brand, affiliation만 적절하게 바꿔서 코드 제공한다.
   그 아래 코드에는 제품상세페이지, 장바구니용 템플릿 코드도 포함해서 보내니 참고해서 가이드한다. -->
 
-  <script>
+  &lt;script>
     var products = [];
     var brand = "brand_name";
     var affiliation = "affiliation_name";
-    <!--/loop_order_product/-->
-    var goods_price = ('<!--/order_product@price/-->').replace(/[^0-9]/g, '');
+    &lt;!--/loop_order_product/-->
+    var goods_price = ('&lt;!--/order_product@price/-->').replace(/[^0-9]/g, '');
     products.push({
-      'item_name': '<!--/order_product@name/-->',
-      'item_id': '<!--/order_product@product_id/-->',
+      'item_name': '&lt;!--/order_product@name/-->',
+      'item_id': '&lt;!--/order_product@product_id/-->',
       'item_price': goods_price,
       'item_brand': brand,
-      'quantity': '<!--/order_product@amount/-->'
+      'quantity': '&lt;!--/order_product@amount/-->'
     });
-    <!--/end_loop/-->
+    &lt;!--/end_loop/-->
     gtag('event', 'purchase', {
-      "transaction_id": '<!--/order_num/-->',
+      "transaction_id": '&lt;!--/order_num/-->',
       "affiliation": affiliation,
-      "value": '<!--/pay_price/-->',
+      "value": '&lt;!--/pay_price/-->',
       "currency": "KRW",
       "items": products
     });
-  </script>`;
+  &lt;/script>`;
     result += "<br /><br /><span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
   window.addEventListener('load', function(event) {
@@ -1079,38 +1079,38 @@ $(document).ready(function () {
 
   $("#makeshop_ga4_eec_for_pc").on("click", function () { 
     let result = `
-  <!-- 메이크샵 GA4 전자상거래 가이드
+  &lt;!-- 메이크샵 GA4 전자상거래 가이드
   구매완료는 치환코드가 있기 때문에 코드 변경 불필요하지만 
   나머지 상세페이지, 장바구니 등은 웹사이트마다 코드가 살짝 다르기 때문에
   개발자 통해서 이 부분 구현하거나 여건이 된다면 코드 수정 지원해줘도 되지만
   구매완료 부분만 코드 제공해도 무방하다. 
-  구매완료 코드는 <head></head> 사이가 아니라 디자인 부분 주문완료 코드에 넣어야 작동되니 주의해야 한다.
-  글로벌 사이트 태그(gtag)는 <head></head>에 이미 삽입되어 있어야 한다.
+  구매완료 코드는 &lt;head></head> 사이가 아니라 디자인 부분 주문완료 코드에 넣어야 작동되니 주의해야 한다.
+  글로벌 사이트 태그(gtag)는 &lt;head></head>에 이미 삽입되어 있어야 한다.
   아래 코드는 메이크샵용 구매완료 코드이며 brand, affiliation만 적절하게 바꿔서 코드 제공한다.
   그 아래 코드에는 제품상세페이지, 장바구니용 템플릿 코드도 포함해서 보내니 참고해서 가이드한다. -->
 
-  <script>
+  &lt;script>
     var products = [];
     var brand = "brand_name";
     var affiliation = "affiliation_name";
-    <!--/loop_order_product/-->
-    var goods_price = ('<!--/order_product@price/-->').replace(/[^0-9]/g, '');
+    &lt;!--/loop_order_product/-->
+    var goods_price = ('&lt;!--/order_product@price/-->').replace(/[^0-9]/g, '');
     products.push({
-      'item_name': '<!--/order_product@name/-->',
-      'item_id': '<!--/order_product@product_id/-->',
+      'item_name': '&lt;!--/order_product@name/-->',
+      'item_id': '&lt;!--/order_product@product_id/-->',
       'item_price': goods_price,
       'item_brand': brand,
-      'quantity': '<!--/order_product@amount/-->'
+      'quantity': '&lt;!--/order_product@amount/-->'
     });
-    <!--/end_loop/-->
+    &lt;!--/end_loop/-->
     gtag('event', 'purchase', {
-      "transaction_id": '<!--/order_num/-->',
+      "transaction_id": '&lt;!--/order_num/-->',
       "affiliation": affiliation,
-      "value": '<!--/pay_price/-->',
+      "value": '&lt;!--/pay_price/-->',
       "currency": "KRW",
       "items": products
     });
-  </script>`;
+  &lt;/script>`;
     result += "<br /><br />";
     result += "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
@@ -1196,20 +1196,20 @@ $(document).ready(function () {
       var products = [];
       var brand = "brand_name";
       var affiliation = "affiliation_name";
-      <!--/loop_order_product/-->
-      var goods_price = ('<!--/order_product@price/-->').replace(/[^0-9]/g, '');
+      &lt;!--/loop_order_product/-->
+      var goods_price = ('&lt;!--/order_product@price/-->').replace(/[^0-9]/g, '');
       products.push({
-        'item_name': '<!--/order_product@name/-->',
-        'item_id': '<!--/order_product@product_id/-->',
+        'item_name': '&lt;!--/order_product@name/-->',
+        'item_id': '&lt;!--/order_product@product_id/-->',
         'item_price': goods_price,
         'item_brand': brand,
-        'quantity': '<!--/order_product@amount/-->'
+        'quantity': '&lt;!--/order_product@amount/-->'
       });
-      <!--/end_loop/-->
+      &lt;!--/end_loop/-->
       gtag('event', 'purchase', {
-        "transaction_id": '<!--/order_num/-->',
+        "transaction_id": '&lt;!--/order_num/-->',
         "affiliation": affiliation,
-        "value": '<!--/pay_price/-->',
+        "value": '&lt;!--/pay_price/-->',
         "currency": "KRW",
         "items": products
       });
