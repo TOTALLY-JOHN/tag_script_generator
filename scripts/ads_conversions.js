@@ -86,150 +86,186 @@ $(document).ready(function () {
   });
 
   $("#cafe24_ua_eec").on("click", function () { 
-    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    let result = "";
     result += `
-      window.addEventListener('load', function(event) {
-        <span class='grey'>// UA (Universal Analytics) E-Commerce (전자상거래) 코드 (카페24용)</span>
+아래 UA-XXXX는 고객의 추적 ID로 반드시 교체해서 사용.
+&lt;!-- Global site tag (gtag.js) - Google Analytics -->
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXX"></script>
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-        <span class='grey'>// 페이지 변수</span>
-        var viewItemPage = /category|detail/.test(window.location.pathname);
-        var cartPage = /basket/.test(window.location.pathname);
-        var checkoutPage = /orderform/.test(window.location.pathname);
-        var purchasePage = /order_result/.test(window.location.pathname);
- 
-        <span class='grey'>// 공통 변수 (웹사이트에 따라 적절하게 변경하세요)</span>
-        var brand = 'Google';
-        var affiliation = 'Google';
-        var listName = 'Search Results';
-        var currency = 'KRW';
- 
-        <span class='grey'>// 네이버 페이 버튼 변수 (네이버 페이는 클릭으로만 전환 추적 가능하다는 점을 반드시 확인하세요)</span>
-        var btnNpay = $('.npay_btn_item')[0];
- 
-        <span class='grey'>// 수량 체크 함수</span>
-        function getQuantity(){
-            var quantity = $('#option_box1_quantity');
-            if(quantity.length == 1){
-                return Number(document.getElementById('option_box1_quantity').value);
-            }
-            else {
-                return 1;
-            }
-        }
+  gtag('config', 'UA-XXXX');
+<span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
+    <br />`;
 
-        function callGtag(pageType, items){
-            gtag('event', pageType, {
-                "items": items
-            });
-        }
+    result += "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+  window.addEventListener('load', function(event) {
+    <span class='grey'>// UA (Universal Analytics) E-Commerce (전자상거래) 코드 (카페24용)</span>
+    <span class='grey'>// 유니버셜 애널리틱스 추적코드 ID</span>
+    const ANALYTICS_TRACKING_ID = "UA-XXXX";
 
-        function callGtagPurchase(pageType, transaction_id, affiliation, totalPrice, currency, items){
-            gtag('event', pageType, {
-                "transaction_id":  transaction_id,
-                "affiliation": affiliation,
-                "value": totalPrice,
-                "currency": currency,
-                "tax": 0,
-                "shipping": 0,
-                "items": items
-            });
-        }
+    <span class='grey'>// 페이지 변수</span>
+    var viewItemPage = /category|detail/.test(window.location.pathname);
+    var cartPage = /basket/.test(window.location.pathname);
+    var checkoutPage = /orderform/.test(window.location.pathname);
+    var purchasePage = /order_result/.test(window.location.pathname);
 
-        function addItem(item, id, name, category, quantity, price){
-            item.push({
-                'id': id,
-                'name': name,
-                'list_name': listName,
-                'brand': brand,
-                'category': category,
-                'quantity': quantity,
-                'price': price
-            });
+    <span class='grey'>// 공통 변수 (웹사이트에 따라 적절하게 변경하세요)</span>
+    var brand = 'Google';
+    var affiliation = 'Google';
+    var listName = 'Search Results';
+    var currency = 'KRW';
+
+    <span class='grey'>// 네이버 페이 버튼 변수 (네이버 페이는 클릭으로만 전환 추적 가능하다는 점을 반드시 확인하세요)</span>
+    var btnNpay = $('.npay_btn_item')[0];
+
+    <span class='grey'>// 수량 체크 함수</span>
+    function getQuantity(){
+        var quantity = $('#option_box1_quantity');
+        if(quantity.length == 1){
+            return Number(document.getElementById('option_box1_quantity').value);
         }
-        
-        if(viewItemPage){
-            var viewItem = [];
-            addItem(viewItem, iProductNo, product_name, iCategoryNo, getQuantity(), product_price);
-            callGtag('view_item', viewItem);
- 
-            var addToCartItem = [];
-            var send = XMLHttpRequest.prototype.send
-            XMLHttpRequest.prototype.send = function() { 
-                this.addEventListener('load', function() {
-                    if(this.responseURL.includes('/exec/front/order/basket/')){
-                        addItem(addToCartItem, iProductNo, product_name, iCategoryNo, getQuantity(), product_price);
-                        callGtag('add_to_cart', addToCartItem);
-                    }
-                })
-                return send.apply(this, arguments)
-            }
- 
-            btnNpay?.addEventListener('click', function(e) {
-                callGtag('begin_checkout', addToCartItem);
-                callGtagPurchase('purchase', btnNpay.children[0].id, affiliation, getQuantity()*product_price, currency, addToCartItem);
-            }, false );
+        else {
+            return 1;
         }
-        else if(cartPage){
-            var send = XMLHttpRequest.prototype.send
-            XMLHttpRequest.prototype.send = function() { 
-                this.addEventListener('load', function() {
-                    if(this.responseURL.includes('/exec/front/order/basket/')){
-                        var removeFromCartItem = [];
-                        $('[id^="'+ BASKET_CHK_ID_PREFIX +'"]').each(function(i){
-                            if ($(this).is(':checked')) {
-                                addItem(removeFromCartItem, aBasketProductData[i].product_no, aBasketProductData[i].product_name, aBasketProductData[i].main_cate_no, aBasketProductData[i].quantity, aBasketProductData[i].product_sum_price);
-                            }
-                        });
-                        callGtag('remove_from_cart', removeFromCartItem);
-                    }
-                })
-                return send.apply(this, arguments)
-            }
-            var cartItem = [];
-            var totalPrice = 0;
-            jQuery.each( aBasketProductData, function( i ) {
-                addItem(cartItem, aBasketProductData[i].product_no, aBasketProductData[i].product_name, aBasketProductData[i].main_cate_no, aBasketProductData[i].quantity, aBasketProductData[i].product_sum_price);
-                totalPrice += aBasketProductData[i].quantity*aBasketProductData[i].product_sum_price
-            });
-            btnNpay?.addEventListener('click', function(e) {
-                callGtag('add_to_cart', cartItem);
-                callGtag('begin_checkout', cartItem);
-                callGtagPurchase('purchase', btnNpay.children[0].id, affiliation, totalPrice, currency, cartItem);
-            }, false );
-        }
-        else if(checkoutPage){
-            var checkOutItem = [];
-            jQuery.each( aBasketProductData, function( i ) {
-                addItem(checkOutItem, aBasketProductData[i].product_no, aBasketProductData[i].product_name, aBasketProductData[i].main_cate_no, aBasketProductData[i].quantity, aBasketProductData[i].product_sum_price);
-            });
-            callGtag('begin_checkout', checkOutItem);
-        }
-        else if(purchasePage){
-            var purchaseItem = [];
-            if(EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length > 0){
-                for(var i = 0; i < EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length; i++){
-                    var category = '';
-                    if(typeof EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].category_no_3 == 'undefined'){
-                        category = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].category_no_2;
-                    }
-                    else{
-                        category = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].category_no_3;
-                    }      
-                    addItem(purchaseItem, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_no, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_name, category, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].quantity, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_price);
+    }
+
+    function callGtag(pageType, items){
+        gtag('event', pageType, {
+            "send_to": ANALYTICS_TRACKING_ID,
+            "items": items
+        });
+    }
+
+    function callGtagPurchase(pageType, transaction_id, affiliation, totalPrice, currency, items){
+        gtag('event', pageType, {
+            "send_to": ANALYTICS_TRACKING_ID,
+            "transaction_id":  transaction_id,
+            "affiliation": affiliation,
+            "value": totalPrice,
+            "currency": currency,
+            "tax": 0,
+            "shipping": 0,
+            "items": items
+        });
+    }
+
+    function addItem(item, id, name, category, quantity, price){
+        item.push({
+            'id': id,
+            'name': name,
+            'list_name': listName,
+            'brand': brand,
+            'category': category,
+            'quantity': quantity,
+            'price': price
+        });
+    }
+    
+    if(viewItemPage){
+        var viewItem = [];
+        addItem(viewItem, iProductNo, product_name, iCategoryNo, getQuantity(), product_price);
+        callGtag('view_item', viewItem);
+
+        var addToCartItem = [];
+        var send = XMLHttpRequest.prototype.send
+        XMLHttpRequest.prototype.send = function() { 
+            this.addEventListener('load', function() {
+                if(this.responseURL.includes('/exec/front/order/basket/')){
+                    addItem(addToCartItem, iProductNo, product_name, iCategoryNo, getQuantity(), product_price);
+                    callGtag('add_to_cart', addToCartItem);
                 }
-            }
-            callGtagPurchase('purchase', EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_id, affiliation, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.payed_amount, currency, purchaseItem);
+            })
+            return send.apply(this, arguments)
         }
-      });`;
+
+        btnNpay?.addEventListener('click', function(e) {
+            callGtag('begin_checkout', addToCartItem);
+            callGtagPurchase('purchase', btnNpay.children[0].id, affiliation, getQuantity()*product_price, currency, addToCartItem);
+        }, false );
+    }
+    else if(cartPage){
+        var send = XMLHttpRequest.prototype.send
+        XMLHttpRequest.prototype.send = function() { 
+            this.addEventListener('load', function() {
+                if(this.responseURL.includes('/exec/front/order/basket/')){
+                    var removeFromCartItem = [];
+                    $('[id^="'+ BASKET_CHK_ID_PREFIX +'"]').each(function(i){
+                        if ($(this).is(':checked')) {
+                            addItem(removeFromCartItem, aBasketProductData[i].product_no, aBasketProductData[i].product_name, aBasketProductData[i].main_cate_no, aBasketProductData[i].quantity, aBasketProductData[i].product_sum_price);
+                        }
+                    });
+                    callGtag('remove_from_cart', removeFromCartItem);
+                }
+            })
+            return send.apply(this, arguments)
+        }
+        var cartItem = [];
+        var totalPrice = 0;
+        jQuery.each( aBasketProductData, function( i ) {
+            addItem(cartItem, aBasketProductData[i].product_no, aBasketProductData[i].product_name, aBasketProductData[i].main_cate_no, aBasketProductData[i].quantity, aBasketProductData[i].product_sum_price);
+            totalPrice += aBasketProductData[i].quantity*aBasketProductData[i].product_sum_price
+        });
+        btnNpay?.addEventListener('click', function(e) {
+            callGtag('add_to_cart', cartItem);
+            callGtag('begin_checkout', cartItem);
+            callGtagPurchase('purchase', btnNpay.children[0].id, affiliation, totalPrice, currency, cartItem);
+        }, false );
+    }
+    else if(checkoutPage){
+        var checkOutItem = [];
+        jQuery.each( aBasketProductData, function( i ) {
+            addItem(checkOutItem, aBasketProductData[i].product_no, aBasketProductData[i].product_name, aBasketProductData[i].main_cate_no, aBasketProductData[i].quantity, aBasketProductData[i].product_sum_price);
+        });
+        callGtag('begin_checkout', checkOutItem);
+    }
+    else if(purchasePage){
+        var purchaseItem = [];
+        if(EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length > 0){
+            for(var i = 0; i < EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length; i++){
+                var category = '';
+                if(typeof EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].category_no_3 == 'undefined'){
+                    category = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].category_no_2;
+                }
+                else{
+                    category = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].category_no_3;
+                }      
+                addItem(purchaseItem, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_no, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_name, category, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].quantity, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_price);
+            }
+        }
+        callGtagPurchase('purchase', EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_id, affiliation, EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.payed_amount, currency, purchaseItem);
+    }
+  });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#ua_generated_script").html("<pre>" + result + "</pre>");
   });
 
-  $("#godomall_ua_eec").on("click", function () { 
-    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+  $("#godomall_ua_eec").on("click", function () {
+    let result = "";
     result += `
-    document.addEventListener('DOMContentLoaded', function (event) {
+&lt;!-- 고도몰 UA 전자상거래 코드 (아래 UA-XXXX는 고객의 추적 ID로 반드시 교체해서 사용한다) -->
+&lt;!-- Global site tag (gtag.js) - Google Analytics -->
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXX"></script>
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-XXXX');
+<span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
+    <br />`;
+ 
+    result += "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+    window.addEventListener('load', function (event) {
       // 고도몰 Universal Analytics 전자상거래 스크립트
+      // 유니버셜 애널리틱스 추적 코드 UA-XXXX를 고객 추적 코드로 반드시 변경!
+      const ANALYTICS_TRACKING_ID = "UA-XXXX";
+
+      // 페이지 변수
       var viewItemPage = /goods_view/.test(window.location.pathname);
       var cartPage = /cart/.test(window.location.pathname);
       var checkout = /order.php/.test(window.location.pathname);
@@ -256,11 +292,13 @@ $(document).ready(function () {
       }
       function callGtag(pageType, items) {
           gtag('event', pageType, {
+              "send_to": ANALYTICS_TRACKING_ID,
               "items": items
           });
       }
       function callGtagPurchase(pageType, transaction_id, affiliation, totalPrice, currency, items) {
           gtag('event', pageType, {
+              "send_to": ANALYTICS_TRACKING_ID,
               "transaction_id": transaction_id,
               "affiliation": affiliation,
               "value": totalPrice,
@@ -463,7 +501,40 @@ $(document).ready(function () {
   });
 
   $("#makeshop_ua_eec_for_pc").on("click", function () { 
-    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    let result = `
+  &lt;!-- 메이크샵 GA4 전자상거래 가이드
+  구매완료는 치환코드가 있기 때문에 코드 변경 불필요하지만 
+  나머지 상세페이지, 장바구니 등은 웹사이트마다 코드가 살짝 다르기 때문에
+  개발자 통해서 이 부분 구현하거나 여건이 된다면 코드 수정 지원해줘도 되지만
+  구매완료 부분만 코드 제공해도 무방하다. 
+  구매완료 코드는 &lt;head></head> 사이가 아니라 디자인 부분 주문완료 코드에 넣어야 작동되니 주의해야 한다.
+  글로벌 사이트 태그(gtag)는 &lt;head></head>에 이미 삽입되어 있어야 한다.
+  아래 코드는 메이크샵용 구매완료 코드이며 brand, affiliation만 적절하게 바꿔서 코드 제공한다.
+  그 아래 코드에는 제품상세페이지, 장바구니용 템플릿 코드도 포함해서 보내니 참고해서 가이드한다. -->
+
+  &lt;script>
+    var products = [];
+    var brand = "brand_name";
+    var affiliation = "affiliation_name";
+    &lt;!--/loop_order_product/-->
+    var goods_price = ('&lt;!--/order_product@price/-->').replace(/[^0-9]/g, '');
+    products.push({
+      'item_name': '&lt;!--/order_product@name/-->',
+      'item_id': '&lt;!--/order_product@product_id/-->',
+      'item_price': goods_price,
+      'item_brand': brand,
+      'quantity': '&lt;!--/order_product@amount/-->'
+    });
+    &lt;!--/end_loop/-->
+    gtag('event', 'purchase', {
+      "transaction_id": '&lt;!--/order_num/-->',
+      "affiliation": affiliation,
+      "value": '&lt;!--/pay_price/-->',
+      "currency": "KRW",
+      "items": products
+    });
+  &lt;/script>`;
+    result += "<br /><br /><span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
   window.addEventListener('load', function(event) {
     // UA (Universal Analytics) E-Commerce (전자상거래) 코드 (메이크샵) PC버전 (모바일 버전은 아직 제작중...)
@@ -651,9 +722,23 @@ $(document).ready(function () {
   });
 
   $("#cafe24_ga4_eec").on("click", function () { 
-    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    let result = "";
+    result += `
+&lt;!-- 구글 애널리틱스4 전자상거래 (카페24) 고객의 추적코드로 G-XXXX 부분 반드시 교체 요망! -->
+&lt;!-- Global site tag (gtag.js) - Google Analytics -->
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-XXXX');
+<span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br /><br />`;
+    result += "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     result +=  "  window.addEventListener('load', function (event) { <br />" +
       "    <span class='grey'>// GA4 (Google Analytics 4) E-Commerce (전자상거래) 코드 (카페24용)</span><br /><br />" +
+      "    <span class='grey'>// GA4 추적코드 ID (고객의 추적코드로 반드시 교체요망)</span><br />" +
+      "    const ANALYTICS_4_TRACKING_ID = 'G-XXXX';<br /><br />" +
       "    <span class='grey'>// 페이지 변수</span><br />" +
       "    var viewItemPageForGA4 = /category|detail/.test(window.location.pathname);<br />" +
       "    var cartPageForGA4 = /basket/.test(window.location.pathname);<br />" +
@@ -682,6 +767,7 @@ $(document).ready(function () {
       "    <span class='grey'>// 상세페이지 gtag 호출 함수</span><br />" +
       "    function callGtagViewItemForGA4(pageType, items) {<br />" +
       "        gtag('event', pageType, {<br />" +
+      "            send_to: ANALYTICS_4_TRACKING_ID,<br />" +
       "            items: items<br />" +
       "        });<br />" +
       "    }<br />" +
@@ -689,6 +775,7 @@ $(document).ready(function () {
       "    <span class='grey'>// 장바구니 추가 gtag 호출 함수</span><br />" +
       "    function callGtagAddToCartForGA4(pageType, items) {<br />" +
       "        gtag('event', pageType, {<br />" +
+      "            send_to: ANALYTICS_4_TRACKING_ID,<br />" +
       "            items: items<br />" +
       "        });<br />" +
       "    }<br/ >" +
@@ -696,6 +783,7 @@ $(document).ready(function () {
       "    <span class='grey'>// 장바구니 제거 gtag 호출 함수</span><br />" +
       "    function callGtagRemoveFromCartForGA4(pageType, items) {<br/ >" +
       "        gtag('event', pageType, {<br />" +
+      "            send_to: ANALYTICS_4_TRACKING_ID,<br />" +
       "            items: items<br />" +
       "        });<br />" +
       "    }<br />" +
@@ -703,6 +791,7 @@ $(document).ready(function () {
       "    <span class='grey'>// 구매완료 gtag 호출 함수</span><br />" +
       "    function callGtagPurchaseForGA4(pageType, transaction_id, affiliation, totalPrice, currency, items) {<br />" +
       "        gtag('event', pageType, {<br />" +
+      "            send_to: ANALYTICS_4_TRACKING_ID,<br />" +
       "            transaction_id: transaction_id,<br />" +
       "            affiliation: affiliation,<br />" +
       "            value: totalPrice,<br />" +
@@ -769,7 +858,7 @@ $(document).ready(function () {
       "            totalPrice += aBasketProductData[i].quantity * aBasketProductData[i].product_sum_price<br />" +
       "        });<br />" +
       "        btnNpayForGA4?.addEventListener('click', function (e) {<br />" +
-      "           callGtagPurchaseForGA4('purchase', btnNpay.children[0].id, affiliationForGA4, getQuantityForGA4() * product_price, currencyForGA4, addToCartItem);<br />" +
+      "           callGtagPurchaseForGA4('purchase', btnNpayForGA4.children[0].id, affiliationForGA4, getQuantityForGA4() * product_price, currencyForGA4, addToCartItem);<br />" +
       "        }, false);<br />" +
       "    }<br />" +
       "    <span class='grey'>// 구매완료 페이지</span><br />" +
@@ -795,10 +884,26 @@ $(document).ready(function () {
   });
 
   $("#godomall_ga4_eec").on("click", function () { 
-    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    let result = "";
     result += `
-    document.addEventListener('DOMContentLoaded', function (event) {
+&lt;!-- 고도몰 GA4 전자상거래 코드 (아래 G-XXXX는 고객의 추적 ID로 반드시 교체해서 사용한다) -->
+&lt;!-- Global site tag (gtag.js) - Google Analytics -->
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-XXXX');
+<span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
+    <br />`;
+    result += "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+    window.addEventListener('load', function (event) {
       // 고도몰 Google Analytics 4 전자상거래 스크립트 (UA를 기반으로 한 스크립트)
+      // 구글 애널리틱스4 추적 코드 (G-XXXX를 고객의 추적 코드로 반드시 변경!)
+      const ANALYTICS_4_TRACKING_ID = "G-XXXX";
+
       var viewItemPageForGA4 = /goods_view/.test(window.location.pathname);
       var cartPageForGA4 = /cart/.test(window.location.pathname);
       var checkoutForGA4 = /order.php/.test(window.location.pathname);
@@ -824,12 +929,14 @@ $(document).ready(function () {
       }
       function callGtagForGA4(pageType, items) {
           gtag('event', pageType, {
+              send_to: ANALYTICS_4_TRACKING_ID,
               currency: currency,
               items: items
           });
       }
       function callGtagPurchaseForGA4(pageType, transaction_id, affiliation, totalPrice, currency, items) {
           gtag('event', pageType, {
+              send_to: ANALYTICS_4_TRACKING_ID
               transaction_id: transaction_id,
               affiliation: affiliation,
               value: totalPrice,
@@ -1045,8 +1152,43 @@ $(document).ready(function () {
   });
 
   $("#makeshop_ga4_eec_for_pc").on("click", function () { 
-    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    let result = `
+  &lt;!-- 메이크샵 GA4 전자상거래 가이드
+  구매완료는 치환코드가 있기 때문에 코드 변경 불필요하지만 
+  나머지 상세페이지, 장바구니 등은 웹사이트마다 코드가 살짝 다르기 때문에
+  개발자 통해서 이 부분 구현하거나 여건이 된다면 코드 수정 지원해줘도 되지만
+  구매완료 부분만 코드 제공해도 무방하다. 
+  구매완료 코드는 &lt;head></head> 사이가 아니라 디자인 부분 주문완료 코드에 넣어야 작동되니 주의해야 한다.
+  글로벌 사이트 태그(gtag)는 &lt;head></head>에 이미 삽입되어 있어야 한다.
+  아래 코드는 메이크샵용 구매완료 코드이며 brand, affiliation만 적절하게 바꿔서 코드 제공한다.
+  그 아래 코드에는 제품상세페이지, 장바구니용 템플릿 코드도 포함해서 보내니 참고해서 가이드한다. -->
+
+  &lt;script>
+    var products = [];
+    var brand = "brand_name";
+    var affiliation = "affiliation_name";
+    &lt;!--/loop_order_product/-->
+    var goods_price = ('&lt;!--/order_product@price/-->').replace(/[^0-9]/g, '');
+    products.push({
+      'item_name': '&lt;!--/order_product@name/-->',
+      'item_id': '&lt;!--/order_product@product_id/-->',
+      'item_price': goods_price,
+      'item_brand': brand,
+      'quantity': '&lt;!--/order_product@amount/-->'
+    });
+    &lt;!--/end_loop/-->
+    gtag('event', 'purchase', {
+      "transaction_id": '&lt;!--/order_num/-->',
+      "affiliation": affiliation,
+      "value": '&lt;!--/pay_price/-->',
+      "currency": "KRW",
+      "items": products
+    });
+  &lt;/script>`;
+    result += "<br /><br />";
+    result += "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
+  // 전체 참고 코드 (구매완료는 반드시 PC,모바일 개별 디자인에 존재하는 주문완료 페이지에 넣어야 한다.)
   window.addEventListener('load', function(event) {
     // GA4 (Google Analytics 4) E-Commerce (전자상거래) 코드 (메이크샵) PC버전 (모바일 버전은 별도로 체크 요함)
     // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 미포함 버전이니 네이버 페이 경우에는 별도로 코드 추가 요함!!!)
@@ -1123,17 +1265,28 @@ $(document).ready(function () {
         });
     }
 
-    // Purchase Done
+    // Purchase Done (반드시 개별디자인의 주문완료 페이지에 넣어야 한다. (공통 head에 넣으면 작동X))
     if (window.location.href.indexOf("shop/orderend") > -1) {
-        var items = JSON.parse(localStorage.getItem('products'));
-        var transaction_id = window.location.href.split("ordernum=")[1].split("&pay")[0];
-        gtag('event', 'purchase', {
-            transaction_id: transaction_id,
-            affiliation: affiliation,
-            value: +document.querySelector("#mk_totalprice").innerText.replace(/[^\\d]/g, ''),
-            currency: currency,
-            items: items
-        });
+      var products = [];
+      var brand = "brand_name";
+      var affiliation = "affiliation_name";
+      &lt;!--/loop_order_product/-->
+      var goods_price = ('&lt;!--/order_product@price/-->').replace(/[^0-9]/g, '');
+      products.push({
+        'item_name': '&lt;!--/order_product@name/-->',
+        'item_id': '&lt;!--/order_product@product_id/-->',
+        'item_price': goods_price,
+        'item_brand': brand,
+        'quantity': '&lt;!--/order_product@amount/-->'
+      });
+      &lt;!--/end_loop/-->
+      gtag('event', 'purchase', {
+        "transaction_id": '&lt;!--/order_num/-->',
+        "affiliation": affiliation,
+        "value": '&lt;!--/pay_price/-->',
+        "currency": "KRW",
+        "items": products
+      });
     }
   });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
@@ -1258,7 +1411,7 @@ $(document).ready(function () {
   $("#cafe24_dr").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
-      document.addEventListener('DOMContentLoaded', function (event) {
+      window.addEventListener('load', function (event) {
           var viewItemPage = /category|detail/.test(window.location.pathname);
           var cartPage = /basket/.test(window.location.pathname);
           var listPage = /list/.test(window.location.pathname);
@@ -1429,7 +1582,33 @@ $(document).ready(function () {
   $("#enhanced_conversion").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
+      // 3가지 기본 템플릿이니 상황에 맞게 적용한다.
+
+      // 기본 템플릿 1
+      // 전역변수로 향상된 데이터 선언한다.
+      var enhanced_conversion_data;
+      window.addEventListener("load", function(event) {
+        if (window.location.href.indexOf("examplePage.html") > -1) {
+          enhanced_conversion_data = {
+            "email": document.querySelector("#userEmailInput1").innerText;
+          };
+        }
+      });
+
+      // 기본 템플릿 2
+      var enhanced_conversion_data;
+      window.addEventListener("load", function(event) {
+        document.querySelector("selector")?.addEventListener("click", function() {
+          // Input인 경우에는 value를 그 경우가 아니라면 아래 이메일 변수에 innerText를 사용한다.
+          enhanced_conversion_data = {
+            "email": document.querySelector("#userEmailInput1").innerText;
+          };
+        });
+      });
+
+      // 기본 템플릿 3
       window.onload = conversion;
+      var enhanced_conversion_data;
 
       function conversion() {
         // 페이지뷰인 경우
@@ -1443,7 +1622,7 @@ $(document).ready(function () {
 
           if (a !== "" && b !== "") {
             let email = a + '@' + b;
-            var enhanced_conversion_data = {
+            enhanced_conversion_data = {
               'email': email
             }
           }
@@ -1650,7 +1829,7 @@ function() {
   $("#godomall_dr").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
-    document.addEventListener('DOMContentLoaded', function(event) {
+    window.addEventListener('load', function(event) {
       var viewItemPage = /goods_view/.test(window.location.pathname);
       var cartPage = /cart/.test(window.location.pathname);
       var listPage = /goods_list/.test(window.location.pathname);
@@ -1800,7 +1979,7 @@ function() {
   $("#imweb_dr").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
-    document.addEventListener('DOMContentLoaded', function(event) {
+    window.addEventListener('load', function(event) {
       var viewItemPage = /viewall/.test(window.location.pathname);
       var cartPage = /shop_cart/.test(window.location.pathname);
       var listPage = /list/.test(window.location.pathname);
@@ -2437,6 +2616,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 2.2 (Updated 2022.07.21)");
-}); 
-
+  $("#versionTextInsert").html("Version 2.4 (Updated 2022.08.08)");
+});
