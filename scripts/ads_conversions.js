@@ -1718,7 +1718,18 @@ $(document).ready(function () {
   });
 
   $("#regex_for_replace").on("click", function () { 
-    let result = `.replace(/[^\\d]/g, '')`;
+    let result = `
+    1. 숫자 이외 문자열을 공백으로 처리
+    .replace(/[^\\d]/g, '')
+    
+    2. 숫자와 - 이외 문자열을 공백으로 처리
+    .replace(/[^\\-d]/g, '')
+
+    3. 이메일만 추출
+    .match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9_-]+)/gi)[0]
+    (사용예시)
+    document.querySelector("#emailText").innerText.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9_-]+)/gi)[0];
+    `;
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
 
