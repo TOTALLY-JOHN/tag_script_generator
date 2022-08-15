@@ -549,8 +549,8 @@ $(document).ready(function () {
         gtag('event', 'view_item', {
             "items": [
                 {
-                    "id": window.location.href.split("branduid=")[1].split("&xcode")[0] || "",
-                    "name": document.querySelector("#productDetail > div.page-body > div > div:nth-child(2) > font > span").innerText, 
+                    "id": document.querySelector("input[name='branduid']").value,
+                    "name": document.title.replace(/[\\[\\]]+/g,''), 
                     "list_name": listName,
                     "brand": brand,
                     "price": +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\\d]/g, '')
@@ -1197,15 +1197,15 @@ $(document).ready(function () {
     var listName = 'Search Results';
     var currency = 'KRW';
 
-    // 제품 상세 페이지 조회 (id, name, price가 메이크샵 웹사이트마다 다르기 때문에 반드시 체크 필요함!)
+    // 제품 상세 페이지 조회
     if (window.location.href.indexOf("shopdetail.html") > -1) {
         gtag('event', 'view_item', {
             currency: currency,
             value: +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\\d]/g, ''),
             items: [
                 {
-                    item_id: window.location.href.split("branduid=")[1].split("&xcode")[0] || "",
-                    item_name: document.querySelector("#productDetail > div.page-body > div > div:nth-child(2) > font > span").innerText, 
+                    "id": document.querySelector("input[name='branduid']").value,
+                    "name": document.title.replace(/[\\[\\]]+/g,''), 
                     item_list_name: listName,
                     item_brand: brand,
                     currency: currency,
