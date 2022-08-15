@@ -90,7 +90,7 @@ $(document).ready(function () {
     result += `
 아래 UA-XXXX는 고객의 추적 ID로 반드시 교체해서 사용.
 &lt;!-- Global site tag (gtag.js) - Google Analytics -->
-<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXX"></script>
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXX"><span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
 <span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -248,7 +248,7 @@ $(document).ready(function () {
     result += `
 &lt;!-- 고도몰 UA 전자상거래 코드 (아래 UA-XXXX는 고객의 추적 ID로 반드시 교체해서 사용한다) -->
 &lt;!-- Global site tag (gtag.js) - Google Analytics -->
-<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXX"></script>
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXX"><span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
 <span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -342,10 +342,10 @@ $(document).ready(function () {
       }
       else if (cartPage) {
           jQuery('#frmCart').submit(function (event) {
-              var proCnt = document.querySelectorAll('.td_left').length;
+              var proCnt = document.querySelectorAll('.cart_item_list .form_element').length;
               var products = [];
               for (var i = 0; i < proCnt; i++) {
-                  addItem(products, document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNo'], document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNm'], '', document.querySelectorAll('.form_element')[i + 1].children[0].dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.form_element')[i + 1].children[0].dataset['price']));
+                  addItem(products, document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['goodsNo'], document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['goodsNm'], '', document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['price']));
               }
               var checked = document.querySelectorAll('.check_s');
               var removedProduct = [];
@@ -360,12 +360,12 @@ $(document).ready(function () {
               callGtag('remove_from_cart', removedProduct);
           });
           btnNpay.click(function () {
-              var proCnt = document.querySelectorAll('.td_left').length;
+              var proCnt = document.querySelectorAll('.cart_item_list .form_element').length;
               var npayProducts = [];
               var totalPrice = 0;
               for (var i = 0; i < proCnt; i++) {
-                  addItem(npayProducts, document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNo'], document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNm'], '', document.querySelectorAll('.form_element')[i + 1].children[0].dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.form_element')[i + 1].children[0].dataset['price']));
-                  totalPrice += Number(document.querySelectorAll('.form_element')[i + 1].children[0].dataset['price']) * document.querySelectorAll('.form_element')[i + 1].children[0].dataset['defaultGoodsCnt']
+                  addItem(npayProducts, document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['goodsNo'], document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['goodsNm'], '', document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['price']));
+                  totalPrice += Number(document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['price']) * document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['defaultGoodsCnt']
               }
               callGtag('begin_checkout', npayProducts);
               callGtagPurchase('purchase', btnNpay.attr('id'), affiliation, totalPrice, currency, npayProducts);
@@ -726,7 +726,7 @@ $(document).ready(function () {
     result += `
 &lt;!-- 구글 애널리틱스4 전자상거래 (카페24) 고객의 추적코드로 G-XXXX 부분 반드시 교체 요망! -->
 &lt;!-- Global site tag (gtag.js) - Google Analytics -->
-<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"><span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
 <span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -888,7 +888,7 @@ $(document).ready(function () {
     result += `
 &lt;!-- 고도몰 GA4 전자상거래 코드 (아래 G-XXXX는 고객의 추적 ID로 반드시 교체해서 사용한다) -->
 &lt;!-- Global site tag (gtag.js) - Google Analytics -->
-<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"><span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
 <span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -936,7 +936,7 @@ $(document).ready(function () {
       }
       function callGtagPurchaseForGA4(pageType, transaction_id, affiliation, totalPrice, currency, items) {
           gtag('event', pageType, {
-              send_to: ANALYTICS_4_TRACKING_ID
+              send_to: ANALYTICS_4_TRACKING_ID,
               transaction_id: transaction_id,
               affiliation: affiliation,
               value: totalPrice,
@@ -980,10 +980,10 @@ $(document).ready(function () {
       }
       else if (cartPageForGA4) {
           jQuery('#frmCart').submit(function (event) {
-              var proCnt = document.querySelectorAll('.td_left').length;
+              var proCnt = document.querySelectorAll('.cart_item_list .form_element').length;
               var products = [];
               for (var i = 0; i < proCnt; i++) {
-                  addItemForGA4(products, document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNo'], document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNm'], '', document.querySelectorAll('.form_element')[i + 1].children[0].dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.form_element')[i + 1].children[0].dataset['price']));
+                  addItemForGA4(products, document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['goodsNo'], document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['goodsNm'], '', document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['price']));
               }
               var checked = document.querySelectorAll('.check_s');
               var removedProduct = [];
@@ -998,12 +998,12 @@ $(document).ready(function () {
               callGtagForGA4('remove_from_cart', removedProduct);
           });
           btnNpayForGA4.click(function () {
-              var proCnt = document.querySelectorAll('.td_left').length;
+              var proCnt = document.querySelectorAll('.cart_item_list .form_element').length;
               var npayProducts = [];
               var totalPrice = 0;
               for (var i = 0; i < proCnt; i++) {
-                  addItemForGA4(npayProducts, document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNo'], document.querySelectorAll('.form_element')[i + 1].children[0].dataset['goodsNm'], '', document.querySelectorAll('.form_element')[i + 1].children[0].dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.form_element')[i + 1].children[0].dataset['price']));
-                  totalPrice += Number(document.querySelectorAll('.form_element')[i + 1].children[0].dataset['price']) * document.querySelectorAll('.form_element')[i + 1].children[0].dataset['defaultGoodsCnt']
+                  addItemForGA4(npayProducts, document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['goodsNo'], document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['goodsNm'], '', document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['price']));
+                  totalPrice += Number(document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['price']) * document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['defaultGoodsCnt']
               }
               callGtagForGA4('begin_checkout', npayProducts);
               callGtagPurchaseForGA4('purchase', btnNpayForGA4.attr('id'), affiliationForGA4, totalPrice, currencyForGA4, npayProducts);
@@ -2627,5 +2627,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 2.4 (Updated 2022.08.08)");
+  $("#versionTextInsert").html("Version 2.5 (Updated 2022.08.15)");
 });
