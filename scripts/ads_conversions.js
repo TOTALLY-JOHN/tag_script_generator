@@ -61,11 +61,12 @@ $(document).ready(function () {
 
   $("#ads_script_for_cafe24_variables").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
-    result += "  <span class='grey'>// 카페24 전자상거래 페이지</span><br />";
+    result += "  <span class='grey'>// 카페24 주요 페이지</span><br />";
     result += "  var viewItemPage = /category|detail/.test(window.location.pathname);<br />";
     result += "  var cartPage = /basket/.test(window.location.pathname);<br />";
     result += "  var checkoutPage = /orderform/.test(window.location.pathname);<br />";
     result += "  var purchasePage = /order_result/.test(window.location.pathname);<br /><br />";
+    result += "  var signupCompletePage = /join_result/.test(window.location.pathname);<br /><br />";
     result += "  <span class='grey'>// 카페24 치환 변수</span><br />";
     result += "  var orderProductLenght = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length;<br />";
     result += "  var totalPrice = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.payed_amount;<br />";
@@ -365,7 +366,7 @@ $(document).ready(function () {
               var totalPrice = 0;
               for (var i = 0; i < proCnt; i++) {
                   addItem(npayProducts, document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['goodsNo'], document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['goodsNm'], '', document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['price']));
-                  totalPrice += Number(document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['price']) * document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['defaultGoodsCnt']
+                  totalPrice += Number(document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['price'])
               }
               callGtag('begin_checkout', npayProducts);
               callGtagPurchase('purchase', btnNpay.attr('id'), affiliation, totalPrice, currency, npayProducts);
@@ -1003,7 +1004,7 @@ $(document).ready(function () {
               var totalPrice = 0;
               for (var i = 0; i < proCnt; i++) {
                   addItemForGA4(npayProducts, document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['goodsNo'], document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['goodsNm'], '', document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['defaultGoodsCnt'], Number(document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['price']));
-                  totalPrice += Number(document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['price']) * document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['defaultGoodsCnt']
+                  totalPrice += Number(document.querySelectorAll('.cart_item_list .form_element')[i].firstElementChild.dataset['price']);
               }
               callGtagForGA4('begin_checkout', npayProducts);
               callGtagPurchaseForGA4('purchase', btnNpayForGA4.attr('id'), affiliationForGA4, totalPrice, currencyForGA4, npayProducts);
@@ -1712,7 +1713,37 @@ $(document).ready(function () {
                 'send_to': 'AW-1111/AAAA'
               });
         }
-      });`;
+      });
+      
+      // Input칸이 많은 경우 (GTM Custom Javascript + 반복문 활용)
+      // 모든 text입력하는 input를 배열로 저장.
+      function() {
+        var arr = document.querySelectorAll("input[type='text']");
+
+        // 모든 checkbox 중에 하나라도 선택되어 있는지 체크하는 변수 (checkbox는 하나 이상 체크 가능하며, 체크가 되어 있지 않다면 null값으로 지정됨)
+        var checkbox1 = document.querySelector("input[type='checkbox']:checked");
+
+        // 모든 radio button에서 선택되어 있는지 체크하는 변수 (radio button은 하나만 선택 가능하며, 체크가 되어 있지 않다면 null값으로 지정됨) 
+        var radioButton1 = document.querySelector("input[type='radio']:checked");
+        
+        // checkbox1 혹은 radioButton1이 선택되어 있지 않다면 false를 반환한다.
+        if (checkbox1 == null || radioButton1 == null) {
+          return false;
+        }
+
+        for (var i = 0; i < arr.length; i++) {
+          // 생략 가능한 입력값인지 체크한다.
+          if (arr[i].id != "입력생략해도무방한css_selector_id붙여넣으세요") {
+            // 필수입력값이 공백인지 체크하며 공백인 경우 false를 반환한다.
+            if (arr[i].value == "") {
+              return false;
+            }
+          }
+        }
+
+        // 필수 입력값이 공백이 아닌 경우 true를 반환한다.
+        return true;
+      }`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
@@ -2627,5 +2658,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 2.5 (Updated 2022.08.15)");
+  $("#versionTextInsert").html("Version 2.6 (Updated 2022.08.18)");
 });
