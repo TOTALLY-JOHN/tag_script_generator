@@ -1585,7 +1585,7 @@ $(document).ready(function () {
     result += `
       // 3가지 기본 템플릿이니 상황에 맞게 적용한다.
 
-      // 기본 템플릿 1
+      // 템플릿 1
       // 전역변수로 향상된 데이터 선언한다.
       var enhanced_conversion_data;
       window.addEventListener("load", function(event) {
@@ -1596,7 +1596,7 @@ $(document).ready(function () {
         }
       });
 
-      // 기본 템플릿 2
+      // 템플릿 2
       var enhanced_conversion_data;
       window.addEventListener("load", function(event) {
         document.querySelector("selector")?.addEventListener("click", function() {
@@ -1607,7 +1607,7 @@ $(document).ready(function () {
         });
       });
 
-      // 기본 템플릿 3
+      // 템플릿 3
       window.onload = conversion;
       var enhanced_conversion_data;
 
@@ -1645,7 +1645,40 @@ $(document).ready(function () {
             }
           }
         });
-      }`;
+      }
+
+      // 템플릿 4 (총 예제)
+      &lt;script>
+        var enhanced_conversion_data;
+        window.addEventListener("load", function(event) {
+          document.querySelector("#userEmail")?.addEventListener("change", function() {
+            enhanced_conversion_data = {
+              "email": document.querySelector("#userEmail").value
+            };
+          });
+        });
+      &lt;/script>
+
+      &lt;script async src="https://www.googletagmanager.com/gtag/js?id=AW-1234">&lt;/script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'AW-1234', { 
+          'allow_enhanced_conversions': true
+        });
+      &lt;/script>
+
+      &lt;script>
+        window.addEventListener("load", function(event) {
+          document.querySelector("#ec_submitButton").addEventListener("click", function() {
+            gtag("event", "conversion", {
+              send_to: "AW-1234/123456789",
+            });
+          });
+        });
+      &lt;/script>
+      `;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_ec_script").html("<pre>" + result + "</pre>");
   });

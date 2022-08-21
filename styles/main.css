@@ -2,11 +2,12 @@
 body {
   font-family: "Poppins", sans-serif;
   color: white;
-  background-image: url("back1.png");
+  /* background-image: url("back1.png"); */
   /* background: #121212; */
-  background-size: cover;
-  background-color: #0005;
-  background-blend-mode: darken;
+  /* background-size: cover; */
+  /* background-color: #0005; */
+  /* background-blend-mode: darken; */
+  background-color: #1f1b24;
 }
 
 table tbody td {
