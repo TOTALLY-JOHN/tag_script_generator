@@ -1843,7 +1843,11 @@ function() {
   $("#makeshop_dr").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
-  document.addEventListener('load', function(event) {
+  메이크샵 DR 구현시 주의사항은 head 공통상단영역에 넣는 것이 아니라
+  개별 페이지(상세 페이지, 상품 리스트 페이지, 구매완료 페이지)에 넣어야 하며 
+  장바구니는 치환 코드 방식이 아니어서 별도 페이지에 넣을 필요가 없다.
+  아래 코드에 앞서 당연히 gtag 선언부(global site tag)가 들어가 있어야 아래에 있는 gtag 함수를 호출할 수 있으니 반드시 확인한다.
+  window.addEventListener('DOMContentLoaded', function(event) {
     var google_business_vertical = "retail";
 
     // VIEW ITEM
@@ -1856,6 +1860,10 @@ function() {
         'items': ids
       });
     }
+  });
+
+  window.addEventListener('DOMContentLoaded', function(event) {
+    var google_business_vertical = "retail";
 
     // VIEW ITEM LIST
     if (window.location.href.indexOf("shopbrand.html") > -1) {
@@ -1870,8 +1878,12 @@ function() {
           'items': ids
       });
     }
+  });
 
-    // ADD TO CART
+  window.addEventListener('DOMContentLoaded', function(event) {
+    var google_business_vertical = "retail";
+
+    // ADD TO CART (장바구니는 치환코드 방식이 아니므로 head 부분 혹은 장바구니 페이지에 적절하게 아래 변수 검증 후에 삽입하면 된다.)
     if (window.location.href.indexOf("basket") > -1) {
       var ids = [];
       var getID = document.getElementsByName('branduid');
@@ -1883,19 +1895,21 @@ function() {
           'items': ids
       });
     }
+  });
+
+  window.addEventListener('DOMContentLoaded', function(event) {
+    var google_business_vertical = "retail";
 
     // PURCHASE
-    if (window.location.href.indexOf("orderend") > -1) {
-      var ids = [];
-      var totalPrice = '&lt;!--/pay_price/-->';
-      &lt;!--/loop_order_product/-->
-          ids.push({ 'id': '&lt;!--/order_product@product_id/-->', 'google_business_vertical': google_business_vertical });
-      &lt;!--/end_loop/-->
-      gtag('event', 'purchase', {
-          'value': totalPrice,
-          'items': ids
-      });
-    }
+    var ids = [];
+    var totalPrice = '&lt;!--/pay_price/-->';
+    &lt;!--/loop_order_product/-->
+        ids.push({ 'id': '&lt;!--/order_product@product_id/-->', 'google_business_vertical': google_business_vertical });
+    &lt;!--/end_loop/-->
+    gtag('event', 'purchase', {
+        'value': totalPrice,
+        'items': ids
+    });
   });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_dr_script").html("<pre>" + result + "</pre>");
@@ -2691,5 +2705,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 2.6 (Updated 2022.08.18)");
+  $("#versionTextInsert").html("Version 2.7 (Updated 2022.09.06)");
 });
