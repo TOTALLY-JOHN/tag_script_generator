@@ -1476,6 +1476,27 @@ $(document).ready(function () {
   $("#ads_script_for_interval").on("click", function () { 
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
+      // Interval Script for GTM Custom HTML
+      var count1 = 0;
+      var conversion_interval;
+
+      function conversions() {
+        if (count1 == 0 && window.location.href.indexOf('about') > -1) {
+          count1 = 1;
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ 'event': 'event_name' });
+        }
+
+        // 전환 발생이 확인된 경우 
+        if (count1 == 1) {
+          clearInterval(conversion_interval);
+        }
+      }
+
+      conversion_interval = setInterval(conversions, 3000);
+      
+
+      // Basic Interval (set Interval)
       function conversions() {
         if (window.location.href.indexOf('example.html') > -1) {
           gtag('event', 'conversions', {
@@ -1490,14 +1511,10 @@ $(document).ready(function () {
         });
       }
 
-      setInterval(conversions, 1000);`;
-    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
-    $("#generated_ads_script").html("<pre>" + result + "</pre>");
-  });
-
-  $("#ads_script_for_interval_once").on("click", function () { 
-    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
-    result += `
+      setInterval(conversions, 1000);
+      
+      
+      // Interval Script Count Once (NOT FOR GTM)
       <span class='grey'>// 이 방법은 SPA웹사이트에서 쓸 수 있는 방법으로, Interval을 활용하여 스크립트를 매 1초마다 함수를 반복하여 실행합니다.</span>
       <span class='grey'>// 모든 전환 작동이 확인되면 1초마다 반복되서 실행했던 함수를 멈춤으로서 더 이상 반복될 필요 없는 스크립트 작동을 중단합니다. (count1, count2 활용)</span>
       <span class='grey'>// count1은 페이지뷰 예시, count2는 버튼 클릭일 경우의 예시입니다.</span>
@@ -1527,7 +1544,40 @@ $(document).ready(function () {
       }
 
       <span class='grey'>// 1초마다 conversion 함수가 반복되서 실행될 수 있도록 변수 할당.</span>
-      let conversion_interval = setInterval(conversions, 1000);`;
+      let conversion_interval = setInterval(conversions, 1000);
+      `;
+    result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ads_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#ads_script_for_page_count").on("click", function () { 
+    let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
+    result += `
+  // 페이지 카운트 숫자 기준점 (여기에서는 3 페이지 이상)
+  var page_count_number = 3;
+
+  // 페이지 카운트가 시작된 경우
+  if (sessionStorage.getItem("pageCount") != null || sessionStorage.getItem("pageCount") != undefined) {
+    var count = Number(sessionStorage.getItem("pageCount"));
+
+    // 페이지 카운트가 기준점 이상일 경우
+    if (count >= page_count_number - 1) {
+      sessionStorage.removeItem("pageCount");
+
+      // 데이터레이어 맞춤 이벤트 트리거
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ 'event': 'event_name' });
+    } 
+    // 페이지 카운트가 기준점 미만일 경우
+    else {
+      count++;
+      sessionStorage.setItem("pageCount", count);
+    }
+  }
+  // 페이지 카운트가 최초로 시작되는 경우 
+  else {
+    sessionStorage.setItem("pageCount", 1);
+  }`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
@@ -2705,5 +2755,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 2.7 (Updated 2022.09.06)");
+  $("#versionTextInsert").html("Version 2.8 (Updated 2022.09.20)");
 });
