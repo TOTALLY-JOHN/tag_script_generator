@@ -74,7 +74,7 @@ $(document).ready(function () {
     result += "  var quantity = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].quantity;<br />";
     result += "  var price = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_price;<br /><br />";
     result += "  <span class='grey'>// 카페24 구매 완료 코드 예제</span><br />";
-    result += "  if (window.location.href.indexOf('order_complete') > -1) {<br />";
+    result += "  if (window.location.href.indexOf('order_result') > -1) {<br />";
     result += "    gtag('event', 'conversion', {<br />";
     result += "      'send_to': 'AW-1111/AAAA',<br />";
     result += "      'value': EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.payed_amount,<br />";
@@ -1837,12 +1837,18 @@ $(document).ready(function () {
     .replace(/[^\\d]/g, '')
     
     2. 숫자와 - 이외 문자열을 공백으로 처리
-    .replace(/[^\\-d]/g, '')
+    .replace(/[^\\d-]/g, '')
 
-    3. 이메일만 추출
+    3. 달러 같은 경우에 소수점(센트) 표시 (예시 $12.34 => 12.34)
+    .replace(/[^\\d.]/g, '')
+
+    4. 이메일만 추출
     .match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9_-]+)/gi)[0]
     (사용예시)
     document.querySelector("#emailText").innerText.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9_-]+)/gi)[0];
+
+    5. 네이버 페이 거래 ID 추출
+    document.querySelector(".npay_btn_pay").id.split("NPAY_BUY_LINK_IDNC_ID_")[1];
     `;
     $("#generated_ads_script").html("<pre>" + result + "</pre>");
   });
@@ -2755,5 +2761,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 2.8 (Updated 2022.09.20)");
+  $("#versionTextInsert").html("Version 2.9 (Updated 2022.10.30)");
 });
