@@ -2761,5 +2761,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 2.9 (Updated 2022.10.30)");
+  $("#versionTextInsert").html("Version 3.0 (Updated 2022.11.04 검색 기능 추가)");
 });

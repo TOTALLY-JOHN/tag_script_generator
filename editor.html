@@ -26,9 +26,19 @@
   <body>
     <h1 id="titleText">Welcome to<br />Tag Script Generator</h1>
     <div id="divider"></div>
+    <div id="searchContainer" class="mt-5 text-center" style="width:700px; margin: 0px auto;">
+      <input type="text" id="searchQuery" placeholder="Search.." class="form-control"/>
+    </div>
     <h6 id="versionText"><a href="update_log.html" id="versionTextInsert"></a></h6>
     <div id="logoImg"><a href="editor.html"><img src="assets/logo.png" width="45" height="45" alt="logoImage"/></a></div>
     <br /><br />
+    <div class="container-fluid mt-5" id="searchResultContainer">
+      <h2 style="text-align:center;">Search Result Generated Script</h2><br />
+      <div id="divider"></div>
+      <button id="search_copy" class="btn btn-warning copy_button">Copy</button>
+      <br /><br />
+      <div id="generated_search_script" class="script_part"></div>
+    </div>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-4">
@@ -84,12 +94,14 @@
         </div>
       </div>
     </div>
+    
     <footer>
       <h5>Powered by Jihwan Jeong</h5><br />
       <h6>Click <i><a href="https://github.com/TOTALLY-JOHN/tag_script_generator" style="color:burlywood">here</a></i> to see code!</h5>
     </footer>
     <script src="scripts/universal_analytics.js?after"></script>
     <script src="scripts/ads_conversions.js?after"></script>
+    <script src="scripts/query.js"></script>
   </body>
 </html>
 
