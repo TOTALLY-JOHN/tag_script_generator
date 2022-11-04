@@ -2089,7 +2089,8 @@ Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태
 
       // 공백인 경우, 검색결과 없는 경우에 검색 결과 컨테이너를 감춤
       if (query.trim() === "" || query === " ") {
-        element.style.display = "none";
+        element.style.display = "none"//delete;
+        // element.classList.toggle('hide') --jin
         nextIndex = -1;
       } 
       // 공백이 아닌 경우
