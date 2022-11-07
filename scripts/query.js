@@ -2144,7 +2144,7 @@ Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태
       }
     });
 
-    document.querySelector("#searchQuery").addEventListener("keypress", (keyDownEvent) => {
+    document.querySelector("#searchQuery").addEventListener("keydown", (keyDownEvent) => {
       if (element.style.display === "block") {
         if (keyDownEvent.target.value === "" || keyDownEvent.target.value === " " || document.querySelector("#searchQuery").value === "" || document.querySelector("#searchQuery").value === " ") {
           element.style.display = "none";
@@ -2180,5 +2180,13 @@ Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태
       let value = document.querySelector("#generated_search_script").innerText;
       performCopy(value);
     });
+
+    function removeDisplay() {
+      if (element.style.display === "block" && document.querySelector("#searchContainer").value === "") {
+        element.style.display = "none";
+      }
+    }
+  
+    setInterval(removeDisplay, 1000);
   }
 });
