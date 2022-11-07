@@ -2182,7 +2182,7 @@ Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태
     });
 
     function removeDisplay() {
-      if (element.style.display === "block" && document.querySelector("#searchContainer").value === "") {
+      if (element.style.display === "block" && document.querySelector("#searchQuery").value === "") {
         element.style.display = "none";
       }
     }
