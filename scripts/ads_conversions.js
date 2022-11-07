@@ -931,17 +931,17 @@ $(document).ready(function () {
       function callGtagForGA4(pageType, items) {
           gtag('event', pageType, {
               send_to: ANALYTICS_4_TRACKING_ID,
-              currency: currency,
+              currency: currencyForGA4,
               items: items
           });
       }
-      function callGtagPurchaseForGA4(pageType, transaction_id, affiliation, totalPrice, currency, items) {
+      function callGtagPurchaseForGA4(pageType, transaction_id, affiliation, totalPrice, currencyForGA4, items) {
           gtag('event', pageType, {
               send_to: ANALYTICS_4_TRACKING_ID,
               transaction_id: transaction_id,
               affiliation: affiliation,
               value: totalPrice,
-              currency: currency,
+              currency: currencyForGA4,
               tax: 0,
               shipping: 0,
               items: items
