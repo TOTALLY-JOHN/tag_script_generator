@@ -2088,7 +2088,7 @@ Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태
       let query = keyEvent.target.value.toLowerCase();
 
       // 공백인 경우, 검색결과 없는 경우에 검색 결과 컨테이너를 감춤
-      if (query.trim() === "" || query === " ") {
+      if (query.trim() === "" || query === " " || document.querySelector("#searchQuery").value === "") {
         element.style.display = "none"//delete;
         // element.classList.toggle('hide') --jin
         nextIndex = -1;
@@ -2145,7 +2145,7 @@ Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태
     });
 
     document.querySelector("#searchQuery").addEventListener("keydown", (keyDownEvent) => {
-      if (keyDownEvent.target.value === "" || keyDownEvent.target.value === " ") {
+      if (keyDownEvent.target.value === "" || keyDownEvent.target.value === " " || document.querySelector("#searchQuery").value === "") {
         element.style.display = "none";
       }
     });
