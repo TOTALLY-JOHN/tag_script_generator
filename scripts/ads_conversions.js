@@ -935,13 +935,13 @@ $(document).ready(function () {
               items: items
           });
       }
-      function callGtagPurchaseForGA4(pageType, transaction_id, affiliation, totalPrice, currencyForGA4, items) {
+      function callGtagPurchaseForGA4(pageType, transaction_id, affiliation, totalPrice, currency, items) {
           gtag('event', pageType, {
               send_to: ANALYTICS_4_TRACKING_ID,
               transaction_id: transaction_id,
               affiliation: affiliation,
               value: totalPrice,
-              currency: currencyForGA4,
+              currency: currency,
               tax: 0,
               shipping: 0,
               items: items
@@ -2761,5 +2761,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 3.0 (Updated 2022.11.04 검색 기능 추가)");
+  $("#versionTextInsert").html("Version 3.1 (Updated 2022.11.07)");
 });

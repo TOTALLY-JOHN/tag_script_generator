@@ -1190,7 +1190,7 @@ function() {
       function callGtagForGA4(pageType, items) {
           gtag('event', pageType, {
               send_to: ANALYTICS_4_TRACKING_ID,
-              currency: currency,
+              currency: currencyForGA4,
               items: items
           });
       }
@@ -2142,6 +2142,17 @@ Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태
           data[selectedIndex][1] + "</pre>");
         }
       }
+    });
+
+    document.querySelector("#searchQuery").addEventListener("keydown", (keyDownEvent) => {
+      if (keyDownEvent.target.value === "" || keyDownEvent.target.value === " ") {
+        element.style.display = "none";
+      }
+    });
+
+    document.querySelector("body").addEventListener("click", (clickEvent) => {
+      if (element.style.display === "block")
+        element.style.display = "none";
     });
 
     document.querySelector("#searchContainer")?.addEventListener("click", (clickEvent) => {
