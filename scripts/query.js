@@ -2144,9 +2144,11 @@ Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태
       }
     });
 
-    document.querySelector("#searchQuery").addEventListener("keydown", (keyDownEvent) => {
-      if (keyDownEvent.target.value === "" || keyDownEvent.target.value === " " || document.querySelector("#searchQuery").value === "") {
-        element.style.display = "none";
+    document.querySelector("#searchQuery").addEventListener("keypress", (keyDownEvent) => {
+      if (element.style.display === "block") {
+        if (keyDownEvent.target.value === "" || keyDownEvent.target.value === " " || document.querySelector("#searchQuery").value === "" || document.querySelector("#searchQuery").value === " ") {
+          element.style.display = "none";
+        }
       }
     });
 
