@@ -1,5 +1,32 @@
 $(document).ready(function () {
-// ADS CONVERSION
+  // UA ID
+  let ua_id = "UA-XXXX";
+  let ua_brand = "Google";
+
+  // GA4 ID
+  let ga4_id = "G-XXXX";
+  let ga4_brand = "Google";
+
+  // UA KEYUP EVENTS
+  document.querySelector("#ua_id")?.addEventListener("keyup", (e) => {
+    ua_id = e.target.value;
+  });
+
+  document.querySelector("#ua_brand")?.addEventListener("keyup", (e) => {
+    ua_brand = e.target.value;
+  });
+
+  // GA4 KEYUP EVENTS
+  document.querySelector("#ga4_id")?.addEventListener("keyup", (e) => {
+    ga4_id = e.target.value;
+  });
+
+  document.querySelector("#ga4_brand")?.addEventListener("keyup", (e) => {
+    ga4_brand = e.target.value;
+
+  });
+
+  // ADS CONVERSION
   let ads_conversion_size = 0;
 
   $("#ads_add_button").on("click", function () {
@@ -87,17 +114,19 @@ $(document).ready(function () {
   });
 
   $("#cafe24_ua_eec").on("click", function () { 
+    document.querySelector("#ua_id").value = "";
+    document.querySelector("#ua_brand").value = "";
     let result = "";
     result += `
 아래 UA-XXXX는 고객의 추적 ID로 반드시 교체해서 사용.
 &lt;!-- Global site tag (gtag.js) - Google Analytics -->
-<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXX"><span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=${ua_id}"><span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
 <span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-XXXX');
+  gtag('config', '${ua_id}');
 <span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
     <br />`;
 
@@ -106,7 +135,7 @@ $(document).ready(function () {
   window.addEventListener('load', function(event) {
     <span class='grey'>// UA (Universal Analytics) E-Commerce (전자상거래) 코드 (카페24용)</span>
     <span class='grey'>// 유니버셜 애널리틱스 추적코드 ID</span>
-    const ANALYTICS_TRACKING_ID = "UA-XXXX";
+    const ANALYTICS_TRACKING_ID = "${ua_id}";
 
     <span class='grey'>// 페이지 변수</span>
     var viewItemPage = /category|detail/.test(window.location.pathname);
@@ -115,8 +144,8 @@ $(document).ready(function () {
     var purchasePage = /order_result/.test(window.location.pathname);
 
     <span class='grey'>// 공통 변수 (웹사이트에 따라 적절하게 변경하세요)</span>
-    var brand = 'Google';
-    var affiliation = 'Google';
+    var brand = '${ua_brand}';
+    var affiliation = '${ua_brand}';
     var listName = 'Search Results';
     var currency = 'KRW';
 
@@ -245,17 +274,19 @@ $(document).ready(function () {
   });
 
   $("#godomall_ua_eec").on("click", function () {
+    document.querySelector("#ua_id").value = "";
+    document.querySelector("#ua_brand").value = "";
     let result = "";
     result += `
 &lt;!-- 고도몰 UA 전자상거래 코드 (아래 UA-XXXX는 고객의 추적 ID로 반드시 교체해서 사용한다) -->
 &lt;!-- Global site tag (gtag.js) - Google Analytics -->
-<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXX"><span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=${ua_id}"><span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
 <span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-XXXX');
+  gtag('config', '${ua_id}');
 <span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
     <br />`;
  
@@ -264,7 +295,7 @@ $(document).ready(function () {
     window.addEventListener('load', function (event) {
       // 고도몰 Universal Analytics 전자상거래 스크립트
       // 유니버셜 애널리틱스 추적 코드 UA-XXXX를 고객 추적 코드로 반드시 변경!
-      const ANALYTICS_TRACKING_ID = "UA-XXXX";
+      const ANALYTICS_TRACKING_ID = "${ua_id}";
 
       // 페이지 변수
       var viewItemPage = /goods_view/.test(window.location.pathname);
@@ -275,8 +306,8 @@ $(document).ready(function () {
       var listName = 'Search Results';
 
       // Affiliation과 Brand명을 적절하게 바꿔주세요.
-      var affiliation = 'Google';
-      var brand = 'Google';
+      var affiliation = '${ua_brand}';
+      var brand = '${ua_brand}';
       var currency = 'KRW';
 
       var btnAddToCart = document.querySelector("#frmView > div > div > div.btn_choice_box > div > button.btn_add_cart");
@@ -403,14 +434,16 @@ $(document).ready(function () {
   });
 
   $("#imweb_ua_eec").on("click", function () { 
+    document.querySelector("#ua_id").value = "";
+    document.querySelector("#ua_brand").value = "";
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
   window.addEventListener('load', function(event) {
     // UA (Universal Analytics) E-Commerce (전자상거래) 코드 (아임웹)
     // 아임웹은 자체 설정에서 Google 애널리틱스 전자상거래 옵션을 사용으로 바꿔주면 된다. 아래 코드는 하드 코딩으로 구현하는 경우에 사용하면 된다.
     // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 아직 미포함했으니 네이버 페이 경우에는 별도로 코드 추가 요함!!! 추후 추가 예정)
-    var brand = 'Google';
-    var affiliation = 'Google';
+    var brand = '${ua_brand}';
+    var affiliation = '${ua_brand}';
     var listName = 'Search Results';
     var currency = 'KRW';
 
@@ -502,6 +535,8 @@ $(document).ready(function () {
   });
 
   $("#makeshop_ua_eec_for_pc").on("click", function () { 
+    document.querySelector("#ua_id").value = "";
+    document.querySelector("#ua_brand").value = "";
     let result = `
   &lt;!-- 메이크샵 GA4 전자상거래 가이드
   구매완료는 치환코드가 있기 때문에 코드 변경 불필요하지만 
@@ -515,8 +550,8 @@ $(document).ready(function () {
 
   &lt;script>
     var products = [];
-    var brand = "brand_name";
-    var affiliation = "affiliation_name";
+    var brand = "${ua_brand}";
+    var affiliation = "${ua_brand}";
     &lt;!--/loop_order_product/-->
     var goods_price = ('&lt;!--/order_product@price/-->').replace(/[^0-9]/g, '');
     products.push({
@@ -540,8 +575,8 @@ $(document).ready(function () {
   window.addEventListener('load', function(event) {
     // UA (Universal Analytics) E-Commerce (전자상거래) 코드 (메이크샵) PC버전 (모바일 버전은 아직 제작중...)
     // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 미포함 버전이니 네이버 페이 경우에는 별도로 코드 추가 요함!!!)
-    var brand = 'Google';
-    var affiliation = 'Google';
+    var brand = '${ua_brand}';
+    var affiliation = '${ua_brand}';
     var listName = 'Search Results';
     var currency = 'KRW';
 
@@ -619,13 +654,15 @@ $(document).ready(function () {
   });
 
   $("#sixshop_ua_eec").on("click", function () { 
+    document.querySelector("#ua_id").value = "";
+    document.querySelector("#ua_brand").value = "";
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
   window.addEventListener('load', function(event) {
     // UA (Universal Analytics) E-Commerce (전자상거래) 코드 (식스샵)
     // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 미포함 버전이니 네이버 페이 경우에는 별도로 코드 추가 요함!!!)
-    var brand = 'Google';
-    var affiliation = 'Google';
+    var brand = '${ua_brand}';
+    var affiliation = '${ua_brand}';
     var listName = 'Search Results';
     var currency = 'KRW';
 
@@ -723,23 +760,25 @@ $(document).ready(function () {
   });
 
   $("#cafe24_ga4_eec").on("click", function () { 
+    document.querySelector("#ga4_id").value = "";
+    document.querySelector("#ga4_brand").value = "";
     let result = "";
     result += `
 &lt;!-- 구글 애널리틱스4 전자상거래 (카페24) 고객의 추적코드로 G-XXXX 부분 반드시 교체 요망! -->
 &lt;!-- Global site tag (gtag.js) - Google Analytics -->
-<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"><span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=${ga4_id}"><span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
 <span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-XXXX');
+  gtag('config', '${ga4_id}');
 <span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br /><br />`;
     result += "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     result +=  "  window.addEventListener('load', function (event) { <br />" +
       "    <span class='grey'>// GA4 (Google Analytics 4) E-Commerce (전자상거래) 코드 (카페24용)</span><br /><br />" +
       "    <span class='grey'>// GA4 추적코드 ID (고객의 추적코드로 반드시 교체요망)</span><br />" +
-      "    const ANALYTICS_4_TRACKING_ID = 'G-XXXX';<br /><br />" +
+      "    const ANALYTICS_4_TRACKING_ID = '" + ga4_id + "';<br /><br />" +
       "    <span class='grey'>// 페이지 변수</span><br />" +
       "    var viewItemPageForGA4 = /category|detail/.test(window.location.pathname);<br />" +
       "    var cartPageForGA4 = /basket/.test(window.location.pathname);<br />" +
@@ -747,8 +786,8 @@ $(document).ready(function () {
       "    var purchasePageForGA4 = /order_result/.test(window.location.pathname);<br />" +
       "<br />" +
       "    <span class='grey'>// 공통 변수 (웹사이트에 따라 적절하게 변경하세요)</span><br />" +
-      "    var brandForGA4 = 'Google';<br />" +
-      "    var affiliationForGA4 = 'Google';<br />" +
+      "    var brandForGA4 = '" + ga4_brand + "';<br />" +
+      "    var affiliationForGA4 = '" + ga4_brand + "';<br />" +
       "    var listNameForGA4 = 'Search Results';<br />" +
       "    var currencyForGA4 = 'KRW';<br />" +
       "<br />" +
@@ -885,17 +924,19 @@ $(document).ready(function () {
   });
 
   $("#godomall_ga4_eec").on("click", function () { 
+    document.querySelector("#ga4_id").value = "";
+    document.querySelector("#ga4_brand").value = "";
     let result = "";
     result += `
 &lt;!-- 고도몰 GA4 전자상거래 코드 (아래 G-XXXX는 고객의 추적 ID로 반드시 교체해서 사용한다) -->
 &lt;!-- Global site tag (gtag.js) - Google Analytics -->
-<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"><span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
+<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'></span> async src="https://www.googletagmanager.com/gtag/js?id=${ga4_id}"><span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
 <span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-XXXX');
+  gtag('config', '${ga4_id}');
 <span class='grey'>&lt;/</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>
     <br />`;
     result += "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
@@ -903,7 +944,7 @@ $(document).ready(function () {
     window.addEventListener('load', function (event) {
       // 고도몰 Google Analytics 4 전자상거래 스크립트 (UA를 기반으로 한 스크립트)
       // 구글 애널리틱스4 추적 코드 (G-XXXX를 고객의 추적 코드로 반드시 변경!)
-      const ANALYTICS_4_TRACKING_ID = "G-XXXX";
+      const ANALYTICS_4_TRACKING_ID = "${ga4_id}";
 
       var viewItemPageForGA4 = /goods_view/.test(window.location.pathname);
       var cartPageForGA4 = /cart/.test(window.location.pathname);
@@ -912,8 +953,8 @@ $(document).ready(function () {
       
       // Affiliation과 Brand명을 적절하게 바꿔주세요.
       var listNameForGA4 = 'Search Results';
-      var affiliationForGA4 = 'Google';
-      var brandForGA4 = 'Google';
+      var affiliationForGA4 = '${ga4_brand}';
+      var brandForGA4 = '${ga4_brand}';
       var currencyForGA4 = 'KRW';
 
       var btnAddToCartForGA4 = document.querySelector("#frmView > div > div > div.btn_choice_box > div > button.btn_add_cart");
@@ -1041,14 +1082,16 @@ $(document).ready(function () {
   });
 
   $("#imweb_ga4_eec").on("click", function () { 
+    document.querySelector("#ga4_id").value = "";
+    document.querySelector("#ga4_brand").value = "";
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
   window.addEventListener('load', function(event) {
     // GA4 (Google Analytics 4) E-Commerce (전자상거래) 코드 (아임웹)
     // 아임웹은 자체 설정에서 Google 애널리틱스 전자상거래 옵션을 사용으로 바꿔주면 된다. 아래 코드는 하드 코딩으로 구현하는 경우에 사용하면 된다.
     // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 미포함 버전이니 네이버 페이 경우에는 별도로 코드 추가 요함!!!)
-    var brand = 'Google';
-    var affiliation = 'Google';
+    var brand = '${ga4_brand}';
+    var affiliation = '${ga4_brand}';
     var listName = 'Search Results';
     var currency = 'KRW';
 
@@ -1153,6 +1196,8 @@ $(document).ready(function () {
   });
 
   $("#makeshop_ga4_eec_for_pc").on("click", function () { 
+    document.querySelector("#ga4_id").value = "";
+    document.querySelector("#ga4_brand").value = "";
     let result = `
   &lt;!-- 메이크샵 GA4 전자상거래 가이드
   구매완료는 치환코드가 있기 때문에 코드 변경 불필요하지만 
@@ -1166,8 +1211,8 @@ $(document).ready(function () {
 
   &lt;script>
     var products = [];
-    var brand = "brand_name";
-    var affiliation = "affiliation_name";
+    var brand = "${ga4_brand}";
+    var affiliation = "${ga4_brand}";
     &lt;!--/loop_order_product/-->
     var goods_price = ('&lt;!--/order_product@price/-->').replace(/[^0-9]/g, '');
     products.push({
@@ -1193,8 +1238,8 @@ $(document).ready(function () {
   window.addEventListener('load', function(event) {
     // GA4 (Google Analytics 4) E-Commerce (전자상거래) 코드 (메이크샵) PC버전 (모바일 버전은 별도로 체크 요함)
     // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 미포함 버전이니 네이버 페이 경우에는 별도로 코드 추가 요함!!!)
-    var brand = 'Google';
-    var affiliation = 'Google';
+    var brand = '${ga4_brand}';
+    var affiliation = '${ga4_brand}';
     var listName = 'Search Results';
     var currency = 'KRW';
 
@@ -1269,8 +1314,8 @@ $(document).ready(function () {
     // Purchase Done (반드시 개별디자인의 주문완료 페이지에 넣어야 한다. (공통 head에 넣으면 작동X))
     if (window.location.href.indexOf("shop/orderend") > -1) {
       var products = [];
-      var brand = "brand_name";
-      var affiliation = "affiliation_name";
+      var brand = "${ga4_brand}";
+      var affiliation = "${ga4_brand}";
       &lt;!--/loop_order_product/-->
       var goods_price = ('&lt;!--/order_product@price/-->').replace(/[^0-9]/g, '');
       products.push({
@@ -1295,13 +1340,15 @@ $(document).ready(function () {
   });
 
   $("#sixshop_ga4_eec").on("click", function () { 
+    document.querySelector("#ga4_id").value = "";
+    document.querySelector("#ga4_brand").value = "";
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
   window.addEventListener('load', function(event) {
     // GA4 (Google Analytics 4) E-Commerce (전자상거래) 코드 (식스샵)
     // 공통변수 (웹사이트에 따라 적절하게 변경하세요) (네이버 페이 미포함 버전이니 네이버 페이 경우에는 별도로 코드 추가 요함!!!)
-    var brand = 'Google';
-    var affiliation = 'Google';
+    var brand = '${ga4_brand}';
+    var affiliation = '${ga4_brand}';
     var listName = 'Search Results';
     var currency = 'KRW';
 
@@ -2761,5 +2808,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 3.1 (Updated 2022.11.07)");
+  $("#versionTextInsert").html("Version 3.2 (Updated 2022.11.13)");
 });
