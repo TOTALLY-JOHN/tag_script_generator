@@ -538,7 +538,7 @@ $(document).ready(function () {
     document.querySelector("#ua_id").value = "";
     document.querySelector("#ua_brand").value = "";
     let result = `
-  &lt;!-- 메이크샵 GA4 전자상거래 가이드
+  &lt;!-- 
   구매완료는 치환코드가 있기 때문에 코드 변경 불필요하지만 
   나머지 상세페이지, 장바구니 등은 웹사이트마다 코드가 살짝 다르기 때문에
   개발자 통해서 이 부분 구현하거나 여건이 된다면 코드 수정 지원해줘도 되지만
@@ -557,7 +557,7 @@ $(document).ready(function () {
     products.push({
       'item_name': '&lt;!--/order_product@name/-->',
       'item_id': '&lt;!--/order_product@product_id/-->',
-      'item_price': goods_price,
+      'price': goods_price,
       'item_brand': brand,
       'quantity': '&lt;!--/order_product@amount/-->'
     });
@@ -1218,7 +1218,7 @@ $(document).ready(function () {
     products.push({
       'item_name': '&lt;!--/order_product@name/-->',
       'item_id': '&lt;!--/order_product@product_id/-->',
-      'item_price': goods_price,
+      'price': goods_price,
       'item_brand': brand,
       'quantity': '&lt;!--/order_product@amount/-->'
     });
@@ -1250,12 +1250,12 @@ $(document).ready(function () {
             value: +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\\d]/g, ''),
             items: [
                 {
-                    "id": document.querySelector("input[name='branduid']").value,
-                    "name": document.title.replace(/[\\[\\]]+/g,''), 
-                    item_list_name: listName,
-                    item_brand: brand,
-                    currency: currency,
-                    price: +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\\d]/g, '')
+                    "item_id": document.querySelector("input[name='branduid']").value,
+                    "item_name": document.title.replace(/[\\[\\]]+/g,''), 
+                    "item_list_name": listName,
+                    "item_brand": brand,
+                    "currency": currency,
+                    "price": +document.querySelector("#form1 > div > table > tbody > tr:nth-child(1) > td > div > strong").innerText.replace(/[^\\d]/g, '')
                 }
             ]
         });
@@ -1321,7 +1321,7 @@ $(document).ready(function () {
       products.push({
         'item_name': '&lt;!--/order_product@name/-->',
         'item_id': '&lt;!--/order_product@product_id/-->',
-        'item_price': goods_price,
+        'price': goods_price,
         'item_brand': brand,
         'quantity': '&lt;!--/order_product@amount/-->'
       });
@@ -2808,5 +2808,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 3.2 (Updated 2022.11.13)");
+  $("#versionTextInsert").html("Version 3.3 (Updated 2022.11.16)");
 });

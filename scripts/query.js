@@ -200,7 +200,7 @@ else {
   var orderNo = '&lt;!--/order_num/-->';
 &lt;/script>
 &lt;script>
-  // 반드시 메이크샵 개별 페이지의 주문 완료 부분에 사용해야 합니다.
+  // 반드시 메이크샵 개별 페이지의 주문 완료 부분에 사용해야 합니다. (GA4 전자상거래 Parameter)
   var products = [];
   var brand = "brand_name";
   var affiliation = "affiliation_name";
@@ -209,7 +209,7 @@ else {
   products.push({
     'item_name': '&lt;!--/order_product@name/-->',
     'item_id': '&lt;!--/order_product@product_id/-->',
-    'item_price': goods_price,
+    'price': goods_price,
     'item_brand': brand,
     'quantity': '&lt;!--/order_product@amount/-->'
   });
@@ -802,7 +802,7 @@ function() {
   products.push({
     'item_name': '&lt;!--/order_product@name/-->',
     'item_id': '&lt;!--/order_product@product_id/-->',
-    'item_price': goods_price,
+    'price': goods_price,
     'item_brand': brand,
     'quantity': '&lt;!--/order_product@amount/-->'
   });
@@ -1432,7 +1432,7 @@ function() {
   products.push({
     'item_name': '&lt;!--/order_product@name/-->',
     'item_id': '&lt;!--/order_product@product_id/-->',
-    'item_price': goods_price,
+    'price': goods_price,
     'item_brand': brand,
     'quantity': '&lt;!--/order_product@amount/-->'
   });
@@ -1534,7 +1534,7 @@ function() {
       products.push({
         'item_name': '&lt;!--/order_product@name/-->',
         'item_id': '&lt;!--/order_product@product_id/-->',
-        'item_price': goods_price,
+        'price': goods_price,
         'item_brand': brand,
         'quantity': '&lt;!--/order_product@amount/-->'
       });
