@@ -177,6 +177,9 @@ else {
   var price = '\${customerVar_double_orderTotalPrice}';
   var orderNo = '\${customerVar_string_orderNo}';
   var currency = '\${customerVar_string_orderCurrency}';
+  
+  // 구매완료일 때 아래 selector로 카드결제, 무통장입금 혹은 가상계좌 둘 다 가능하면 아래로 진행.
+  document.querySelector('input[type=hidden]').value.replace(/[^\\d]/g, '');
 &lt;/script>
       `
     ],

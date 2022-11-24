@@ -75,7 +75,10 @@ $(document).ready(function () {
     result += "    return document.querySelector('#content_div > div.content.designSettingElement.text-body > div:nth-child(2) > input').value;<br />";
     result += "  } <br />";
     result += "}<br /><br />";
-    result += "<span class='grey'>// Sixshop Purchase Price</span><br />";
+    result += "<span class='grey'>// Sixshop Purchase Price 보통 2형태가 있는데 아래 방법으로 되면 2번째 방법은 사용할 필요 없습니다.</span><br />";
+    result += "function() {<br />";
+    result += "  return document.querySelector('input[type=hidden]').value.replace(/[^\\d]/g, '');";
+    result += "}<br /><br />";
     result += "function() {<br />";
     result += "  if (window.location.href.indexOf('payment/success/inicisPay') > -1) {<br />";
     result += "    return document.querySelector('#content_div > div.content.designSettingElement.text-body > div:nth-child(4) > input:nth-child(3)').value.replace(/[^\\d]/g, '');<br />";
@@ -2808,5 +2811,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 3.3 (Updated 2022.11.16)");
+  $("#versionTextInsert").html("Version 3.4 (Updated 2022.11.24)");
 });
