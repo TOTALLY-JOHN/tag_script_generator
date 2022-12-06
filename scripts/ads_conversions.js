@@ -98,11 +98,14 @@ $(document).ready(function () {
     result += "  var purchasePage = /order_result/.test(window.location.pathname);<br /><br />";
     result += "  var signupCompletePage = /join_result/.test(window.location.pathname);<br /><br />";
     result += "  <span class='grey'>// 카페24 치환 변수</span><br />";
-    result += "  var orderProductLenght = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length;<br />";
+    result += "  var orderProductLength = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product.length;<br />";
     result += "  var totalPrice = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.payed_amount;<br />";
     result += "  var transactionId = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_id;<br />";
     result += "  var quantity = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].quantity;<br />";
     result += "  var price = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_price;<br /><br />";
+    result += "  <br /><br />";
+    result += "  // 아래 EC_FRONT 구글 애즈에서 자바스크립트 변수로 향상된 전환에 넣으시면 바로 적용됩니다. 세미콜론은 빼주셔야 합니다<br />";
+    result += "  var emailAddressForEC = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.common_member_email; <br /><br />";
     result += "  <span class='grey'>// 카페24 구매 완료 코드 예제</span><br />";
     result += "  if (window.location.href.indexOf('order_result') > -1) {<br />";
     result += "    gtag('event', 'conversion', {<br />";
@@ -2811,5 +2814,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 3.4 (Updated 2022.11.24)");
+  $("#versionTextInsert").html("Version 3.5 (Updated 2022.12.06)");
 });

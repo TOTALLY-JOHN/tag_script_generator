@@ -157,6 +157,9 @@ else {
   var quantity = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].quantity;
   var price = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_price;
 
+  // 아래 EC_FRONT 구글 애즈에서 자바스크립트 변수로 향상된 전환에 넣으시면 바로 적용됩니다. 세미콜론은 빼주셔야 합니다.
+  var emailAddressForEC = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.common_member_email;
+
   // 카페24 구매 완료 코드 예제
   if (window.location.href.indexOf('order_result') > -1) {
     gtag('event', 'conversion', {
