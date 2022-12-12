@@ -2063,6 +2063,25 @@ Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태
 {% endif %}
       `
     ],
+    [
+      "유용한 크롬 단축키 (Shortcut)",
+      `
+1) 새 탭 열기: Ctrl + T
+2) 새 창 열기: Ctrl + N
+3) 현재 탭 닫기: Ctrl + W
+4) 탭 오른쪽 이동: Ctrl + Tab
+5) 탭 왼쪽 이동: Ctrl + Shift + Tab
+6) 방금 닫았던 탭 열기: Ctrl + Shift + T
+7) 탭 검색: Ctrl + Shift + A
+8) 주소창으로 커서 이동: Ctrl + L
+9) 북마크에 추가: Ctrl + D
+10) 개발자 도구에서 Element 마우스 커서 모드: Ctrl + Shift + C
+11) 개발자 도구에서 모바일, 태블릿 화면 모드: Ctrl + Shift + M
+12) 시크릿 모드(Incognito) 열기: Ctrl + Shift + N
+12) 창 최소화: Ctrl + H
+13) 서버에서 데이터를 새로 받아오는 강력 새로고침: Ctrl + Shift + R (또는 Ctrl + F5)
+      `
+    ]
   ];
   if (!window.location.href.includes("editor_search")) {
 

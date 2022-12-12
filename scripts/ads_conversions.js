@@ -2814,5 +2814,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 3.5 (Updated 2022.12.06)");
+  $("#versionTextInsert").html("Version 3.6 (Updated 2022.12.12)");
 });
