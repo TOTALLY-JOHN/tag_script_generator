@@ -2081,6 +2081,27 @@ Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태
 12) 창 최소화: Ctrl + H
 13) 서버에서 데이터를 새로 받아오는 강력 새로고침: Ctrl + Shift + R (또는 Ctrl + F5)
       `
+    ],
+    [
+      "OCT (오프라인 전환 - Offline Conversion Tracking - GCLID 방식)",
+      `
+1. 히든 태그 넣기 (Form 태그 안에 넣어주셔야 합니다)
+gclid=123456789
+<input type="hidden" id="gclid_field" name="gclid_field" value="">
+
+2. 자바스크립트 코드 추가 (GCLID url를 히든 태그 value에 붙이는 작업
+https://support.google.com/google-ads/answer/7012522?hl=ko&ref_topic=7280668 에 자바스크립트 코드 있습니다.
+
+3. 데이터베이스 테이블에 GCLID column 추가하셔서 GCLID 데이터 적재 가능하게 변경 (저는 varchar 255로 진행)
+phone, name, income, card...., GCLID 
+01012341234, JOHN, 40000000, DEBIT, 123456789
+
+4. action에 연결되는 php 페이지에서 SQL query문 수정해서 GCLID 삽입 가능하게 변경
+INSERT INTO SAMPLE_TABLES (......., GCLID) VALUES (....., 123456789);
+
+5. 이 데이터를 기반으로 구글 스프레드시트 만든 템플릿에 업로드
+(유튜브 핵심요약강좌 참고)
+      `
     ]
   ];
   if (!window.location.href.includes("editor_search")) {
