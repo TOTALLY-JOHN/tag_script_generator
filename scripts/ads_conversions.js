@@ -2245,7 +2245,6 @@ function() {
   $("#basic_dr").on("click", function () {
     let result = "<span class='grey'>&lt;</span><span class='lightblue2'>script</span><span class='grey'>&gt;</span>";
     result += `
-    &lt;script&gt;
       window.addEventListener('load', function (event) {
         var google_business_vertical = 'retail';
         var 상세_페이지 = window.location.href.indexOf("view_item.html") > -1;
@@ -2299,8 +2298,7 @@ function() {
               ]
           });
         }
-      });
-    &lt;/script&gt;`;
+      });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
     $("#generated_dr_script").html("<pre>" + result + "</pre>");
   });
