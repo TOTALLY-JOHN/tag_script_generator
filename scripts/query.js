@@ -981,6 +981,42 @@ function() {
     });
   }
 &lt;/script>
+
+// GTM 상세페이지 및 장바구니 (add_to_cart로 변경)
+dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+dataLayer.push({
+  event: "view_item",
+  ecommerce: {
+    items: [
+      {
+        item_id: window.location.href.split("item_id=")[1].substring(0, 1),
+        item_name: document.querySelector("#itemName").innerText,
+        price: document.querySelector("#price").innerText.replace(/[^\d]/g, ''),
+        quantity: 1
+      }
+    ]
+  }
+});
+
+// GTM 구매완료
+dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+dataLayer.push({
+  event: "purchase",
+  ecommerce: {
+    value: document.querySelector("#totalPrice").innerText.replace(/[^\d]/g, ''),
+    transaction_id: new Date().getTime(),
+    currency: "KRW", 
+    items: [
+      {
+        item_id: window.location.href.split("item_id=")[1].substring(0, 1),
+        item_name: document.querySelector("#product_title").innerText,
+        currency: "KRW",
+        price: document.querySelector("#total_price").innerText.replace(/[^\d]/g, ''),
+        quantity: 1
+      }
+    ]
+  }
+});
       `
     ],
     [
@@ -1692,6 +1728,66 @@ function conversion() {
 &lt;/script>
 
       `
+    ],
+    [
+      "Basic Dynamic Remarketing (기본 동적리마케팅 DR 코드)",
+      `
+&lt;script&gt;
+  window.addEventListener('load', function (event) {
+    var google_business_vertical = 'retail';
+    var 상세_페이지 = window.location.href.indexOf("view_item.html") > -1;
+    var 상품_리스트_페이지 = window.location.href.indexOf("view_item_list") > -1;
+    var 장바구니_페이지 = window.location.href.indexOf("basket") > -1;
+    var 주문완료_페이지 = window.location.href.indexOf("order_complete") > -1;
+
+    if (상품_리스트_페이지) {
+      var 동적_리마케팅_상품배열 = [];
+      var 상품_배열 = document.querySelectorAll("td > a");
+      상품_배열.forEach(function(상품_아이디) {
+          동적_리마케팅_상품배열.push({
+              'id': 상품_아이디.href.split("item_id=")[1],
+              'google_business_vertical': google_business_vertical
+          });
+      });
+      gtag('event', 'view_item_list', {
+          'items': 동적_리마케팅_상품배열
+      });
+    }
+    else if (상세_페이지) {
+      var 상품_아이디 = window.location.href.split("item_id=")[1];
+      gtag('event', "view_item", {
+          'items': [
+              {
+                  'id': 상품_아이디,
+                  'google_business_vertical': google_business_vertical
+              }
+          ]
+      });
+    }
+    else if (장바구니_페이지) {
+      var 상품_아이디 = window.location.href.split("item_id=")[1];
+      gtag('event', "add_to_cart", {
+          'items': [
+              {
+                  'id': 상품_아이디,
+                  'google_business_vertical': google_business_vertical
+              }
+          ]
+      });
+    }
+    else if (주문완료_페이지) {
+      var 상품_아이디 = window.location.href.split("item_id=")[1].split("&order_no")[0];
+      gtag('event', "purchase", {
+          'items': [
+              {
+                  'id': 상품_아이디,
+                  'google_business_vertical': google_business_vertical
+              }
+          ]
+      });
+    }
+  });
+&lt;/script&gt;`
     ],
     [
       "Cafe24 Dynamic Remarketing (카페24 동적리마케팅, 동적리마게팅 DR 코드)",
