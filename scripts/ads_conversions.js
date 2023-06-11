@@ -929,6 +929,175 @@ $(document).ready(function () {
     $("#generated_ga4_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#cafe24_ga4_eec_gtm").on("click", function () { 
+    document.querySelector("#ga4_id").value = "";
+    document.querySelector("#ga4_brand").value = "";
+    let result = "";
+    result += `
+&lt;!-- 카페24 GTM 전자상거래 코드 (카페24 쇼핑몰 홈페이지에 따라 수정 필요), 다른 CMS에도 변수만 바꿔서 적용하시면 됩니다. -->
+&lt;!-- 한 HTML 태그에 모두 넣어도 되나 그 때에는 if문으로 페이지를 체크해주셔야 하고 각각 트리거를 지정하여 분리해서 맞춤 HTML 태그를 만드는 것을 권장합니다. -->
+&lt;!-- 아래는 단순 코드이기 때문에 GTM에서 GA4 이벤트 세팅, 맞춤 이벤트, 변수, 트리거들은 슬라이드 가이드를 따라 각각 생성하시면 됩니다. -->
+&lt;!-- 상세페이지 조회 (view_item), 장바구니 클릭인 경우에는 아래 event만 add_to_cart로 바꿔서 바로 사용하면 됩니다. -->
+&lt;script>
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "view_item",
+    ecommerce: {
+      currency: "KRW",
+      value: document.querySelector('meta[property="product:price:amount"]').content,
+      items: [
+        {
+          item_id: document.querySelector('meta[property="product:productId"]').content,
+          item_name: document.querySelector("div.detailArea > div > div > h1").innerText,
+          price: document.querySelector('meta[property="product:price:amount"]').content,
+          quantity: 1
+        }
+      ]
+    }
+  });
+&lt;/script>
+
+&lt;!-- 장바구니 페이지 조회인 경우 (버튼 클릭인 경우 위의 상세페이지 조회 부분만 add_to_cart로 바꾸시고 버튼 클릭 트리거로 하시면 빠르게 만들 수 있습니다) -->
+&lt;script>
+  // 모바일 접속인 경우
+  if (window.location.href.indexOf("m.홈페이지주소") > -1) {
+    var productIdArr = document.querySelectorAll(".prdImg > a");
+    var productNameArr = document.querySelectorAll(".prdName");
+    var productPriceArr = document.querySelectorAll("span[title='할인판매가']");
+    var productQtyArr = document.querySelectorAll(".quantity > input");
+    var products = [];
+
+    for (var i = 0; i < productIdArr.length; i++) {
+      var product = {
+        item_id: productIdArr[i].href.split("product_no=")[1].split("&cate")[0],
+        item_name: productNameArr[i].innerText,
+        price: productPriceArr[i].innerText.replace(/[^\\d]/g, ''),
+        quantity: productQtyArr[i].value
+      };
+      products.push(product);
+    }
+
+    dataLayer.push({
+    event: "add_to_cart",
+    ecommerce: {
+      items: products
+    }
+    });
+  } 
+  // PC인 경우
+  else {
+    var productIdArr = document.querySelectorAll("td.thumb > a");
+    var productNameArr = document.querySelectorAll("tr > td.left > a");
+    var productPriceArr = document.querySelectorAll("tr > td:nth-child(4) > div:nth-child(2)");
+    var productQtyArr = document.querySelectorAll(".ec-base-qty > input");
+    var products = [];
+
+    for (var i = 0; i < productIdArr.length; i++) {
+      var product = {
+        item_id: productIdArr[i].href.split("product_no=")[1].split("&cate")[0],
+        item_name: productNameArr[i].innerText,
+        price: productPriceArr[i].innerText.replace(/[^\\d]/g, ''),
+        quantity: productQtyArr[i].value
+      };
+      products.push(product);
+    }
+
+    dataLayer.push({
+      event: "add_to_cart",
+      ecommerce: {
+        items: products
+      }
+    });
+  }
+&lt;script/>
+
+&lt;!-- 결제 시작(begin_checkout) 스크립트. 이 부분이 제일 복잡한 부분이며 해당 사항으로 되지 않는 경우 sessionStorage 이용 방법을 고려해보셔야 합니다. -->
+&lt;script>
+  dataLayer.push({ ecommerce: null });
+  
+  // 모바일인 경우 (아래 홈페이지 주소를 바꿔주세요)
+  if (window.location.href.indexOf("m.홈페이지주소") > -1) {
+    var productIdArr = document.querySelectorAll("div.contents.prdArea > div.orderArea > div.orderSheet > div.xans-order.xans-order-normallist > div.xans-record- > div.description > p.prdImg > a");
+    var productNameArr = document.querySelectorAll("div.contents.prdArea > div:nth-child(1) > div > div > div > div > strong");
+    var productPriceArr = document.querySelectorAll("div.contents.prdArea > div:nth-child(1) > div > div > div > div > ul > li.price > span:nth-child(2) > strong");
+    var productQtyArr = document.querySelectorAll("div.contents.prdArea > div > div > div > div > div > ul > li.price > strong[title='수량']");
+    var products = [];
+
+    for (var i = 0; i < productIdArr.length; i++) {
+      var product = {
+        item_id: productIdArr[i].href.split("product_no=")[1].split("&cate")[0],
+        item_name: productNameArr[i].innerText,
+        price: productPriceArr[i].innerText.replace(/[^\\d]/g, ''),
+        quantity: Number(productQtyArr[i].innerText.replace(/[^\\d]/g, ''))
+      };
+      products.push(product);
+    }
+
+    dataLayer.push({
+      event: "begin_checkout",
+      ecommerce: {
+        items: products
+      }
+    });
+  } 
+  // PC인 경우
+  else {
+    var productIdArr = document.querySelectorAll(".xans-record- > td.thumb.gClearLine > a");
+    var productNameArr = document.querySelectorAll(".ec-product-name");
+    var productPriceArr = document.querySelectorAll("tr > td:nth-child(4) > div:nth-child(2)");
+    var productQtyArr = document.querySelectorAll("tbody.xans-element-.xans-order.xans-order-normallist.center > tr.xans-record- > td:nth-child(5)");
+    var products = [];
+
+    for (var i = 0; i < productIdArr.length; i++) {
+      var product = {
+        item_id: productIdArr[i].href.split("product_no=")[1].split("&cate")[0],
+        item_name: productNameArr[i].innerText,
+        price: productPriceArr[i].innerText.replace(/[^\\d]/g, ''),
+        quantity: Number(productQtyArr[i].innerText)
+      };
+      products.push(product);
+    }
+
+    dataLayer.push({
+      event: "begin_checkout",
+      ecommerce: {
+        items: products
+      }
+    });
+  }
+&lt;/script>
+
+&lt;!-- 구매 완료(purchase) 부분. 카페24는 아래 코드로 PC, 모바일 모두 됩니다. -->
+&lt;script>
+  dataLayer.push({ ecommerce: null });
+  var productData = EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product;
+  var products = [];
+
+  for (var i = 0; i < productData.length; i++) {
+    var product = {
+      item_id: EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_no,
+      item_name: EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_name,
+      price: EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].product_price,
+      quantity: EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_product[i].quantity,
+      currency: "KRW"
+    };
+    products.push(product);
+  }
+  
+  dataLayer.push({
+    event: "purchase",
+    ecommerce: {
+      value: EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.payed_amount,
+      transaction_id: EC_FRONT_EXTERNAL_SCRIPT_VARIABLE_DATA.order_id,
+      currency: "KRW",
+      items: products
+    }
+  });
+&lt;/script>
+`;
+    $("#generated_ga4_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#godomall_ga4_eec").on("click", function () { 
     document.querySelector("#ga4_id").value = "";
     document.querySelector("#ga4_brand").value = "";
@@ -2814,5 +2983,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 3.6 (Updated 2022.12.12)");
+  $("#versionTextInsert").html("Version 3.7 (Updated 2023.06.11)");
 });
