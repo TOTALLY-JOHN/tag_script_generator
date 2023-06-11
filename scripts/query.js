@@ -981,6 +981,42 @@ function() {
     });
   }
 &lt;/script>
+
+// GTM 상세페이지 및 장바구니 (add_to_cart로 변경)
+dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+dataLayer.push({
+  event: "view_item",
+  ecommerce: {
+    items: [
+      {
+        item_id: window.location.href.split("item_id=")[1].substring(0, 1),
+        item_name: document.querySelector("#itemName").innerText,
+        price: document.querySelector("#price").innerText.replace(/[^\d]/g, ''),
+        quantity: 1
+      }
+    ]
+  }
+});
+
+// GTM 구매완료
+dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+dataLayer.push({
+  event: "purchase",
+  ecommerce: {
+    value: document.querySelector("#totalPrice").innerText.replace(/[^\d]/g, ''),
+    transaction_id: new Date().getTime(),
+    currency: "KRW", 
+    items: [
+      {
+        item_id: window.location.href.split("item_id=")[1].substring(0, 1),
+        item_name: document.querySelector("#product_title").innerText,
+        currency: "KRW",
+        price: document.querySelector("#total_price").innerText.replace(/[^\d]/g, ''),
+        quantity: 1
+      }
+    ]
+  }
+});
       `
     ],
     [
@@ -1694,6 +1730,66 @@ function conversion() {
       `
     ],
     [
+      "Basic Dynamic Remarketing (기본 동적리마케팅 DR 코드)",
+      `
+&lt;script&gt;
+  window.addEventListener('load', function (event) {
+    var google_business_vertical = 'retail';
+    var 상세_페이지 = window.location.href.indexOf("view_item.html") > -1;
+    var 상품_리스트_페이지 = window.location.href.indexOf("view_item_list") > -1;
+    var 장바구니_페이지 = window.location.href.indexOf("basket") > -1;
+    var 주문완료_페이지 = window.location.href.indexOf("order_complete") > -1;
+
+    if (상품_리스트_페이지) {
+      var 동적_리마케팅_상품배열 = [];
+      var 상품_배열 = document.querySelectorAll("td > a");
+      상품_배열.forEach(function(상품_아이디) {
+          동적_리마케팅_상품배열.push({
+              'id': 상품_아이디.href.split("item_id=")[1],
+              'google_business_vertical': google_business_vertical
+          });
+      });
+      gtag('event', 'view_item_list', {
+          'items': 동적_리마케팅_상품배열
+      });
+    }
+    else if (상세_페이지) {
+      var 상품_아이디 = window.location.href.split("item_id=")[1];
+      gtag('event', "view_item", {
+          'items': [
+              {
+                  'id': 상품_아이디,
+                  'google_business_vertical': google_business_vertical
+              }
+          ]
+      });
+    }
+    else if (장바구니_페이지) {
+      var 상품_아이디 = window.location.href.split("item_id=")[1];
+      gtag('event', "add_to_cart", {
+          'items': [
+              {
+                  'id': 상품_아이디,
+                  'google_business_vertical': google_business_vertical
+              }
+          ]
+      });
+    }
+    else if (주문완료_페이지) {
+      var 상품_아이디 = window.location.href.split("item_id=")[1].split("&order_no")[0];
+      gtag('event', "purchase", {
+          'items': [
+              {
+                  'id': 상품_아이디,
+                  'google_business_vertical': google_business_vertical
+              }
+          ]
+      });
+    }
+  });
+&lt;/script&gt;`
+    ],
+    [
       "Cafe24 Dynamic Remarketing (카페24 동적리마케팅, 동적리마게팅 DR 코드)",
       `
 &lt;script>
@@ -2244,7 +2340,28 @@ Online Store에서 Themes 클릭하고 Actions -> Edit Code 눌러서 <head> 태
       items: products
     }
   });
-&lt;/script>      
+&lt;/script>
+`,
+    ],
+    [
+      "OCT (오프라인 전환 - Offline Conversion Tracking - GCLID 방식)",
+      `
+1. 히든 태그 넣기 (Form 태그 안에 넣어주셔야 합니다)
+gclid=123456789
+<input type="hidden" id="gclid_field" name="gclid_field" value="">
+
+2. 자바스크립트 코드 추가 (GCLID url를 히든 태그 value에 붙이는 작업
+https://support.google.com/google-ads/answer/7012522?hl=ko&ref_topic=7280668 에 자바스크립트 코드 있습니다.
+
+3. 데이터베이스 테이블에 GCLID column 추가하셔서 GCLID 데이터 적재 가능하게 변경 (저는 varchar 255로 진행)
+phone, name, income, card...., GCLID 
+01012341234, JOHN, 40000000, DEBIT, 123456789
+
+4. action에 연결되는 php 페이지에서 SQL query문 수정해서 GCLID 삽입 가능하게 변경
+INSERT INTO SAMPLE_TABLES (......., GCLID) VALUES (....., 123456789);
+
+5. 이 데이터를 기반으로 구글 스프레드시트 만든 템플릿에 업로드
+(유튜브 핵심요약강좌 참고)
       `
     ]
   ];
