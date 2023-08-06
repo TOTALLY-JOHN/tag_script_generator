@@ -7,7 +7,7 @@ body {
   /* background-size: cover; */
   /* background-color: #0005; */
   /* background-blend-mode: darken; */
-  background-color: #1f1b24;
+  background-color: #004578;
 }
 
 table tbody td {
@@ -77,6 +77,12 @@ table tbody td {
   text-align: center;
   height: 280px;
   background : rgba(0, 0, 0, 0.3);
+}
+
+#feedbackButton {
+  position: absolute;
+  left: 75px;
+  top: 15px;
 }
 
 a {
