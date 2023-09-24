@@ -1418,6 +1418,189 @@ $(document).ready(function () {
     $("#generated_ga4_script").html("<pre>" + result + "</pre>");
   });
 
+  $("#godomall_ga4_gtm_eec").on("click", function () { 
+    let result = "";
+    result += `
+&lt;!-- 고도몰 GA4 전자상거래 GTM코드 - 일부 수정해서 사용하면 됩니다. -->
+`;
+    result += `
+// 상세페이지 조회
+&lt;script>
+  dataLayer.push({ ecommerce: null });
+  if (window.location.href.indexOf("m.모바일주소") > -1) {
+    dataLayer.push({
+      event: "view_item",
+      ecommerce: {
+        currency: "KRW",
+        value: Number(document.querySelector('input[name="set_goods_price"]').value),
+        items: [
+          {
+            item_id: goodsNo,
+            item_name: document.querySelector("#contents_wrap > div.goods_view > div.detail_info > form > div.detail_info_top > h3").innerText,
+            price: Number(document.querySelector('input[name="set_goods_price"]').value),
+            quantity: 1
+          }
+        ]
+      }
+    });
+  } else {
+    dataLayer.push({
+      event: "view_item",
+      ecommerce: {
+        currency: "KRW",
+        value: Number(document.querySelector('input[name="set_goods_price"]').value),
+        items: [
+          {
+            item_id: goodsNo,
+            item_name: document.querySelector("#frmView > div > div > div.item_detail_tit > h3").innerText,
+            price: Number(document.querySelector('input[name="set_goods_price"]').value),
+            quantity: 1
+          }
+        ]
+      }
+    });
+  }
+&lt;/script>
+
+// 장바구니 담기
+&lt;script>
+  dataLayer.push({ ecommerce: null });
+  if (window.location.href.indexOf("m.모바일주소") > -1) {
+    dataLayer.push({
+      event: "add_to_cart",
+      ecommerce: {
+        currency: "KRW",
+        value: Number(document.querySelector(".total_price").innerText.replace(/[^\\d]/g, '')),
+        items: [
+          {
+            item_id: goodsNo,
+            item_name: document.querySelector("#contents_wrap > div.goods_view > div.detail_info > form > div.detail_info_top > h3").innerText,
+            price: Number(document.querySelector('input[name="set_goods_price"]').value),
+            quantity: Number(document.querySelector('input[name="goodsCnt[]"]').value)
+          }
+        ]
+      }
+    });
+  } else {
+    dataLayer.push({
+      event: "add_to_cart",
+      ecommerce: {
+        currency: "KRW",
+        value: Number(document.querySelector(".total_price").innerText.replace(/[^\\d]/g, '')),
+        items: [
+          {
+            item_id: goodsNo,
+            item_name: document.querySelector("#frmView > div > div > div.item_detail_tit > h3").innerText,
+            price: Number(document.querySelector('input[name="set_goods_price"]').value),
+            quantity: Number(document.querySelector('input[name="goodsCnt[]"]').value)
+          }
+        ]
+      }
+    });
+  }
+&lt;/script>
+
+// 결제시작
+&lt;script>
+  dataLayer.push({ ecommerce: null });
+  
+  if (window.location.href.indexOf("m.모바일주소") > -1) {
+    var productIdArr = document.querySelectorAll("#frmOrder > div.pay > ul > li > div > a");
+    var productNameArr = document.querySelectorAll("#frmOrder > div.pay > ul > li > div > a > div > div.itembody > p.name");
+    var productPriceArr = document.querySelectorAll("#frmOrder > div.pay > ul > li > div > a > div > div.itembody > strong");
+    var productQtyArr = document.querySelectorAll("#frmOrder > div.pay > ul > li > div > a > div > div.itembody > p:nth-child(2)");
+    var totalPrice = 0;
+    var products = [];
+
+    for (var i = 0; i < productIdArr.length; i++) {
+      totalPrice += Number(productPriceArr[i].innerText.replace(/[^\\d]/g, ''));
+      var product = {
+        item_id: productIdArr[i].href.split("goodsNo=")[1],
+        item_name: productNameArr[i].innerText,
+        price: Number(productPriceArr[i].innerText.replace(/[^\\d]/g, '')),
+        quantity: Number(productQtyArr[i].innerText.split(" : ")[1].replace(/[^\\d]/g, ''))
+      };
+      products.push(product);
+    }
+
+    dataLayer.push({
+      event: "begin_checkout",
+      ecommerce: {
+        currency: "KRW",
+        value: totalPrice,
+        items: products
+      }
+    });
+  } 
+  // PC인 경우
+  else {
+    var productIdArr = document.querySelectorAll("table > tbody > tr > td.td_left > div > span > a");
+    var productNameArr = document.querySelectorAll("table > tbody > tr > td.td_left > div > div > em > a");
+    var productPriceArr = document.querySelectorAll("table > tbody > tr > td:nth-child(5) > strong");
+    var productQtyArr = document.querySelectorAll("table > tbody > tr > td.td_order_amount > div > strong");
+    var totalPrice = 0;
+    var products = [];
+
+    for (var i = 0; i < productIdArr.length; i++) {
+      totalPrice += Number(productPriceArr[i].innerText.replace(/[^\\d]/g, ''));
+      var product = {
+        item_id: productIdArr[i].href.split("goodsNo=")[1],
+        item_name: productNameArr[i].innerText,
+        price: Number(productPriceArr[i].innerText.replace(/[^\\d]/g, '')),
+        quantity: Number(productQtyArr[i].innerText.replace(/[^\\d]/g, ''))
+      };
+      products.push(product);
+    }
+
+    dataLayer.push({
+      event: "begin_checkout",
+      ecommerce: {
+        currency: "KRW",
+        value: totalPrice,
+        items: products
+      }
+    });
+  }
+&lt;/script>
+
+// 구매완료 (그대로 사용하면 됩니다.)
+&lt;script>
+  dataLayer.push({ ecommerce: null });
+  var productData = document.querySelectorAll('input[name=naver-common-inflow-script-order-item]');
+  var products = [];
+  var totalPrice = 0;
+  var orderNo = "";
+
+  for (var i = 0; i < productData.length; i++) {
+    var productDetail = eval('(' + productData[i].value + ')');
+    var product = {
+      item_id: productDetail.sno,
+      item_name: productDetail.goodsnm,
+      price: productDetail.price,
+      quantity: productDetail.ea,
+      currency: "KRW"
+    };
+    totalPrice += productDetail.price;
+    products.push(product);
+    if (orderNo == "") {
+      orderNo = productDetail.ordno;
+    }
+  }
+  
+  dataLayer.push({
+    event: "purchase2",
+    ecommerce: {
+      value: totalPrice,
+      transaction_id: orderNo,
+      currency: "KRW",
+      items: products
+    }
+  });
+&lt;/script>
+    `;
+    $("#generated_ga4_script").html("<pre>" + result + "</pre>");
+  });
+
   $("#shopify_ga4_eec").on("click", function () { 
     document.querySelector("#ga4_id").value = "";
     document.querySelector("#ga4_brand").value = "";
@@ -1874,6 +2057,263 @@ $(document).ready(function () {
     }
   });`;
     result += "<br /><span class='grey'>&lt;/<span class='lightblue2'>script</span><span class='grey'>&gt;</span><br />";
+    $("#generated_ga4_script").html("<pre>" + result + "</pre>");
+  });
+
+  $("#makeshop_ga4_gtm_eec_for_pc").on("click", function () { 
+    let result = `
+&lt;!-- 메이크샵 GA4 전자상거래 GTM 가이드 
+메이크샵은 GTM으로 구현할 때 메이크샵 관리자 페이지에서 코드 삽입이 가능하다면
+병행하는 것이 가장 좋습니다. 특히 구매완료 경우에는 넣어주면 간단하게 구현 가능합니다.
+그 외 다른 페이지는 수정이 필요할 수 있습니다.
+-->
+
+// 상세페이지 조회
+&lt;script>
+  // 모바일 접속인 경우
+  if (window.location.href.indexOf("m/product.html?branduid=") > -1) {
+    if (document.querySelector("#pricevalue")) {
+      dataLayer.push({
+        event: "view_item",
+        ecommerce: {
+          currency: "KRW",
+          value: document.querySelector("#pricevalue").innerText.replace(/[^\\d]/g, ''),
+          items: [
+            {
+              item_id: window.location.href.split("branduid=")[1].split("&")[0],
+              item_name: document.querySelector("#contents > div > div.prdDesc > h1").innerText,
+              price: document.querySelector("#pricevalue").innerText.replace(/[^\\d]/g, ''),
+              quantity: 1
+            }
+          ]
+        }
+      });
+    } else {
+      dataLayer.push({
+        event: "view_item",
+        ecommerce: {
+          currency: "KRW",
+          value: document.querySelector("#form1 > div.shopdetailInfoValue > p:nth-child(4) > span.shopdetailInfoCont").innerText.replace(/[^\\d]/g, ''),
+          items: [
+            {
+              item_id: window.location.href.split("branduid=")[1].split("&")[0],
+              item_name: document.querySelector("#contents > div > div.prdDesc > h1").innerText,
+              price: document.querySelector("#form1 > div.shopdetailInfoValue > p:nth-child(4) > span.shopdetailInfoCont").innerText.replace(/[^\\d]/g, ''),
+              quantity: 1
+            }
+          ]
+        }
+      });
+    }
+    
+  }
+  // PC인 경우
+  else {
+    if (document.querySelector("#pricevalue")) {
+      dataLayer.push({
+        event: "view_item",
+        ecommerce: {
+          currency: "KRW",
+          value: document.querySelector("#pricevalue").innerText.replace(/[^\\d]/g, ''),
+          items: [
+            {
+              item_id: window.location.href.split("branduid=")[1].split("&")[0],
+              item_name: document.querySelector("#form1 > div > h3").innerText,
+              price: document.querySelector("#pricevalue").innerText.replace(/[^\\d]/g, ''),
+              quantity: 1
+            }
+          ]
+        }
+      });
+    } else {
+      dataLayer.push({
+        event: "view_item",
+        ecommerce: {
+          currency: "KRW",
+          value: document.querySelector("#form1 > div > div > table > tbody > tr:nth-child(3) > td > div").innerText.replace(/[^\\d]/g, ''),
+          items: [
+            {
+              item_id: window.location.href.split("branduid=")[1].split("&")[0],
+              item_name: document.querySelector("#form1 > div > h3").innerText,
+              price: document.querySelector("#form1 > div > div > table > tbody > tr:nth-child(3) > td > div").innerText.replace(/[^\\d]/g, ''),
+              quantity: 1
+            }
+          ]
+        }
+      });
+    }
+  }
+&lt;/script>
+
+// 장바구니 담기
+&lt;script>
+  // 모바일 접속인 경우
+  if (window.location.href.indexOf("m/product.html?branduid=") > -1) {
+    if (document.querySelector("#pricevalue")) {
+      dataLayer.push({
+        event: "add_to_cart",
+        ecommerce: {
+          currency: "KRW",
+          value: document.querySelector("#pricevalue").innerText.replace(/[^\\d]/g, ''),
+          items: [
+            {
+              item_id: window.location.href.split("branduid=")[1].split("&")[0],
+              item_name: document.querySelector("#contents > div > div.prdDesc > h1").innerText,
+              price: document.querySelector("#pricevalue").innerText.replace(/[^\\d]/g, ''),
+              quantity: Number(document.querySelector("#MS_amount_basic_0").value)
+            }
+          ]
+        }
+      });
+    } else {
+      dataLayer.push({
+        event: "add_to_cart",
+        ecommerce: {
+          currency: "KRW",
+          value: document.querySelector("#form1 > div.shopdetailInfoValue > p:nth-child(4) > span.shopdetailInfoCont").innerText.replace(/[^\\d]/g, ''),
+          items: [
+            {
+              item_id: window.location.href.split("branduid=")[1].split("&")[0],
+              item_name: document.querySelector("#contents > div > div.prdDesc > h1").innerText,
+              price: document.querySelector("#form1 > div.shopdetailInfoValue > p:nth-child(4) > span.shopdetailInfoCont").innerText.replace(/[^\\d]/g, ''),
+              quantity: Number(document.querySelector("#MS_amount_basic_0").value)
+            }
+          ]
+        }
+      });
+    }
+  }
+  // PC인 경우
+  else {
+    if (document.querySelector("#pricevalue")) {
+      dataLayer.push({
+        event: "add_to_cart",
+        ecommerce: {
+          currency: "KRW",
+          value: document.querySelector("#pricevalue").innerText.replace(/[^\\d]/g, ''),
+          items: [
+            {
+              item_id: window.location.href.split("branduid=")[1].split("&")[0],
+              item_name: document.querySelector("#form1 > div > h3").innerText,
+              price: document.querySelector("#pricevalue").innerText.replace(/[^\\d]/g, ''),
+              quantity: Number(document.querySelector("#MS_amount_basic_0").value)
+            }
+          ]
+        }
+      });
+    } else {
+      dataLayer.push({
+        event: "add_to_cart",
+        ecommerce: {
+          currency: "KRW",
+          value: document.querySelector("#form1 > div > div > table > tbody > tr:nth-child(3) > td > div").innerText.replace(/[^\\d]/g, ''),
+          items: [
+            {
+              item_id: window.location.href.split("branduid=")[1].split("&")[0],
+              item_name: document.querySelector("#form1 > div > h3").innerText,
+              price: document.querySelector("#form1 > div > div > table > tbody > tr:nth-child(3) > td > div").innerText.replace(/[^\\d]/g, ''),
+              quantity: Number(document.querySelector("#MS_amount_basic_0").value)
+            }
+          ]
+        }
+      });
+    }
+  }
+&lt;/script>
+
+// 결제시작
+&lt;script>
+  dataLayer.push({ ecommerce: null });
+  
+  if (window.location.href.indexOf("/m/order.html") > -1) {
+    var productIdArr = document.querySelectorAll("#order_form > ul > li > figure > div > a");
+    var productNameArr = document.querySelectorAll("#order_form > ul > li > figure > figcaption > p.pname.bold");
+    var productPriceArr = document.querySelectorAll("#order_form > ul > li > figure > figcaption > p.pprice > span");
+    var productQtyArr = document.querySelectorAll("#order_form > ul > li > figure > figcaption > p.pprice");
+    var totalPrice = 0;
+    var products = [];
+
+    for (var i = 0; i < productIdArr.length; i++) {
+      totalPrice += Number(productPriceArr[i].innerText.replace(/[^\\d]/g, ''));
+      var product = {
+        item_id: productIdArr[i].href.split("branduid=")[1],
+        item_name: productNameArr[i].innerText,
+        price: Number(productPriceArr[i].innerText.replace(/[^\\d]/g, '')),
+        quantity: Number(productQtyArr[i].innerText.split("/")[1].replace(/[^\\d]/g, ''))
+      };
+      products.push(product);
+    }
+
+    dataLayer.push({
+      event: "begin_checkout",
+      ecommerce: {
+        currency: "KRW",
+        value: totalPrice,
+        items: products
+      }
+    });
+  } 
+  // PC인 경우
+  else {
+    var productIdArr = document.querySelectorAll(".tb-left > a");
+    var productNameArr = document.querySelectorAll(".tb-left > a");
+    var productPriceArr = document.querySelectorAll("td:nth-child(4) > div.tb-center")
+    var productQtyArr = document.querySelectorAll("td:nth-child(3) > div.tb-center");
+    var products = [];
+    var totalPrice = 0;
+
+    for (var i = 0; i < productIdArr.length; i++) {
+      totalPrice += Number(productPriceArr[i].innerText.replace(/[^\\d]/g, ''));
+      var product = {
+        item_id: productIdArr[i].href.split("branduid=")[1],
+        item_name: productNameArr[i].innerText,
+        price: Number(productPriceArr[i].innerText.replace(/[^\\d]/g, '')),
+        quantity: Number(productQtyArr[i].innerText.replace(/[^\\d]/g, ''))
+      };
+      products.push(product);
+    }
+
+    dataLayer.push({
+      event: "begin_checkout",
+      ecommerce: {
+        currency: "KRW",
+        value: totalPrice,
+        items: products
+      }
+    });
+  }
+&lt;/script>
+
+// 구매완료 (아래 코드를 먼저 메이크샵 관리자 페이지를 통해서 PC와 모바일 각각 주문완료 쪽에 넣어줍니다.)
+/*
+var ga4_products = [];
+&lt;!--/loop_order_product/-->
+var ga4_totalPrice = '&lt;!--/pay_price/-->';
+var goods_price = ('&lt;!--/order_product@price/-->').replace(/[^0-9]/g, '');
+ga4_products.push({
+  'item_name': '&lt;!--/order_product@name/-->',
+  'item_id': '&lt;!--/order_product@product_id/-->',
+  'price': goods_price,
+  'item_brand': brand,
+  'quantity': '&lt;!--/order_product@amount/-->'
+});
+&lt;!--/end_loop/-->
+
+그리고 아래 코드를 GTM에 구매 완료 페이지 DOM을 트리거로 하여 넣어주면 됩니다.
+*/
+&lt;script>
+  dataLayer.push({ ecommerce: null });
+  dataLayer.push({
+    event: "purchase2",
+    ecommerce: {
+      value: Number(ga4_totalPrice),
+      transaction_id: ga4_transaction_id,
+      currency: "KRW",
+      items: ga4_products
+    }
+  });
+&lt;/script>
+`;
     $("#generated_ga4_script").html("<pre>" + result + "</pre>");
   });
 
@@ -3443,5 +3883,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 4.0 (Updated 2023.08.06)");
+  $("#versionTextInsert").html("Version 4.1 (Updated 2023.09.24)");
 });
