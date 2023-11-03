@@ -3883,5 +3883,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 4.1 (Updated 2023.09.24)");
+  $("#versionTextInsert").html("Version 4.2 (Updated 2023.11.03)");
 });

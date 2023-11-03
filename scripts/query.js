@@ -3155,6 +3155,32 @@ INSERT INTO SAMPLE_TABLES (......., GCLID) VALUES (....., 123456789);
 5. 이 데이터를 기반으로 구글 스프레드시트 만든 템플릿에 업로드
 (유튜브 핵심요약강좌 참고)
       `
+    ],
+    [
+      "GA4 (Google Analytics 4) Refund Event DataLayer",
+      `
+GA4 Refund
+환불 이벤트(refund)를 일으키면 기존 transaction_id와 item_id를 기준으로 하여 금액을 차감하게 된다.
+즉 어제 같은 상품을 10000원 구매했고 오늘 환불 취소 처리 했다면 당일 보고서에는 -10000원으로 표시되고 이틀 간의 보고서에서는 0원으로 표시된다.
+&lt;script>
+  dataLayer.push({
+    event: "refund",
+    ecommerce: {
+      currency: "KRW",
+      value: 10000,
+      transaction_id: "TRANSACTION_ID",
+      items: [
+        {
+          item_id: "ITEM_ID",
+          item_name: "ITEM_NAME",
+          price: 10000,
+          quantity: 1
+        }
+      ]
+    }
+  });
+&lt;/script>
+      `
     ]
   ];
   if (!window.location.href.includes("editor_search")) {
@@ -3206,7 +3232,7 @@ INSERT INTO SAMPLE_TABLES (......., GCLID) VALUES (....., 123456789);
         // 찾으려는 검색값이 있는 경우
         data.forEach((elem, i) => {
           const [title, content] = elem;
-          if (title.toLowerCase().indexOf(query) > -1 || content.toLowerCase().indexOf(query) > -1) {
+          if (title.toLowerCase().indexOf(query) > -1 || content?.toLowerCase().indexOf(query) > -1) {
             element.style.display = "block";
             let liElem = document.createElement("li");
             liElem.className = i;
