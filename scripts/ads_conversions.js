@@ -2289,12 +2289,12 @@ $(document).ready(function () {
 var ga4_products = [];
 &lt;!--/loop_order_product/-->
 var ga4_totalPrice = '&lt;!--/pay_price/-->';
+var ga4_transaction_id = '&lt;!--/order_num/-->';
 var goods_price = ('&lt;!--/order_product@price/-->').replace(/[^0-9]/g, '');
 ga4_products.push({
   'item_name': '&lt;!--/order_product@name/-->',
   'item_id': '&lt;!--/order_product@product_id/-->',
   'price': goods_price,
-  'item_brand': brand,
   'quantity': '&lt;!--/order_product@amount/-->'
 });
 &lt;!--/end_loop/-->
@@ -3883,5 +3883,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 4.2 (Updated 2023.11.03)");
+  $("#versionTextInsert").html("Version 4.3 (Updated 2023.12.14)");
 });
