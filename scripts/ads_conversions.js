@@ -1597,6 +1597,70 @@ $(document).ready(function () {
     }
   });
 &lt;/script>
+
+// 네이버페이 장바구니 기준
+&lt;script>
+  // 모바일 접속
+  if (window.location.href.indexOf("m.모바일주소") > -1) {
+    var productIdArr = document.querySelectorAll("div.cart_content_box > ul > li > div.mid_box > div.right_box > div > a");
+    var productNameArr = document.querySelectorAll("div.cart_content_box > ul > li > div.mid_box > div.right_box > div > a > div > div.itembody > p.name");
+    var productPriceArr = document.querySelectorAll("div.cart_content_box > ul > li > div.mid_box > div.right_box > div > a > div > div.itembody > strong");
+    var productQtyArr = document.querySelectorAll("div.cart_content_box > ul > li > div.mid_box > div.right_box > div > a > div > div.itembody > p:nth-child(2)");
+    var totalPrice = 0;
+    var products = [];
+
+    for (var i = 0; i < productIdArr.length; i++) {
+      totalPrice += Number(productPriceArr[i].innerText.replace(/[^\\d]/g, ''));
+      var product = {
+        item_id: productIdArr[i].href.split("goodsNo=")[1],
+        item_name: productNameArr[i].innerText,
+        price: Number(productPriceArr[i].innerText.replace(/[^\\d]/g, '')),
+        quantity: Number(productQtyArr[i].innerText.split(":")[1].replace(/[^\\d]/g, ''))
+      };
+      products.push(product);
+    }
+
+    dataLayer.push({
+      event: "purchase",
+      ecommerce: {
+        value: totalPrice,
+        currency: "KRW",
+        transaction_id: document.querySelector(".npay_btn_pay").id.split("NPAY_BUY_LINK_IDNC_ID_")[1],
+        items: products
+      }
+    });
+  } 
+  // PC
+  else {
+    var productIdArr = document.querySelectorAll("#frmCart > div > div.order_table_type > table > tbody > tr > td.td_left > div > div > em > a");
+    var productNameArr = document.querySelectorAll("#frmCart > div > div.order_table_type > table > tbody > tr > td.td_left > div > div > em > a");
+    var productPriceArr = document.querySelectorAll("#frmCart > div > div.order_table_type > table > tbody > tr > td:nth-child(4)");
+    var productQtyArr = document.querySelectorAll("#frmCart > div > div.order_table_type > table > tbody > tr > td.td_order_amount > div > strong");
+    var totalPrice = 0;
+    var products = [];
+
+    for (var i = 0; i < productIdArr.length; i++) {
+      totalPrice += Number(productPriceArr[i].innerText.replace(/[^\\d]/g, ''));
+      var product = {
+        item_id: productIdArr[i].href.split("goodsNo=")[1],
+        item_name: productNameArr[i].innerText,
+        price: Number(productPriceArr[i].innerText.replace(/[^\\d]/g, '')),
+        quantity: Number(productQtyArr[i].innerText.replace(/[^\\d]/g, ''))
+      };
+      products.push(product);
+    }
+
+    dataLayer.push({
+      event: "purchase",
+      ecommerce: {
+        value: totalPrice,
+        currency: "KRW",
+        transaction_id: document.querySelector(".npay_btn_pay").id.split("NPAY_BUY_LINK_IDNC_ID_")[1],
+        items: products
+      }
+    });
+  }
+&lt;/script>
     `;
     $("#generated_ga4_script").html("<pre>" + result + "</pre>");
   });
@@ -3883,5 +3947,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 4.3 (Updated 2023.12.14)");
+  $("#versionTextInsert").html("Version 4.4 (Updated 2024.03.28)");
 });
