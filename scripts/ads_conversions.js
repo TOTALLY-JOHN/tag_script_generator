@@ -944,12 +944,12 @@ $(document).ready(function () {
     event: "view_item",
     ecommerce: {
       currency: "KRW",
-      value: document.querySelector('meta[property="product:price:amount"]').content,
+      value: Number(document.querySelector('meta[property="product:price:amount"]').content),
       items: [
         {
           item_id: document.querySelector('meta[property="product:productId"]').content,
           item_name: document.querySelector("div.detailArea > div > div > h1").innerText,
-          price: document.querySelector('meta[property="product:price:amount"]').content,
+          price: Number(document.querySelector('meta[property="product:price:amount"]').content),
           quantity: 1
         }
       ]
@@ -971,8 +971,8 @@ $(document).ready(function () {
       var product = {
         item_id: productIdArr[i].href.split("product_no=")[1].split("&cate")[0],
         item_name: productNameArr[i].innerText,
-        price: productPriceArr[i].innerText.replace(/[^\\d]/g, ''),
-        quantity: productQtyArr[i].value
+        price: Number(productPriceArr[i].innerText.replace(/[^\\d]/g, '')),
+        quantity: Number(productQtyArr[i].value)
       };
       products.push(product);
     }
@@ -996,8 +996,8 @@ $(document).ready(function () {
       var product = {
         item_id: productIdArr[i].href.split("product_no=")[1].split("&cate")[0],
         item_name: productNameArr[i].innerText,
-        price: productPriceArr[i].innerText.replace(/[^\\d]/g, ''),
-        quantity: productQtyArr[i].value
+        price: Number(productPriceArr[i].innerText.replace(/[^\\d]/g, '')),
+        quantity: Number(productQtyArr[i].value)
       };
       products.push(product);
     }
@@ -1022,12 +1022,14 @@ $(document).ready(function () {
     var productPriceArr = document.querySelectorAll("div.contents.prdArea > div:nth-child(1) > div > div > div > div > ul > li.price > span:nth-child(2) > strong");
     var productQtyArr = document.querySelectorAll("div.contents.prdArea > div > div > div > div > div > ul > li.price > strong[title='수량']");
     var products = [];
+    var totalPrice = 0;
 
     for (var i = 0; i < productIdArr.length; i++) {
+      totalPrice += Number(productPriceArr[i].innerText.replace(/[^\\d]/g, ''));
       var product = {
         item_id: productIdArr[i].href.split("product_no=")[1].split("&cate")[0],
         item_name: productNameArr[i].innerText,
-        price: productPriceArr[i].innerText.replace(/[^\\d]/g, ''),
+        price: Number(productPriceArr[i].innerText.replace(/[^\\d]/g, '')),
         quantity: Number(productQtyArr[i].innerText.replace(/[^\\d]/g, ''))
       };
       products.push(product);
@@ -1036,6 +1038,8 @@ $(document).ready(function () {
     dataLayer.push({
       event: "begin_checkout",
       ecommerce: {
+        value: totalPrice,
+        currency: "KRW",
         items: products
       }
     });
@@ -1049,6 +1053,7 @@ $(document).ready(function () {
     var products = [];
 
     for (var i = 0; i < productIdArr.length; i++) {
+      totalPrice += Number(productPriceArr[i].innerText.replace(/[^\\d]/g, ''));
       var product = {
         item_id: productIdArr[i].href.split("product_no=")[1].split("&cate")[0],
         item_name: productNameArr[i].innerText,
@@ -1061,6 +1066,8 @@ $(document).ready(function () {
     dataLayer.push({
       event: "begin_checkout",
       ecommerce: {
+        value: totalPrice,
+        currency: "KRW",
         items: products
       }
     });
@@ -3947,5 +3954,5 @@ function() {
     let value = document.querySelector("#generated_cms_script").innerText;
     performCopy(value);
   });
-  $("#versionTextInsert").html("Version 4.4 (Updated 2024.03.28)");
+  $("#versionTextInsert").html("Version 4.5 (Updated 2024.06.03)");
 });
